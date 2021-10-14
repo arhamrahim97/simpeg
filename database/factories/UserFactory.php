@@ -22,7 +22,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $role = array('Guru', 'Pegawai');
+        $role = array('Guru', 'Pegawai', 'Admin');
         return [
             'nama' => $this->faker->name(),
             'nip' => $this->faker->unique()->numerify('##################'),
