@@ -29,7 +29,7 @@
 
 				  <!-- Buttons -->
 				  <div class="text-center text-md-start">
-					<a href="masuk.html" class="btn btn-primary shadow lift me-1">
+					<a href="/login" class="btn btn-primary shadow lift me-1">
 					  Masuk <i class="fe fe-arrow-right d-none d-md-inline ms-3"></i>
 					</a>
 				  </div>

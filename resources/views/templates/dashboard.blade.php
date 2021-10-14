@@ -4,15 +4,16 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>@yield('title')</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="assets/dashboard/img/icon.ico" type="image/x-icon"/>
-	{{-- <link rel="stylesheet" href="assets/dashboard/css/theme.bundle.css" /> --}}
+	<link rel="icon" href="/assets/dashboard/img/icon.ico" type="image/x-icon"/>
+	{{-- <link rel="stylesheet" href="/assets/dashboard/css/theme.bundle.css" /> --}}
 
 	<!-- Fonts and icons -->
-	<script src="assets/dashboard/js/plugin/webfont/webfont.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/webfont/webfont.min.js"></script>
 	<script>
 		WebFont.load({
 			google: {"families":["Lato:300,400,700,900"]},
-			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['assets/dashboard/css/fonts.min.css']},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], 
+			urls: ['/assets/dashboard/css/fonts.min.css']},
 			active: function() {
 				sessionStorage.fonts = true;
 			}
@@ -20,12 +21,12 @@
 	</script>
 
 	<!-- CSS Files -->
-	<link rel="stylesheet" href="assets/dashboard/css/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/dashboard/css/atlantis.css">
+	<link rel="stylesheet" href="/assets/dashboard/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/dashboard/css/atlantis.css">
 
 	<!-- CSS Just for demo purpose, don't include it in your project -->
-	<link rel="stylesheet" href="assets/dashboard/css/demo.css">
-    <link rel="stylesheet" href="assets/dashboard/css/toastr.min.css">
+	<link rel="stylesheet" href="/assets/dashboard/css/demo.css">
+    <link rel="stylesheet" href="/assets/dashboard/css/toastr.min.css">
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -44,7 +45,7 @@
 		<div class="logo-header position-fixed" data-background-color="blue">
 
 			<a href="index.html" class="logo">
-				<img src="assets/dashboard/img/logo.svg" alt="navbar brand" class="navbar-brand">
+				<img src="/assets/dashboard/img/logo.svg" alt="navbar brand" class="navbar-brand">
 			</a>
 			<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon">
@@ -100,80 +101,80 @@
 		<!-- End Custom template -->
 	</div>
 	<!--   Core JS Files   -->
-	<script src="assets/dashboard/js/core/jquery.3.2.1.min.js"></script>
-	<script src="assets/dashboard/js/core/popper.min.js"></script>
-	<script src="assets/dashboard/js/core/bootstrap.min.js"></script>
+	<script src="/assets/dashboard/js/core/jquery.3.2.1.min.js"></script>
+	<script src="/assets/dashboard/js/core/popper.min.js"></script>
+	<script src="/assets/dashboard/js/core/bootstrap.min.js"></script>
 
 	<!-- jQuery UI -->
-	<script src="assets/dashboard/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script src="assets/dashboard/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 
 	<!-- jQuery Scrollbar -->
-	<script src="assets/dashboard/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
 	<!-- Moment JS -->
-	<script src="assets/dashboard/js/plugin/moment/moment.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/moment/moment.min.js"></script>
 
 	<!-- Chart JS -->
-	<script src="assets/dashboard/js/plugin/chart.js/chart.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/chart.js/chart.min.js"></script>
 
 	<!-- jQuery Sparkline -->
-	<script src="assets/dashboard/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
 	<!-- Chart Circle -->
-	<script src="assets/dashboard/js/plugin/chart-circle/circles.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/chart-circle/circles.min.js"></script>
 
 	<!-- Datatables -->
-	<script src="assets/dashboard/js/plugin/datatables/datatables.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/datatables/datatables.min.js"></script>
 
 	<!-- Bootstrap Notify -->
-	<script src="assets/dashboard/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
 	<!-- Bootstrap Toggle -->
-	<script src="assets/dashboard/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js"></script>
 
 	<!-- jQuery Vector Maps -->
-	<script src="assets/dashboard/js/plugin/jqvmap/jquery.vmap.min.js"></script>
-	<script src="assets/dashboard/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+	<script src="/assets/dashboard/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
 
 	<!-- Google Maps Plugin -->
-	<script src="assets/dashboard/js/plugin/gmaps/gmaps.js"></script>
+	<script src="/assets/dashboard/js/plugin/gmaps/gmaps.js"></script>
 
 	<!-- Dropzone -->
-	<script src="assets/dashboard/js/plugin/dropzone/dropzone.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/dropzone/dropzone.min.js"></script>
 
 	<!-- Fullcalendar -->
-	<script src="assets/dashboard/js/plugin/fullcalendar/fullcalendar.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/fullcalendar/fullcalendar.min.js"></script>
 
 	<!-- DateTimePicker -->
-	<script src="assets/dashboard/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
 
 	<!-- Bootstrap Tagsinput -->
-	<script src="assets/dashboard/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
 
 	<!-- Bootstrap Wizard -->
-	<script src="assets/dashboard/js/plugin/bootstrap-wizard/bootstrapwizard.js"></script>
+	<script src="/assets/dashboard/js/plugin/bootstrap-wizard/bootstrapwizard.js"></script>
 
 	<!-- jQuery Validation -->
-	<script src="assets/dashboard/js/plugin/jquery.validate/jquery.validate.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery.validate/jquery.validate.min.js"></script>
 
 	<!-- Summernote -->
-	<script src="assets/dashboard/js/plugin/summernote/summernote-bs4.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/summernote/summernote-bs4.min.js"></script>
 
 	<!-- Select2 -->
-	<script src="assets/dashboard/js/plugin/select2/select2.full.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/select2/select2.full.min.js"></script>
 
 	<!-- Sweet Alert -->
-	<script src="assets/dashboard/js/plugin/sweetalert/sweetalert.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/sweetalert/sweetalert.min.js"></script>
 
 	<!-- Owl Carousel -->
-	<script src="assets/dashboard/js/plugin/owl-carousel/owl.carousel.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/owl-carousel/owl.carousel.min.js"></script>
 
 	<!-- Magnific Popup -->
-	<script src="assets/dashboard/js/plugin/jquery.magnific-popup/jquery.magnific-popup.min.js"></script>
+	<script src="/assets/dashboard/js/plugin/jquery.magnific-popup/jquery.magnific-popup.min.js"></script>
 
 	<!-- Atlantis JS -->
-	<script src="assets/dashboard/js/atlantis.min.js"></script>
+	<script src="/assets/dashboard/js/atlantis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
@@ -208,7 +209,7 @@
 			fillColor: 'rgba(255, 165, 52, .14)'
 		});
 	</script>
-    <script src="assets/dashboard/js/toastr.min.js"></script>
+    <script src="/assets/dashboard/js/toastr.min.js"></script>
      {!! Toastr::message() !!}
     @stack('script')
 </body>

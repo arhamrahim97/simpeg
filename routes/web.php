@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +16,24 @@ use Brian2694\Toastr\Facades\Toastr;
 |
 */
 
-Route::get('dashboard', function () {
-    Toastr::success('Menampilkan Notifikasi Toastr', 'Success');
-    return view('pages.dashboard.dashboard');
-});
+
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+
+Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::get('/logout', [LoginController::class, 'logout']);
+
+// Route::get('/dashboard', function () {
+//     Toastr::success('Menampilkan Notifikasi Toastr', 'Success');
+//     return view('pages.dashboard.dashboard');
+// })->middleware('auth');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+
+Route::get('/lengkapi-data', function () {
+    return view('pages.guru.dashboard.lengkapiData');
+})->middleware('auth');
 
 Route::get('/', function () {
-
     return view('pages.welcome.welcome');
 });
