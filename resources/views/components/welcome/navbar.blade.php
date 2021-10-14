@@ -45,7 +45,7 @@
         </ul>
 
         <!-- Button -->
-        <a class="navbar-btn btn btn-sm btn-primary lift ms-auto" href="masuk.html" target="_blank">
+        <a class="navbar-btn btn btn-sm btn-primary lift ms-auto" href="/login" target="_blank">
           Masuk
         </a>
 

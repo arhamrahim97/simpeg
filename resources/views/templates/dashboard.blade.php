@@ -51,6 +51,7 @@
 </head>
 
 <body>
+
     <div class="wrapper fullheight-side">
         <!-- Logo Header -->
         <div class="logo-header position-fixed" data-background-color="blue">
@@ -73,11 +74,13 @@
         </div>
         <!-- End Logo Header -->
         <!-- Sidebar -->
+
         @include('components.dashboard.sidebar')
         <!-- End Sidebar -->
 
         <!-- Navbar Header -->
         @include('components.dashboard.navbarHeader')
+
         <!-- End Navbar -->
 
         <div class="main-panel full-height">
@@ -190,7 +193,6 @@
     </script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-
     <script>
         $('#lineChart').sparkline([102, 109, 120, 99, 110, 105, 115], {
             type: 'line',
