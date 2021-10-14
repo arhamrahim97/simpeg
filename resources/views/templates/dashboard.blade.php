@@ -75,12 +75,13 @@
         <!-- End Logo Header -->
         <!-- Sidebar -->
 
-        @include('components.dashboard.sidebar')
-        <!-- End Sidebar -->
-
-        <!-- Navbar Header -->
+        @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) 
+            @include('components.dashboard.guru_pegawai.sidebar')          
+        @elseif ((Auth::user()->role == 'Admin'))
+            @include('components.dashboard.admin.sidebar')                  
+        @endif
+        
         @include('components.dashboard.navbarHeader')
-
         <!-- End Navbar -->
 
         <div class="main-panel full-height">

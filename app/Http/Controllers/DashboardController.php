@@ -13,12 +13,12 @@ class DashboardController extends Controller
     {
         if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
             if ((User::find(Auth::user()->id)->profile) != null) {
-                return view('pages.dashboard.dashboard');
+                return view('pages.dashboard.dashboardGuru');
             } else {
-                return view('pages.guru.lengkapiData');
+                return view('pages.guru_pegawai.lengkapiData');
             }
-        } else { // Selain role GURU atau PEGAWAI
-            echo 'gagal';
+        } else if (Auth::user()->role == 'Admin') { // Selain role GURU atau PEGAWAI
+            return view('pages.dashboard.dashboardAdmin');
         }
     }
 }

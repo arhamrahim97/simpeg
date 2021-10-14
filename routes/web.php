@@ -3,7 +3,6 @@
 use App\Http\Controllers\admin\MasterJabatanFungsionalController;
 use App\Http\Controllers\admin\MasterJabatanStrukturalController;
 use App\Http\Controllers\admin\MasterUnitKerjaController;
-use Illuminate\Support\Facades\Route;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 
@@ -51,5 +50,5 @@ Route::resource('master-unit-kerja', MasterUnitKerjaController::class)->paramete
 ]);
 
 Route::get('upload', function () {
-    return view('pages.guru.kenaikanGaji.index');
+    return view('pages.guru_pegawai.kenaikanGaji.index');
 });
