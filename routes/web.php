@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\guru_pegawai\UsulanKenaikanGajiController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,18 +39,25 @@ Route::get('/', function () {
     return view('pages.welcome.welcome');
 });
 
-Route::resource('master-jabatan-struktural', MasterJabatanStrukturalController::class)->parameters([
-    'master-jabatan-struktural' => 'jabatan_struktural'
-]);
+Route::middleware(['admin'])->group(function () {
+    Route::resource('master-jabatan-struktural', MasterJabatanStrukturalController::class)->parameters([
+        'master-jabatan-struktural' => 'jabatan_struktural'
+    ]);
 
-Route::resource('master-jabatan-fungsional', MasterJabatanFungsionalController::class)->parameters([
-    'master-jabatan-fungsional' => 'jabatan_fungsional'
-]);
+    Route::resource('master-jabatan-fungsional', MasterJabatanFungsionalController::class)->parameters([
+        'master-jabatan-fungsional' => 'jabatan_fungsional'
+    ]);
 
-Route::resource('master-unit-kerja', MasterUnitKerjaController::class)->parameters([
-    'master-unit-kerja' => 'unit_kerja'
-]);
+    Route::resource('master-unit-kerja', MasterUnitKerjaController::class)->parameters([
+        'master-unit-kerja' => 'unit_kerja'
+    ]);
+});
 
-Route::get('upload', function () {
-    return view('pages.guru_pegawai.kenaikanGaji.index');
+
+Route::middleware(['gurudanpegawai'])->group(function () {
+    Route::resource('usulan-kenaikan-gaji', UsulanKenaikanGajiController::class)->parameters([
+        'usulan-kenaikan-gaji' => 'usulan_gaji'
+    ]);
+    Route::post('get-timeline-usulan-kenaikan-gaji', [UsulanKenaikanGajiController::class, 'getTimelineUsulanGaji']);
+    Route::delete('/hapus-berkas/{berkas_usulan_gaji}', [UsulanKenaikanGajiController::class, 'hapusBerkas']);
 });
