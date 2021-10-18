@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\MasterJabatanFungsionalController;
 use App\Http\Controllers\admin\MasterJabatanStrukturalController;
 use App\Http\Controllers\admin\MasterUnitKerjaController;
+use App\Http\Controllers\admin\MasterPersyaratanController;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 
@@ -25,13 +26,23 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
-Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/lengkapi-data', function () {
+        return view('pages.guru.dashboard.lengkapiData');
+    });
 
-Route::get('/lengkapi-data', function () {
-    return view('pages.guru.dashboard.lengkapiData');
-})->middleware('auth');
+    Route::post('/lengkapi-data/jabatan-golongan-pangkat', [DashboardController::class, 'getJabatanGolonganPangkat'])->name('lengkapiData.jabatanGolonganPangkat');
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    Route::get('/logout', [LoginController::class, 'logout']);
+
+    // Role Admin
+    Route::resource('/master-persyaratan', MasterPersyaratanController::class)->parameters([
+        'master-persyaratan' => 'persyaratan'
+    ]);
+});
 
 Route::get('/', function () {
     return view('pages.welcome.welcome');

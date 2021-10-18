@@ -26,6 +26,12 @@
                         <p>Unit Kerja</p>
                     </a>
                 </li>
+                <li class="nav-item nav-master-persyaratan">
+                    <a href="{{url('master-persyaratan')}}">
+                        <i class="fas fa-list-ol"></i>
+                        <p>Persyaratan</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

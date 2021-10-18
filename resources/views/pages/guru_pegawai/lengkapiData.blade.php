@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Lengkapi Data </title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="/assets/dashboard/img/icon.ico" type="image/x-icon" />
 
     <!-- Fonts and icons -->
@@ -151,7 +152,11 @@
 														<label>Unit Kerja (Sekolah) :</label>
 														<select class="form-control" name="unit_kerja" required>
 															<option value="">- Pilih Salah Satu -</option>
-															<option value="1">SMA Negeri 1 Testing</option>
+															@forelse ($unit_kerja as $row)
+																<option value="{{ $row->id }}">{{ $row->nama }}</option>																
+															@empty
+																<option value="">Tidak Ada Data</option>																																
+															@endforelse
 														</select>
 													</div>
 													<div class="form-group">
@@ -171,11 +176,20 @@
 																						<option value="Fungsional">Fungsional</option>														
 																					</select>
 																				</div>		 --}}
+
 													<div class="form-group">
+														<label>Jabatan - Golongan - Pangkat :</label>
+														<select class="form-control" name="jabatan" id="jabatan" required>
+															<option value=""> - Pilih Jenis ASN terlebih dahulu -</option>
+															{{-- <option value="">- Pilih Salah Satu -</option> --}}
+															{{-- Kondisi jika guru = tabel jabatan fungsional, else tabel jabatan struktural --}}
+															{{-- <option value="Guru Pertama">Guru Pertama</option> --}}
+														</select>
+													</div>
+													{{-- <div class="form-group">
 														<label>Jabatan :</label>
 														<select class="form-control" name="jabatan" required>
-															<option value="">- Pilih Salah Satu -</option>
-															{{-- Kondisi jika guru = tabel jabatan fungsional, else tabel jabatan struktural --}}
+															<option value="">- Pilih Salah Satu -</option>															
 															<option value="Guru Pertama">Guru Pertama</option>
 														</select>
 													</div>
@@ -192,7 +206,7 @@
 															<option value="">- Pilih Salah Satu -</option>
 															<option value="Penata Muda">III/a</option>
 														</select>
-													</div>
+													</div> --}}
 													<div class="row">
 														<div class="col-md-6">
 															<div class="form-group">
@@ -351,16 +365,31 @@
 
 		function jenis_asn1(sel)
 		{
-			if(sel.value == 'Guru'){
+			if(sel.value == 'Guru'){				
 				$('#jenis_guru').prop('required',true);									
 				$('#jenis_guru').val('');		
 				$('#form-sertifikasi').removeClass('d-none')
 				$('#form-jenis-guru').removeClass('d-none')				
 
 				$('#nuptk_file').val('');		
-				$('#nuptk_file').prop('required',true);
+				$('#nuptk_file').prop('required',true);				
+				$.ajax({
+					url: "{{ route('lengkapiData.jabatanGolonganPangkat') }}",
+					type: 'POST',					
+					data: {						
+						role : "Guru",
+						_token:     '{{ csrf_token() }}'
+					},
+					success: function(data) {
+						$('#jabatan').html(data)
+						console.log(data)    
+					},
+					error: function(error) {
+						console.log(error)
+					}
+				})
 			}	
-			else {
+			else if(sel.value == 'Pegawai') {
 				$('#jenis_guru').closest('.form-group').removeClass('has-error')
 				$('#jenis_guru').closest('.form-group').removeClass('has-success')
 				$('#jenis_guru-error').addClass('d-none')
@@ -377,11 +406,60 @@
 				
 				$('#form-sertifikasi').addClass('d-none')
 
+				$.ajax({
+					url: "{{ route('lengkapiData.jabatanGolonganPangkat') }}",
+					type: 'POST',					
+					data: {						
+						role : "Pegawai",
+						_token:     '{{ csrf_token() }}'
+					},
+					success: function(data) {
+						$('#jabatan').html(data)
+						console.log(data)    
+					},
+					error: function(error) {
+						console.log(error)
+					}
+				})
+
+			}
+
+			else{
+				$('#jenis_guru').closest('.form-group').removeClass('has-error')
+				$('#jenis_guru').closest('.form-group').removeClass('has-success')
+				$('#jenis_guru-error').addClass('d-none')
+				$('#jenis_guru').val('');				
+				$('#form-jenis-guru').addClass('d-none')							
+				$('#jenis_guru').prop('required',false);
+
+
+				$('#nuptk_file').closest('.form-group').removeClass('has-error')
+				$('#nuptk_file').closest('.form-group').removeClass('has-success')			
+				$('#nuptk_file-error').addClass('d-none')
+				$('#nuptk_file').val('');				
+				$('#nuptk_file').prop('required',false);		
+				
+				$('#form-sertifikasi').addClass('d-none')
+				$.ajax({
+					url: "{{ route('lengkapiData.jabatanGolonganPangkat') }}",
+					type: 'POST',					
+					data: {						
+						role : "nothing",
+						_token:     '{{ csrf_token() }}'
+					},
+					success: function(data) {
+						$('#jabatan').html(data)
+						console.log(data)    
+					},
+					error: function(error) {
+						console.log(error)
+					}
+				})
 			}		
 		}
 
 		$(document).ready(function() {
-			jenis_asn1(sel)		
+			// jenis_asn1(sel)		
 		});
 		
 		$('.tanggal').mask('00-00-0000');
