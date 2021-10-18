@@ -8,17 +8,17 @@
                     </span>
                     <h4 class="text-section">Master</h4>
                 </li>
-                <li class="nav-item nav-jabatan-fungsional">
-                    <a href="{{url('master-jabatan-fungsional')}}">
+                <li class="nav-item nav-usulan-kenaikan-gaji">
+                    <a href="{{url('usulan-kenaikan-gaji')}}">
                         <i class="fas fa-briefcase"></i>
                         <p>Usulan Kenaikan Gaji</p>
                     </a>
                 </li>
                 {{-- <li class="nav-item nav-jabatan-struktural">
                     <a href="{{url('master-jabatan-struktural')}}">
-                        <i class="fas fa-briefcase"></i>
-                        <p>Jabatan Struktural</p>
-                    </a>
+                <i class="fas fa-briefcase"></i>
+                <p>Jabatan Struktural</p>
+                </a>
                 </li>
                 <li class="nav-item nav-unit-kerja">
                     <a href="{{url('master-unit-kerja')}}">
