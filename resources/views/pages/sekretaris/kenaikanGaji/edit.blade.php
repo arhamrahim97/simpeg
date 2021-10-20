@@ -1,7 +1,7 @@
 @extends('templates.dashboard')
 
 @section('title')
-Lihat Berkas
+Edit Proses Berkas
 @endsection
 
 @section('content')
@@ -16,31 +16,55 @@ Lihat Berkas
             <tbody>
                 <tr>
                     <th scope="row" width="40%">Nama : </th>
-                    <td>Amirul Hidayah</td>
+                    <td>{{$user->nama}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Jenis Kelamin : </th>
+                    <td>{{$user->profile->jenis_kelamin}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Pendidikan Terakhir : </th>
+                    <td>{{$user->profile->pendidikan_terakhir}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Jenis ASN : </th>
+                    <td>{{$user->profile->jenis_asn}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">NIP : </th>
-                    <td>16081999</td>
+                    <td>{{$user->nip}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">NUPTK : </th>
-                    <td>16081999</td>
+                    <td>{{$user->profile->nuptk}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Unit Kerja : </th>
                     <td>SMP Negeri 1 Parigi</td>
                 </tr>
                 <tr>
+                    <th scope="row" width="40%">Status : </th>
+                    <td>{{$user->profile->status}}</td>
+                </tr>
+                <tr>
                     <th scope="row" width="40%">Gaji Terakhir : </th>
-                    <td>4.000.000</td>
+                    <td>{{"Rp " . number_format($user->profile->nilai_gaji,0,',','.');}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Lama Kerja : </th>
-                    <td>4 Tahun 3 Bulan</td>
+                    <td>{{$user->profile->jumlah_tahun_kerja}} Tahun {{$user->profile->jumlah_bulan_kerja}} Bulan</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">TMT Gaji Berkala : </th>
-                    <td>16-08-2018</td>
+                    <td>{{date("d-m-Y", strtotime($user->profile->tmt_gaji))}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Nilai Usulan Gaji : </th>
+                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_selanjutnya,0,',','.');}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">TMT Gaji Selanjutnya : </th>
+                    <td>{{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_selanjutnya))}}</td>
                 </tr>
             </tbody>
         </table>
@@ -193,6 +217,36 @@ Lihat Berkas
             @endif
         </div> <!-- / .row -->
 
+        <form action="{{route('proses-usulan-kenaikan-gaji-sekretaris.update',$usulanGaji->id)}}" method="POST">
+            @csrf
+            @method('PUT')
+            <h4 class="page-title mt-4">Proses Berkas</h4>
+
+            <div>
+                <label for="exampleInputEmail1" class="form-label mt-4">Konfirmasi Berkas</label>
+                <select class="form-select form-select-lg mb-3 col-lg-12" aria-label=".form-select-lg example"
+                    id="konfirmasi-berkas" name="konfirmasi_berkas" required>
+                    <option value="" selected>Pilih Status Konfirmasi</option>
+                    <option value="1" @if ($usulanGaji->status_sekretaris == 1) {{ 'selected' }} @endif>Setuju
+                    </option>
+                    <option value="2" @if ($usulanGaji->status_sekretaris == 2) {{ 'selected' }} @endif>Tolak
+                    </option>
+                </select>
+            </div>
+
+            <div id="form-alasan-ditolak">
+                <label for="exampleFormControlTextarea1" class="form-label">Alasan Ditolak</label>
+                <textarea class="form-control" id="alasan-ditolak" name="alasan_ditolak"
+                    required>{{$usulanGaji->alasan_tolak_sekretaris}}</textarea>
+            </div>
+
+            <div class="div d-flex justify-content-center mt-5">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Proses Berkas</button>
+            </div>
+        </form>
+
+
+
     </div><!-- End -->
 
 </div>
@@ -228,103 +282,48 @@ Lihat Berkas
 
 {{-- Script Disini --}}
 @push('script')
-
+<!-- Jquery Mask -->
+<script src="/assets/dashboard/js/plugin/jquery.mask/jquery.mask.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.nav-usulan-kenaikan-gaji').addClass('active');
+        $('#konfirmasi-berkas').change();
     })
 
 </script>
 
 <script>
-    var i = 1;
-    $('#btnTambahBerkas').on('click', function () {
-        i++;
-        var formBerkas =
-            ' <div class="form-group border border-success rounded p-3" id="daftarBerkas' + i +
-            '"><label for="exampleInputEmail1">Nama Berkas</label><input type="text" class="form-control namaBerkas" id="exampleInputEmail1" aria-describedby="emailHelp"placeholder="Nama Berkas" name="namaBerkas[]"><div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm" type="file" name="fileBerkas[]"></div><div class="div d-flex justify-content-end"><button href="" class="btn btn-danger btn-sm btnHapusBerkas" id="' +
-            i +
-            '"><i class="fas fa-trash-alt"></i> Hapus</button></div></div>';
-        $('#listBerkas').append(formBerkas);
+    $('#konfirmasi-berkas').change(function () {
+        var konfirmasi_berkas = $('#konfirmasi-berkas').val();
+        if (konfirmasi_berkas == 1) {
+            $('#form-alasan-ditolak').hide();
+            $("#alasan-ditolak").prop('required', false);
+        } else if (konfirmasi_berkas == 2) {
+            $('#form-alasan-ditolak').show();
+            $("#alasan-ditolak").prop('required', true);
+        } else {
+            $('#form-alasan-ditolak').hide();
+            $("#alasan-ditolak").prop('required', true);
+        }
     })
 
-    $(document).on('click', '.btnHapusBerkas', function () {
-        var id = $(this).attr("id");
-        $('#daftarBerkas' + id).remove();
-        i--;
-    })
-
-    $(document).on('click', '.btnHapusBerkasUpdate', function () {
-        var id = $(this).attr("id");
-        swal({
-            title: 'Anda Yakin Ingin Menghapus Berkas Ini?',
-            text: "Berkas yang sudah dihapus tidak dapat dikembalikan lagi",
-            icon: 'warning',
-            buttons: {
-                confirm: {
-                    text: 'Hapus',
-                    className: 'btn btn-success'
-                },
-                cancel: {
-                    visible: true,
-                    text: 'Batal',
-                    className: 'btn btn-danger'
-                }
-            }
-        }).then((Delete) => {
-            if (Delete) {
-                var url = "{{url('hapus-berkas')}}";
-                $.ajax({
-                    type: "DELETE",
-                    url: url + "/" + id,
-                    dataType: 'json',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function (data) {
-                        if (data.res == 'success') {
-                            swal({
-                                title: 'Terhapus',
-                                text: data.message,
-                                icon: 'success',
-                                buttons: {
-                                    confirm: {
-                                        className: 'btn btn-success'
-                                    }
-                                }
-                            });
-                            $('#daftarBerkasUpdate' + id).remove();
-                        } else {
-                            swal({
-                                title: 'Gagal',
-                                text: 'Gagal Menghapus Data',
-                                icon: 'warning',
-                                buttons: {
-                                    confirm: {
-                                        className: 'btn btn-success'
-                                    }
-                                }
-                            });
-                        }
-                    },
-                    error: function (data) {
-                        swal({
-                            title: 'Gagal',
-                            text: 'Gagal Menghapus Data',
-                            icon: 'warning',
-                            buttons: {
-                                confirm: {
-                                    className: 'btn btn-success'
-                                }
-                            }
-                        });
-                    }
-                });
-            } else {
-                swal.close();
-            }
-        });
-    })
+    $('.rupiah').mask('000.000.000.000', {
+        reverse: true
+    });
+    $('.tanggal').mask('00-00-0000');
 
 </script>
+{{-- <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.ckeditor').ckeditor();
+    });
+
+    CKEDITOR.replace('ckeditor', {
+        removeButtons: 'Source,Image,Table,HorizontalRule,Anchor,Link,RemoveFormat,Indent,Blockquote,Styles,Format,About,SpecialChar'
+    });
+
+</script> --}}
+
+
 @endpush

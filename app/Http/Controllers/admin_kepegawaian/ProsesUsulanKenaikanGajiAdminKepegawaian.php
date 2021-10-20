@@ -1,29 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\guru_pegawai;
+namespace App\Http\Controllers\admin_kepegawaian;
 
 use App\Http\Controllers\Controller;
-use App\Models\BerkasUsulanGaji;
+use App\Models\User;
 use App\Models\UsulanGaji;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
+use Brian2694\Toastr\Facades\Toastr;
 
-class UsulanKenaikanGajiController extends Controller
+class ProsesUsulanKenaikanGajiAdminKepegawaian extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $usulanGaji = UsulanGaji::where('id_user', Auth::id())->orderBy('id', 'desc')->get(); //Nanti Ganti Ke Where id user login
-        return view('pages.guru_pegawai.kenaikanGaji.index', compact('usulanGaji'));
+        if ($request->ajax()) {
+            $data = UsulanGaji::all();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '<button type="button" class="btn btn-sm btn-primary lihatTimeline" id="' . $row->id . '">
+                            Lihat
+                        </button>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('pages.admin_kepegawaian.kenaikanGaji.index');
     }
 
     /**
@@ -33,7 +42,7 @@ class UsulanKenaikanGajiController extends Controller
      */
     public function create()
     {
-        return view('pages.guru_pegawai.kenaikanGaji.create');
+        //
     }
 
     /**
@@ -44,37 +53,7 @@ class UsulanKenaikanGajiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(count($request->namaBerkas));
-        // dd($request->file('fileBerkas'));
-        // dd($request->file('fileBerkas')[0]);
-        $lengthBerkas = count($request->namaBerkas);
-
-        $usulanGaji = new UsulanGaji();
-        $usulanGaji->id_user = Auth::id();
-        $usulanGaji->nama = "Surat Pengantar Kenaikan Gaji " . Auth::user()->nama . " " . date('d-m-Y', strtotime(Auth::user()->profile->tmt_gaji));
-        $usulanGaji->status_kepegawaian = 0;
-        $usulanGaji->status_kasubag = 0;
-        $usulanGaji->status_sekretaris = 0;
-        $usulanGaji->status_kepala_dinas = 0;
-        $usulanGaji->save();
-
-        $usulanGajiId = $usulanGaji->id;
-
-        for ($i = 0; $i < $lengthBerkas; $i++) {
-            $namaFileBerkas = Str::slug($request->namaBerkas[$i], '-') . "-" . $i . Carbon::now()->format('YmdHs') . rand(1, 9999) . ".pdf";
-            $request->file('fileBerkas')[$i]->storeAs(
-                'upload/berkas-usulan-gaji',
-                $namaFileBerkas
-            );
-
-            $berkasGaji = new BerkasUsulanGaji();
-            $berkasGaji->id_usulan_gaji = $usulanGajiId;
-            $berkasGaji->nama = $request->namaBerkas[$i];
-            $berkasGaji->file = $namaFileBerkas;
-            $berkasGaji->save();
-        }
-        Toastr::success('Berhasil Mengupload Berkas', 'Success');
-        return redirect()->route('usulan-kenaikan-gaji.index');
+        //
     }
 
     /**
@@ -85,7 +64,8 @@ class UsulanKenaikanGajiController extends Controller
      */
     public function show(UsulanGaji $usulanGaji)
     {
-        return view('pages.guru_pegawai.kenaikanGaji.show', compact('usulanGaji'));
+        $user = User::find($usulanGaji->id_user);
+        return view('pages.admin_kepegawaian.kenaikanGaji.show', compact(['usulanGaji', 'user']));
     }
 
     /**
@@ -96,8 +76,8 @@ class UsulanKenaikanGajiController extends Controller
      */
     public function edit(UsulanGaji $usulanGaji)
     {
-        $berkasGaji = $usulanGaji->berkasUsulanGaji;
-        return view('pages.guru_pegawai.kenaikanGaji.edit', compact(['berkasGaji', 'usulanGaji']));
+        $user = User::find($usulanGaji->id_user);
+        return view('pages.admin_kepegawaian.kenaikanGaji.edit', compact(['usulanGaji', 'user']));
     }
 
     /**
@@ -109,51 +89,20 @@ class UsulanKenaikanGajiController extends Controller
      */
     public function update(Request $request, UsulanGaji $usulanGaji)
     {
-        // dd($request->file('fileBerkasUpdate'));
-        $lengthBerkasUpdate = count($request->namaBerkasUpdate);
-        // Update
-        if ($request->namaBerkasUpdate) {
-            for ($i = 0; $i < $lengthBerkasUpdate; $i++) {
-                $berkasGaji = BerkasUsulanGaji::find($request->idBerkasUpdate[$i]);
-                $namaFileBerkasUpdate = Str::slug($request->namaBerkasUpdate[$i], '-') . "-" . $i . Carbon::now()->format('YmdHs') . rand(1, 9999) . ".pdf";
-
-
-                if (isset($request->file('fileBerkasUpdate')[$i])) {
-                    if (Storage::exists('upload/berkas-usulan-gaji/' . $berkasGaji->file)) {
-                        Storage::delete('upload/berkas-usulan-gaji/' . $berkasGaji->file);
-                    }
-                    $request->file('fileBerkasUpdate')[$i]->storeAs(
-                        'upload/berkas-usulan-gaji',
-                        $namaFileBerkasUpdate
-                    );
-                    $berkasGaji->file = $namaFileBerkasUpdate;
-                }
-
-                $berkasGaji->nama = $request->namaBerkasUpdate[$i];
-                $berkasGaji->save();
-            }
+        $usulanGaji->status_kepegawaian = $request->konfirmasi_berkas;
+        $usulanGaji->tmt_gaji_selanjutnya = date("Y-m-d", strtotime($request->tmt_gaji_selanjutnya));
+        $usulanGaji->nilai_gaji_selanjutnya = str_replace(".", "", $request->gaji_selanjutnya);
+        $usulanGaji->tanggal_konfirmasi_kepegawaian = now();
+        if ($request->konfirmasi_berkas == 2) {
+            $usulanGaji->alasan_tolak_kepegawaian = $request->alasan_ditolak;
+        } else if ($request->konfirmasi_berkas == 1) {
+            $usulanGaji->alasan_tolak_kepegawaian = NULL;
         }
-        // Tambahkan Berkas Baru
-        if ($request->namaBerkas) {
-            $lengthBerkas = count($request->namaBerkas);
-            if ($request->namaBerkas) {
-                for ($i = 0; $i < $lengthBerkas; $i++) {
-                    $namaFileBerkas = Str::slug($request->namaBerkas[$i], '-') . "-" . $i . Carbon::now()->format('YmdHs') . ".pdf";
-                    $request->file('fileBerkas')[$i]->storeAs(
-                        'upload/berkas-usulan-gaji',
-                        $namaFileBerkas
-                    );
 
-                    $berkasGaji = new BerkasUsulanGaji();
-                    $berkasGaji->id_usulan_gaji = $usulanGaji->id;
-                    $berkasGaji->nama = $request->namaBerkas[$i];
-                    $berkasGaji->file = $namaFileBerkas;
-                    $berkasGaji->save();
-                }
-            }
-        }
-        Toastr::success('Berhasil Mengubah Berkas', 'Success');
-        return redirect()->route('usulan-kenaikan-gaji.index');
+        $usulanGaji->save();
+
+        Toastr::success('Berhasil Memproses Berkas', 'Success');
+        return redirect()->route('proses-usulan-kenaikan-gaji-admin-kepegawaian.index');
     }
 
     /**
@@ -167,7 +116,6 @@ class UsulanKenaikanGajiController extends Controller
         //
     }
 
-    // Custom Function
     public function getTimelineUsulanGaji(Request $request)
     {
         $id = $request->id;
@@ -187,12 +135,6 @@ class UsulanKenaikanGajiController extends Controller
                 </section>';
 
         // Timeline Guru
-        if ($usulanGaji->status_kepegawaian != 1) {
-            $ubahBerkas = '<a href=" ' . route('usulan-kenaikan-gaji.edit', $usulanGaji->id) . '" class="btn btn-sm btn-warning mt-2">Ubah
-                                                                Berkas</a>';
-        } else {
-            $ubahBerkas = '';
-        }
         $timelineGuru = '<div class="single-timeline-area">
                                         <div class="timeline-date timeline-date-accept wow fadeInLeft"
                                             data-wow-delay="0.1s"
@@ -209,12 +151,6 @@ class UsulanKenaikanGajiController extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Guru</h6>
                                                         <p>Berkas Selesai Diupload</p>
-                                                        <div class="row">
-                                                            <a target="_blank" href=" ' . route('usulan-kenaikan-gaji.show', $usulanGaji->id) . ' " class="btn btn-sm btn-primary mt-2 mr-2 ml-3">Lihat
-                                                                Berkas</a>
-                                                                ' . $ubahBerkas . '
-                                                        </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,6 +158,10 @@ class UsulanKenaikanGajiController extends Controller
                                     </div>';
 
         // Timeline Kepegawaian
+        $btnUbah = '';
+        if ($usulanGaji->status_kasubag == 0) {
+            $btnUbah = '<a href=" ' . route('proses-usulan-kenaikan-gaji-admin-kepegawaian.edit', $usulanGaji->id) . '" class="btn btn-sm btn-warning mt-2">Ubah Berkas</a>';
+        }
         if ($usulanGaji->status_kepegawaian == 0) {
             $statusKepegawaian = '<div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s"
                                             style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
@@ -237,6 +177,11 @@ class UsulanKenaikanGajiController extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Admin Kepegawaian</h6>
                                                         <p>Berkas Masih Diproses</p>
+                                                        <div class="row">
+                                                        <a href=" ' . route('proses-usulan-kenaikan-gaji-admin-kepegawaian.show', $usulanGaji->id) . '" class="btn btn-sm btn-warning mt-2">Lihat Berkas</a>
+                                                            <a href=" ' . url('proses-berkas-usulan-kenaikan-gaji-admin-kepegawaian', $usulanGaji->id) . ' " class="btn btn-sm btn-success mt-2 mr-2 ml-3">Proses
+                                                                Berkas</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,6 +202,8 @@ class UsulanKenaikanGajiController extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Admin Kepegawaian</h6>
                                                         <p>Menyetujui Berkas</p>
+                                                        <a href=" ' . route('proses-usulan-kenaikan-gaji-admin-kepegawaian.show', $usulanGaji->id) . '" class="btn btn-sm btn-primary mt-2">Lihat Berkas</a>
+                                                        ' . $btnUbah . '
                                                     </div>
                                                 </div>
                                             </div>
@@ -278,6 +225,8 @@ class UsulanKenaikanGajiController extends Controller
                                                         <h6>Admin Kepegawaian</h6>
                                                         <p>Berkas Ditolak</p>
                                                         <p>Alasan : ' . $usulanGaji->alasan_tolak_kepegawaian . '</p>
+                                                        <a href=" ' . route('proses-usulan-kenaikan-gaji-admin-kepegawaian.show', $usulanGaji->id) . '" class="btn btn-sm btn-primary mt-2">Lihat Berkas</a>
+                                                        ' . $btnUbah . '
                                                     </div>
                                                 </div>
                                             </div>
@@ -539,28 +488,9 @@ class UsulanKenaikanGajiController extends Controller
         ]);
     }
 
-    public function hapusBerkas(BerkasUsulanGaji $berkasUsulanGaji)
+    public function prosesBerkas(UsulanGaji $usulanGaji)
     {
-        if (Storage::exists('upload/berkas-usulan-gaji/' . $berkasUsulanGaji->file)) {
-            Storage::delete('upload/berkas-usulan-gaji/' . $berkasUsulanGaji->file);
-        }
-
-        $berkasUsulanGaji->delete();
-
-        return response()->json([
-            'res' => 'success',
-            'data' => $berkasUsulanGaji
-        ]);
-    }
-
-    public function getBerkasUsulanGaji(Request $request)
-    {
-        $id = $request->id;
-        $fileBerkas = BerkasUsulanGaji::find($id)->file;
-        $urlFileBerkas = Storage::url('upload/berkas-usulan-gaji/' . $fileBerkas);
-        return response()->json([
-            'res' => 'success',
-            'urlPdf' => $urlFileBerkas
-        ]);
+        $user = User::find($usulanGaji->id_user);
+        return view('pages.admin_kepegawaian.kenaikanGaji.proses', compact(['usulanGaji', 'user']));
     }
 }

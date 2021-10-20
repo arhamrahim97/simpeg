@@ -27,8 +27,7 @@ Usulan Kenaikan Gaji
                             height="50px" width="50px"></td>
                     <td>
                         <div class="mb-3 mt-2">
-                            <label for="formFile" class="form-label"> <b> Surat Pengantar Kenaikan Gaji
-                                    {{$loop->iteration}}</b></label>
+                            <label for="formFile" class="form-label"> <b> {{$usulan->nama}}</b></label>
                             <p>Klik Lihat Untuk Melihat Progres Berkas</p>
                         </div>
                     </td>
@@ -502,7 +501,7 @@ Usulan Kenaikan Gaji
         var id = $(this).attr('id');
         $.ajax({
             type: "POST",
-            url: "get-timeline-usulan-kenaikan-gaji",
+            url: "get-timeline-usulan-kenaikan-gaji-guru",
             dataType: 'json',
             data: {
                 id: id
