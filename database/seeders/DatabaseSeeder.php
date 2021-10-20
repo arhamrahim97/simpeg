@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Pangkat;
-use App\Models\Profile;
-use App\Models\Golongan;
 use Illuminate\Database\Seeder;
+use App\Models\ProfileGuruPegawai;
+use Database\Seeders\UnitKerjaSeeder;
+use Database\Seeders\PersyaratanSeeder;
+use Database\Seeders\JabatanFungsionalSeeder;
 use Database\Seeders\JabatanStrukturalSeeder;
+use Database\Seeders\DeskripsiPersyaratanSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,9 +21,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(4)->create();
-        Profile::factory(2)->create();
+        ProfileGuruPegawai::factory(2)->create();
         $this->call(JabatanFungsionalSeeder::class);
         $this->call(JabatanStrukturalSeeder::class);
         $this->call(UnitKerjaSeeder::class);
+        $this->call(PersyaratanSeeder::class);
+        $this->call(DeskripsiPersyaratanSeeder::class);
     }
 }

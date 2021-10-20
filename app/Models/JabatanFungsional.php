@@ -11,4 +11,10 @@ class JabatanFungsional extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'jabatan_fungsional';
+
+
+    // public function persyaratan()
+    // {
+    //     return $this->hasMany(Persyaratan::class, 'ke_golongan', 'id');
+    // }
 }

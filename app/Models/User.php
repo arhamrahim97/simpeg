@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Profile;
+use App\Models\BerkasDasar;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\ProfileGuruPegawai;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +14,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    use HasFactory;
+    use SoftDeletes;
     protected $table = 'user';
     protected $guarded = ['id'];
 
@@ -23,6 +26,11 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne(Profile::class, 'id_user', 'id');
+        return $this->hasOne(ProfileGuruPegawai::class, 'id_user', 'id');
+    }
+
+    public function berkasDasar()
+    {
+        return $this->hasOne(BerkasDasar::class, 'id_user', 'id');
     }
 }

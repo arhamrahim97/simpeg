@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\MasterJabatanFungsionalController;
 use App\Http\Controllers\admin\MasterJabatanStrukturalController;
 use App\Http\Controllers\admin\MasterUnitKerjaController;
+use App\Http\Controllers\admin\MasterPersyaratanController;
 use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanGajiAdminKepegawaian;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\guru_pegawai\UsulanKenaikanGajiController;
+use App\Http\Controllers\guru_pegawai\BerkasDasarController;
+use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
 use App\Http\Controllers\kasubag\ProsesUsulanKenaikanGajiKasubag;
 use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanGajiKepalaDinas;
 use App\Http\Controllers\sekretaris\ProsesUsulanKenaikanGajiSekretaris;
@@ -31,13 +34,23 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
-Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/lengkapi-data', function () {
+        return view('pages.guru.dashboard.lengkapiData');
+    });
 
-Route::get('/lengkapi-data', function () {
-    return view('pages.guru.dashboard.lengkapiData');
-})->middleware('auth');
+    Route::post('/lengkapi-data/jabatan-golongan-pangkat', [DashboardController::class, 'getJabatanGolonganPangkat'])->name('lengkapiData.jabatanGolonganPangkat');
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    Route::get('/logout', [LoginController::class, 'logout']);
+
+    // Role Admin
+    Route::resource('/master-persyaratan', MasterPersyaratanController::class)->parameters([
+        'master-persyaratan' => 'persyaratan'
+    ]);
+});
 
 Route::get('/', function () {
     return view('pages.welcome.welcome');
@@ -64,6 +77,9 @@ Route::middleware(['gurudanpegawai'])->group(function () {
     ]);
     Route::post('get-timeline-usulan-kenaikan-gaji-guru', [UsulanKenaikanGajiController::class, 'getTimelineUsulanGaji']);
     Route::delete('/hapus-berkas/{berkas_usulan_gaji}', [UsulanKenaikanGajiController::class, 'hapusBerkas']);
+
+    Route::resource('profile-guru-pegawai', ProfileGuruPegawaiController::class);
+    Route::resource('berkas-dasar', BerkasDasarController::class);
 });
 
 // Proses Usulan Gaji Admin Kepegawaian

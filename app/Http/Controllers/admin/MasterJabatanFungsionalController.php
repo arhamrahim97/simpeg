@@ -147,7 +147,7 @@ class MasterJabatanFungsionalController extends Controller
         $jabatanFungsional->no_urut = $request->no_urut;
         $jabatanFungsional->save();
 
-        Toastr::success('Berhasil Mengubah Jabatan Fungsional', 'Success');
+        Toastr::success('Berhasil Mengubah Jabatan Fungsional', 'Success', ["showDuration" => "15000"]);
         return redirect()->route('master-jabatan-fungsional.index');
     }
 

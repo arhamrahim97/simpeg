@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Profile;
+use App\Models\ProfileGuruPegawai;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Validation\Rules\Unique;
 
-class ProfileFactory extends Factory
+class ProfileGuruPegawaiFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Profile::class;
+    protected $model = ProfileGuruPegawai::class;
 
     /**
      * Define the model's default state.
@@ -47,9 +46,7 @@ class ProfileFactory extends Factory
             'unit_kerja' => mt_rand(1, 10),
             'status' => $status[array_rand($status)],
             'jenis_jabatan' => $jenis_jabatan[array_rand($jenis_jabatan)],
-            'jabatan' => mt_rand(1, 20),
-            'pangkat' => mt_rand(1, 20),
-            'golongan' => mt_rand(1, 20),
+            'jabatan_pangkat_golongan' => mt_rand(1, 9),
             'jumlah_tahun_kerja' => mt_rand(1, 20),
             'jumlah_bulan_kerja' => mt_rand(1, 12),
             'nilai_gaji' => mt_rand(1, 19) . '000000',
