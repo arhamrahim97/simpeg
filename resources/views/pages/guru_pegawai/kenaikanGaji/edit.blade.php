@@ -52,9 +52,9 @@ Ubah Berkas
             <div class="row">
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Kartu Pegawai
@@ -64,9 +64,9 @@ Ubah Berkas
                 </div>
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Kartu Tanda Penduduk
@@ -79,9 +79,9 @@ Ubah Berkas
             <div class="row mt-3">
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Kartu Keluarga
@@ -91,9 +91,9 @@ Ubah Berkas
                 </div>
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Ijazah Terakhir
@@ -106,9 +106,9 @@ Ubah Berkas
             <div class="row mt-3">
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 SK CPNS
@@ -118,9 +118,9 @@ Ubah Berkas
                 </div>
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 SK PNS
@@ -133,9 +133,9 @@ Ubah Berkas
             <div class="row mt-3">
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 SK Kenaikan Gaji Berkala
@@ -145,9 +145,9 @@ Ubah Berkas
                 </div>
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 SPMT
@@ -160,9 +160,9 @@ Ubah Berkas
             <div class="row mt-3">
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Kartu NUPTK
@@ -172,9 +172,9 @@ Ubah Berkas
                 </div>
                 <div class="col-lg-6">
                     <a href="" class="text-decoration-none">
-                        <div class="border border-warning text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
-                            <img src="/assets/dashboard/img/documents.png" alt="" width="50" class="img-fluid">
+                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
                                 Sertifikasi Guru
@@ -193,9 +193,9 @@ Ubah Berkas
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="border border-warning text-center rounded shadow-sm py-5 px-4"><img
-                    src="/assets/dashboard/img/file-upload.png" alt="" width="100" class="img-fluid">
-                <h5 class="mb-0">Upload Berkas Usulan Kenaikan Gaji</h5>
+            <div class="shadow-lg text-center rounded shadow-sm py-5 px-4"><img src="/assets/dashboard/img/pdf.png"
+                    alt="" width="100" class="img-fluid">
+                <h5 class="mb-0 mt-3">Upload Berkas Usulan Kenaikan Gaji</h5>
                 <span class="small text-uppercase">
                     File harus berekstensi .PDF dengan ukuran maksimal 1 MB
                 </span>
@@ -204,7 +204,8 @@ Ubah Berkas
             <div class="row gx-4 d-flex justify-content-center">
                 <div class="col-lg-12 mt-3" id="listBerkas">
                     @foreach ($berkasGaji as $berkas)
-                    <div class="form-group border border-success rounded p-3" id="daftarBerkasUpdate{{$berkas->id}}">
+                    <div class="form-group shadow-lg border border-grey rounded p-3"
+                        id="daftarBerkasUpdate{{$berkas->id}}">
                         <input type="hidden" value="{{$berkas->id}}" name="idBerkasUpdate[]">
                         <label for="exampleInputEmail1">Nama Berkas</label>
                         <input type="text" class="form-control namaBerkasUpdate" id="exampleInputEmail1"
@@ -468,7 +469,7 @@ Ubah Berkas
     $('#btnTambahBerkas').on('click', function () {
         i++;
         var formBerkas =
-            ' <div class="form-group border border-success rounded p-3" id="daftarBerkas' + i +
+            ' <div class="form-group border border-grey shadow-lg rounded p-3" id="daftarBerkas' + i +
             '"><label for="exampleInputEmail1">Nama Berkas</label><input type="text" class="form-control namaBerkas" id="exampleInputEmail1" aria-describedby="emailHelp"placeholder="Nama Berkas" name="namaBerkas[]"><div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm" type="file" name="fileBerkas[]"></div><div class="div d-flex justify-content-end"><button href="" class="btn btn-danger btn-sm btnHapusBerkas" id="' +
             i +
             '"><i class="fas fa-trash-alt"></i> Hapus</button></div></div>';
