@@ -16,6 +16,7 @@ class CreateUsulanGajiTable extends Migration
         Schema::create('usulan_gaji', function (Blueprint $table) {
             $table->id();
             $table->integer('id_user');
+            $table->text('nama');
             $table->integer('status_kepegawaian');
             $table->text('alasan_tolak_kepegawaian')->nullable();
             $table->dateTime('tanggal_konfirmasi_kepegawaian')->nullable();
@@ -29,6 +30,8 @@ class CreateUsulanGajiTable extends Migration
             $table->text('alasan_tolak_kepala_dinas')->nullable();
             $table->dateTime('tanggal_konfirmasi_kepala_dinas')->nullable();
             $table->text('nomor_surat')->nullable();
+            $table->date('tmt_gaji_selanjutnya')->nullable();
+            $table->bigInteger('nilai_gaji_selanjutnya')->nullable();
             $table->timestamps();
         });
     }
