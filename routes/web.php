@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\guru_pegawai\UsulanKenaikanGajiController;
+use App\Http\Controllers\guru_pegawai\BerkasDasarController;
+use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +73,7 @@ Route::middleware(['gurudanpegawai'])->group(function () {
     ]);
     Route::post('get-timeline-usulan-kenaikan-gaji', [UsulanKenaikanGajiController::class, 'getTimelineUsulanGaji']);
     Route::delete('/hapus-berkas/{berkas_usulan_gaji}', [UsulanKenaikanGajiController::class, 'hapusBerkas']);
+
+    Route::resource('profile-guru-pegawai', ProfileGuruPegawaiController::class);
+    Route::resource('berkas-dasar', BerkasDasarController::class);
 });
