@@ -6,12 +6,37 @@ Usulan Kenaikan Gaji
 
 @section('content')
 
-<div class="table-responsive">
+<div class="row">
+    <div class="col-lg-6">
+        <label for="exampleFormControlSelect1" class="font-weight-bold">Jenis ASN</label>
+        <select class="form-control filterBerkas" id="jenisAsn">
+            <option value="">Semua</option>
+            <option value="Guru">Guru</option>
+            <option value="Pegawai">Pegawai</option>
+        </select>
+    </div>
+    <div class="col-lg-6">
+        <label for="exampleFormControlSelect1" class="font-weight-bold">Status Berkas</label>
+        <select class="form-control filterBerkas" id="statusBerkas">
+            <option value="">Semua</option>
+            <option value="0">Belum Diproses</option>
+            <option value="1">Selesai Diproses</option>
+            <option value="2">Ditolak</option>
+        </select>
+    </div>
+</div>
+
+
+<div class="table-responsive mt-4">
     <table class="table table-bordered yajra-datatable " style="width: 100%">
-        <thead>
+        <thead class="text-center">
             <tr>
                 <th>No</th>
                 <th>Nama</th>
+                <th>Jenis ASN</th>
+                <th>Daftar Berkas</th>
+                <th>Status Berkas</th>
+                <th>Tanggal</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -209,19 +234,43 @@ Usulan Kenaikan Gaji
             fixedColumns: true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('proses-usulan-kenaikan-gaji-kepala-dinas.index') }}",
+            ajax: {
+                url: "{{ route('proses-usulan-kenaikan-gaji-kepala-dinas.index') }}",
+                data: function (d) {
+                    d.statusBerkas = $('#statusBerkas').val();
+                    d.jenisAsn = $('#jenisAsn').val();
+                    d.search = $('input[type="search"]').val();
+                }
+            },
             columns: [{
                     data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'nama',
                     name: 'nama'
                 },
-                // {
-                //     data: 'kategori',
-                //     name: 'kategori'
-                // },
+                {
+                    data: 'jenisAsn',
+                    name: 'jenisAsn',
+                    className: 'text-center'
+                },
+                {
+                    data: 'daftarBerkas',
+                    name: 'daftarBerkas'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    className: 'text-center'
+                },
+                {
+                    data: 'tanggal',
+                    name: 'tanggal',
+                    className: 'text-center'
+                },
                 {
                     data: 'action',
                     name: 'action',
@@ -237,6 +286,10 @@ Usulan Kenaikan Gaji
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('.filterBerkas').change(function () {
+            table.draw();
+        })
 
     });
 

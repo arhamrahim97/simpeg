@@ -5,49 +5,51 @@ Usulan Kenaikan Gaji
 @endsection
 
 @section('content')
-
-<div class="row mt-3">
-    <div class="col-lg-12">
-        <a href="{{route('usulan-kenaikan-gaji.create')}}" class="btn btn-primary">Tambah Usulan</a>
-        @if (count($usulanGaji))
-        <table class="table col-lg-12">
-            <thead>
-                <tr>
-                    <th scope="col" colspan="2">Berkas</th>
-                    <th scope="col">Tahun</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach ($usulanGaji as $usulan)
-                <tr>
-                    <td width="10%"><img src="/assets/dashboard/img/documents.png" alt="" class="img-fluid"
-                            height="50px" width="50px"></td>
-                    <td>
-                        <div class="mb-3 mt-2">
-                            <label for="formFile" class="form-label"> <b> {{$usulan->nama}}</b></label>
-                            <p>Klik Lihat Untuk Melihat Progres Berkas</p>
-                        </div>
-                    </td>
-                    <td>{{date('Y', strtotime($usulan->created_at))}}</td>
-                    <td>--Masih Develop--</td>
-                    <td>
-                        <button type="button" class="btn btn-primary lihatTimeline" id="{{$usulan->id}}">
-                            Lihat
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-        @else
-        <p class="text-center">Usulan Kenaikan Gaji Tidak Ada</p>
-        @endif
+@if ($usulan)
+<div class="notification">
+    <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="text-center mt-2"> <img src="/assets/dashboard/img/illustration/illustration-11.png"
+                    class="img-fluid" width="300px"> </div>
+        </div>
+        <div class="col-md-8 align-self-center">
+            <div class="text-white mt-4"> <span class="intro-1 fw-bold">Selamat, Anda Mendapatkan Usulan Kenaikan
+                    Gaji</span>
+                <div class="mt-2"> <span class="intro-2">Silahkan Upload Berkas Sesuai Persyaratan yang Telah
+                        Ditentukan</span> </div>
+                <div class="mt-4 mb-5"> <a class="btn btn-notification"
+                        href="{{route('usulan-kenaikan-gaji.create')}}">Upload Berkas<i
+                            class="fa fa-cloud-download"></i></a> </div>
+            </div>
+        </div>
     </div>
 </div>
+@endif
+
+@if ($usulanGaji)
+<div class="row mt-3">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-bordered yajra-datatable " style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Tahun</th>
+                        <th>Daftar Berkas</th>
+                        <th>Status Berkas</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endif
+
 
 <!-- Modal -->
 <div class="modal fade" id="modal-timeline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -372,6 +374,39 @@ Usulan Kenaikan Gaji
         color: #3f43fd;
     }
 
+    .notification {
+        background-color: #5165ff;
+        border-color: #5165ff;
+        border-radius: 10px;
+    }
+
+    .intro-1 {
+        font-size: 20px
+    }
+
+    .close {
+        color: #fff
+    }
+
+    .close:hover {
+        color: #fff
+    }
+
+    .intro-2 {
+        font-size: 13px
+    }
+
+    .btn-notification {
+        color: #5165ff;
+        background-color: #fffaff;
+        border-color: #fffaff;
+        padding: 12px;
+        font-weight: 700;
+        border-radius: 10px;
+        padding-right: 20px;
+        padding-left: 20px
+    }
+
 </style>
 @endpush
 
@@ -383,26 +418,29 @@ Usulan Kenaikan Gaji
             fixedColumns: true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('master-jabatan-fungsional.index') }}",
+            ajax: "{{ route('usulan-kenaikan-gaji.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
-                    data: 'golongan',
-                    name: 'golongan'
+                    data: 'nama',
+                    name: 'nama'
                 },
                 {
-                    data: 'jabatan',
-                    name: 'jabatan'
+                    data: 'tahun',
+                    name: 'tahun'
                 },
                 {
-                    data: 'pangkat',
-                    name: 'pangkat'
+                    data: 'daftarBerkas',
+                    name: 'daftarBerkas'
                 },
                 {
-                    data: 'no_urut',
-                    name: 'no_urut'
+                    data: 'status',
+                    name: 'status',
+                    class: 'text-center'
                 },
                 {
                     data: 'action',
@@ -497,11 +535,11 @@ Usulan Kenaikan Gaji
         $('#modal-timeline').modal('hide');
     })
 
-    $('.lihatTimeline').click(function () {
+    $(document).on('click', '.lihatTimeline', function () {
         var id = $(this).attr('id');
         $.ajax({
             type: "POST",
-            url: "get-timeline-usulan-kenaikan-gaji-guru",
+            url: "get-timeline-usulan-kenaikan-gaji",
             dataType: 'json',
             data: {
                 id: id
@@ -517,14 +555,14 @@ Usulan Kenaikan Gaji
             },
             error: function (data) {
                 // swal({
-                //     title: 'Gagal',
-                //     text: 'Gagal Menghapus Data',
-                //     icon: 'warning',
-                //     buttons: {
-                //         confirm: {
-                //             className: 'btn btn-success'
-                //         }
-                //     }
+                // title: 'Gagal',
+                // text: 'Gagal Menghapus Data',
+                // icon: 'warning',
+                // buttons: {
+                // confirm: {
+                // className: 'btn btn-success'
+                // }
+                // }
                 // });
             }
         });

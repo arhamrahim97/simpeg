@@ -26,4 +26,9 @@ class Persyaratan extends Model
     {
         return $this->hasOne(JabatanFungsional::class, 'id', 'ke_golongan');
     }
+
+    public function jabatanStruktural()
+    {
+        return $this->hasOne(JabatanStruktural::class, 'id', 'ke_golongan');
+    }
 }
