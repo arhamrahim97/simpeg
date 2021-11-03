@@ -11,12 +11,7 @@ class BerkasDasar extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'berkas_dasar';
-    protected $guarded = [];
-
-    // public function getRouteKeyName()
-    // {
-    //     return 'id_user';
-    // }
+    protected $guarded = ['id'];
 
     public function user()
     {

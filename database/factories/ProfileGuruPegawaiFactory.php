@@ -47,7 +47,7 @@ class ProfileGuruPegawaiFactory extends Factory
             'unit_kerja' => mt_rand(1, 4),
             'status' => $status[array_rand($status)],
             'jenis_jabatan' => $jenis_jabatan[array_rand($jenis_jabatan)],
-            'jabatan_pangkat_golongan' => mt_rand(1, 9),
+            'jabatan_pangkat_golongan' => 1,
             'tanggal_kerja' => '2005-08-16',
             'nilai_gaji' => mt_rand(1, 19) . '000000',
             'tmt_gaji' => date('Y-m-d H:i:s'),

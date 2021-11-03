@@ -17,7 +17,7 @@ class ProfileGuruPegawai extends Model
     {
         return $this->hasMany(BerkasDasar::class, 'id_user', 'id_user');
     }
-
+  
     public function unitKerja()
     {
         return $this->hasOne(UnitKerja::class, 'id', 'unit_kerja');

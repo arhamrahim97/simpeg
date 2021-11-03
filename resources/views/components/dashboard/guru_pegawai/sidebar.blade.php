@@ -12,12 +12,18 @@
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Master</h4>
+                    <h4 class="text-section">Usulan</h4>
                 </li>
                 <li class="nav-item nav-usulan-kenaikan-gaji">
                     <a href="{{url('usulan-kenaikan-gaji')}}">
                         <i class="fas fa-briefcase"></i>
-                        <p>Usulan Kenaikan Gaji</p>
+                        <p>Kenaikan Gaji</p>
+                    </a>
+                </li>
+                <li class="nav-item nav-usulan-kenaikan-pangkat">
+                    <a href="{{url('usulan-kenaikan-pangkat')}}">
+                        <i class="fas fa-briefcase"></i>
+                        <p>Kenaikan Pangkat</p>
                     </a>
                 </li>
                 {{-- <li class="nav-item nav-jabatan-struktural">
