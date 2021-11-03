@@ -10,4 +10,9 @@ class BerkasDasar extends Model
     use HasFactory;
     protected $table = 'berkas_dasar';
     protected $guarded = ['id'];
+
+    public function getRouteKeyName()
+    {
+        return 'id_user';
+    }
 }

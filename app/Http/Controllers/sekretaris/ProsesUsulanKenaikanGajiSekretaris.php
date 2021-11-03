@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\sekretaris;
 
 use App\Http\Controllers\Controller;
+use App\Models\BerkasDasar;
+use App\Models\Persyaratan;
 use App\Models\User;
 use App\Models\UsulanGaji;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 
 class ProsesUsulanKenaikanGajiSekretaris extends Controller
 {
@@ -19,7 +22,7 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = UsulanGaji::all();
+            $data = UsulanGaji::with(['user', 'profileGuruPegawai'])->orderBy('id', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -28,10 +31,51 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
                         </button>';
                     return $actionBtn;
                 })
-                ->rawColumns(['action'])
+                ->filter(function ($instance) use ($request) {
+                    if ($request->statusBerkas != '') {
+                        $instance->where('status_sekretaris', $request->statusBerkas);
+                    }
+
+                    if ($request->jenisAsn != '') {
+                        $instance->whereHas('profileGuruPegawai', function ($profile) use ($request) {
+                            $profile->where('jenis_asn', $request->jenisAsn);
+                        });
+                    }
+
+                    if ($request->search != '') {
+                        $instance->where('nama', "LIKE", "%$request->search%");
+                    }
+                })
+                ->addColumn('daftarBerkas', function (UsulanGaji $usulanGaji) {
+                    $daftarBerkas = '';
+                    $i = 1;
+                    foreach ($usulanGaji->berkasUsulanGaji as $berkasGaji) {
+                        $daftarBerkas .= '<div class="d-block">
+                                    <p>' . $i .  " . " . $berkasGaji->nama . '</p>
+                                </div>';
+                        $i++;
+                    }
+                    return $daftarBerkas;
+                })
+                ->addColumn('status', function ($row) {
+                    if ($row->status_sekretaris == 0) {
+                        $status = '<span class="badge badge-warning">Belum Diperiksa</span>';
+                    } else if ($row->status_sekretaris == 1) {
+                        $status = '<span class="badge badge-success">Selesai Diperiksa</span>';
+                    } else {
+                        $status = '<span class="badge badge-danger">Berkas Ditolak</span>';
+                    }
+                    return $status;
+                })
+                ->addColumn('tanggal', function ($row) {
+                    return date('d-m-Y', strtotime($row->created_at));
+                })
+                ->addColumn('jenisAsn', function ($row) {
+                    return $row->profileGuruPegawai->jenis_asn;
+                })
+                ->rawColumns(['action', 'status', 'daftarBerkas', 'tanggal', 'jenisAsn'])
                 ->make(true);
         }
-
         return view('pages.sekretaris.kenaikanGaji.index');
     }
 
@@ -65,7 +109,9 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
     public function show(UsulanGaji $usulanGaji)
     {
         $user = User::find($usulanGaji->id_user);
-        return view('pages.sekretaris.kenaikanGaji.show', compact(['usulanGaji', 'user']));
+        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
+        return view('pages.sekretaris.kenaikanGaji.show', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
 
     /**
@@ -76,8 +122,13 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
      */
     public function edit(UsulanGaji $usulanGaji)
     {
+        if (!($usulanGaji->status_kepala_dinas == 0 && $usulanGaji->status_sekretaris != 0 && $usulanGaji->status_kepegawaian == 1 && $usulanGaji->status_kasubag == 1)) {
+            return redirect()->route('proses-usulan-kenaikan-gaji-sekretaris.index');
+        }
         $user = User::find($usulanGaji->id_user);
-        return view('pages.sekretaris.kenaikanGaji.edit', compact(['usulanGaji', 'user']));
+        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
+        return view('pages.sekretaris.kenaikanGaji.edit', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
 
     /**
@@ -91,6 +142,7 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
     {
         $usulanGaji->status_sekretaris = $request->konfirmasi_berkas;
         $usulanGaji->tanggal_konfirmasi_sekretaris = now();
+        $usulanGaji->nilai_gaji_selanjutnya = str_replace(".", "", $request->gaji_selanjutnya);
         if ($request->konfirmasi_berkas == 2) {
             $usulanGaji->alasan_tolak_sekretaris = $request->alasan_ditolak;
         } else if ($request->konfirmasi_berkas == 1) {
@@ -294,7 +346,7 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
         $btnUbah = '';
         $btnProses = '';
         if ($usulanGaji->status_sekretaris != 0 && $usulanGaji->status_kepala_dinas == 0) {
-            $btnUbah = '<a href=" ' . route('proses-usulan-kenaikan-gaji-sekretaris.edit', $usulanGaji->id) . '" class="btn btn-sm btn-warning mt-2">Ubah Berkas</a>';
+            $btnUbah = '<a href=" ' . route('proses-usulan-kenaikan-gaji-sekretaris.edit', $usulanGaji->id) . '" class="btn btn-sm btn-warning mt-2">Ubah Konfirmasi</a>';
         }
 
         if ($usulanGaji->status_kasubag == 1 && $usulanGaji->status_sekretaris == 0 && $usulanGaji->status_kepegawaian == 1) {
@@ -500,7 +552,12 @@ class ProsesUsulanKenaikanGajiSekretaris extends Controller
 
     public function prosesBerkas(UsulanGaji $usulanGaji)
     {
+        if (!($usulanGaji->status_sekretaris == 0 && $usulanGaji->status_kepegawaian == 1 && $usulanGaji->status_kasubag == 1)) {
+            return redirect()->route('proses-usulan-kenaikan-gaji-sekretaris.index');
+        }
         $user = User::find($usulanGaji->id_user);
-        return view('pages.sekretaris.kenaikanGaji.proses', compact(['usulanGaji', 'user']));
+        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
+        return view('pages.sekretaris.kenaikanGaji.proses', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
 }

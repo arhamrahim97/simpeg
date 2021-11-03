@@ -16,179 +16,128 @@ Ubah Berkas
             <tbody>
                 <tr>
                     <th scope="row" width="40%">Nama : </th>
-                    <td>Amirul Hidayah</td>
+                    <td>{{$user->nama}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Jenis Kelamin : </th>
+                    <td>{{$user->profile->jenis_kelamin}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Pendidikan Terakhir : </th>
+                    <td>{{$user->profile->pendidikan_terakhir}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Jenis ASN : </th>
+                    <td>{{$user->profile->jenis_asn}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">NIP : </th>
-                    <td>16081999</td>
+                    <td>{{$user->nip}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">NUPTK : </th>
-                    <td>16081999</td>
+                    <td>{{$user->profile->nuptk}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Unit Kerja : </th>
-                    <td>SMP Negeri 1 Parigi</td>
+                    <td>{{$user->profile->unitKerja->nama}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Status : </th>
+                    <td>{{$user->profile->status}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Golongan : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->golongan}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->golongan}}</td>
+                    @endif
+                </tr>
+
+                <tr>
+                    <th scope="row" width="40%">Jabatan : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->jabatan}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->jabatan}}</td>
+                    @endif
+                </tr>
+
+                <tr>
+                    <th scope="row" width="40%">Pangkat : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->pangkat}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->pangkat}}</td>
+                    @endif
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Gaji Terakhir : </th>
-                    <td>4.000.000</td>
-                </tr>
-                <tr>
-                    <th scope="row" width="40%">Lama Kerja : </th>
-                    <td>4 Tahun 3 Bulan</td>
+                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_sebelumnya,0,',','.');}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">TMT Gaji Berkala : </th>
-                    <td>16-08-2018</td>
+                    <td>{{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_sebelumnya))}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Berkas Dasar : </th>
-                    <td scope="row"></td>
+                    <th scope="row" width="40%">Lama Kerja : </th>
+                    <td>{{$usulanGaji->jumlah_tahun_kerja_lama}} Tahun {{$usulanGaji->jumlah_bulan_kerja_lama}}
+                        Bulan
+                    </td>
                 </tr>
+                @if ($usulanGaji->nilai_gaji_selanjutnya)
+                <tr>
+                    <th scope="row" width="40%">Nilai Usulan Gaji : </th>
+                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_selanjutnya,0,',','.');}}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">TMT Gaji Selanjutnya : </th>
+                    <td>{{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_selanjutnya))}}</td>
+                </tr>
+                @endif
+
             </tbody>
         </table>
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
+                @foreach ($berkasDasar as $berkas)
+                <div class="col-lg-6 mt-3">
+                    <a href="{{Storage::url('upload/berkas-dasar/' . $berkas->file)}}" class="text-decoration-none">
                         <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                             style="height: 200px">
                             <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                             <br>
                             <span class="small text-uppercase">
-                                Kartu Pegawai
+                                {{$berkas->nama}}
                             </span>
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                Kartu Tanda Penduduk
-                            </span>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                Kartu Keluarga
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                Ijazah Terakhir
-                            </span>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                SK CPNS
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                SK PNS
-                            </span>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                SK Kenaikan Gaji Berkala
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                SPMT
-                            </span>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                Kartu NUPTK
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-6">
-                    <a href="" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                Sertifikasi Guru
-                            </span>
-                        </div>
-                    </a>
-                </div>
-
+                @endforeach
             </div>
         </div>
 
     </div>
 
     <div class="col-xl-7 col-sm-12 mb-5">
+        <h6 class="my-2 font-weight-bold">Berikut beberapa berkas yang harus di upload:</h6>
+        <ul class="list-group list-group-bordered list my-4">
+            @php
+            $i = 1
+            @endphp
+            @forelse ($persyaratan as $row)
+            @foreach ($row->deskripsiPersyaratan as $deskripsi)
+            <li class="list-group-item">
+                <span class="name">{{ $i++ }}. {{ $deskripsi->deskripsi }}</span>
+            </li>
+            @endforeach
+            @empty
+            <h5>Tidak ada persyaratan</h5>
+            @endforelse
+        </ul>
+
         <form method="POST" id="formBerkas" action="{{route('usulan-kenaikan-gaji.update',$usulanGaji->id)}}"
             enctype="multipart/form-data">
             @csrf

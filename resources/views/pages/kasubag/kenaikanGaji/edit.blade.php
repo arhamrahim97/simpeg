@@ -40,161 +40,101 @@ Edit Proses Berkas
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Unit Kerja : </th>
-                    <td>SMP Negeri 1 Parigi</td>
+                    <td>{{$user->profile->unitKerja->nama}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">Status : </th>
                     <td>{{$user->profile->status}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Gaji Terakhir : </th>
-                    <td>{{"Rp " . number_format($user->profile->nilai_gaji,0,',','.');}}</td>
+                    <th scope="row" width="40%">Golongan : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->golongan}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->golongan}}</td>
+                    @endif
+                </tr>
+
+                <tr>
+                    <th scope="row" width="40%">Jabatan : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->jabatan}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->jabatan}}</td>
+                    @endif
+                </tr>
+
+                <tr>
+                    <th scope="row" width="40%">Pangkat : </th>
+                    @if ($user->role == "Pegawai")
+                    <td>{{$user->profile->jabatanStruktural->pangkat}}</td>
+                    @elseif ($user->role == "Guru")
+                    <td>{{$user->profile->jabatanFungsional->pangkat}}</td>
+                    @endif
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Lama Kerja : </th>
-                    <td>{{$user->profile->jumlah_tahun_kerja}} Tahun {{$user->profile->jumlah_bulan_kerja}} Bulan</td>
+                    <th scope="row" width="40%">Gaji Terakhir : </th>
+                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_sebelumnya,0,',','.');}}</td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">TMT Gaji Berkala : </th>
-                    <td>{{date("d-m-Y", strtotime($user->profile->tmt_gaji))}}</td>
+                    <td>{{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_sebelumnya))}}</td>
                 </tr>
                 <tr>
+                    <th scope="row" width="40%">Lama Kerja : </th>
+                    <td>{{$usulanGaji->jumlah_tahun_kerja_lama}} Tahun {{$usulanGaji->jumlah_bulan_kerja_lama}}
+                        Bulan
+                    </td>
+                </tr>
+                @if ($usulanGaji->nilai_gaji_selanjutnya)
+                <tr>
                     <th scope="row" width="40%">Nilai Usulan Gaji : </th>
-                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_selanjutnya,0,',','.');}}</td>
+                    <td>{{"Rp " . number_format($usulanGaji->nilai_gaji_selanjutnya,0,',','.');}}
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row" width="40%">TMT Gaji Selanjutnya : </th>
                     <td>{{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_selanjutnya))}}</td>
                 </tr>
+                @endif
+
             </tbody>
         </table>
 
     </div>
 
     <div class="col-xl-7 col-sm-12 mb-5">
-
+        <h4 class="page-title">Persyaratan Berkas</h4>
+        <ul class="list-group list-group-bordered list my-4">
+            @php
+            $i = 1
+            @endphp
+            @forelse ($persyaratan as $row)
+            @foreach ($row->deskripsiPersyaratan as $deskripsi)
+            <li class="list-group-item">
+                <span class="name">{{ $i++ }}. {{ $deskripsi->deskripsi }}</span>
+            </li>
+            @endforeach
+            @empty
+            <h5>Tidak ada persyaratan</h5>
+            @endforelse
+        </ul>
         <h4 class="page-title">Berkas Dasar</h4>
-        <div class="row gx-4">
+        <div class="row">
+            @foreach ($berkasDasar as $berkas)
             <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
+                <a href="{{Storage::url('upload/berkas-dasar/' . $berkas->file)}}" class="text-decoration-none">
                     <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
                         style="height: 200px">
                         <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
                         <br>
                         <span class="small text-uppercase">
-                            Kartu Pegawai
+                            {{$berkas->nama}}
                         </span>
                     </div>
                 </a>
             </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            Kartu Tanda Penduduk
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            Kartu Keluarga
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            Ijazah Terakhir
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            SK CPNS
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            SK PNS
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            SK Kenaikan Gaji Berkala
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            SPMT
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            Kartu NUPTK
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 mt-3">
-                <a href="" class="text-decoration-none">
-                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                        style="height: 200px">
-                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                        <br>
-                        <span class="small text-uppercase">
-                            Sertifikasi Guru
-                        </span>
-                    </div>
-                </a>
-            </div>
+            @endforeach
         </div>
         <h4 class="page-title mt-4">Berkas Tambahan</h4>
         <div class="row gx-4">
@@ -221,6 +161,17 @@ Edit Proses Berkas
             @csrf
             @method('PUT')
             <h4 class="page-title mt-4">Proses Berkas</h4>
+
+            <div>
+                <label>Nilai Gaji Usulan (Rp) :</label>
+                <div class="row mx-1">
+                    <input name="gaji_selanjutnya" type="text" class="form-control rupiah col-lg-10"
+                        placeholder="Masukkan Nilai Gaji Usulan" required
+                        value="{{$usulanGaji->nilai_gaji_selanjutnya}}" readonly id="nilaiGaji">
+                    <button type="button" class="btn btn-warning col-lg-2" id="ubahGaji">Ubah</button>
+                </div>
+
+            </div>
 
             <div>
                 <label for="exampleInputEmail1" class="form-label mt-4">Konfirmasi Berkas</label>
@@ -311,6 +262,24 @@ Edit Proses Berkas
         reverse: true
     });
     $('.tanggal').mask('00-00-0000');
+
+</script>
+<script>
+    var nilaiGaji = "{{ number_format($usulanGaji->nilai_gaji_selanjutnya,0,',','.') }}";
+    $('#ubahGaji').click(function () {
+        $('#nilaiGaji').keyup();
+        if ($('#nilaiGaji').prop('readonly')) {
+            $('#nilaiGaji').prop('readonly', false);
+            $("#ubahGaji").html('Batal');
+            $("#ubahGaji").removeClass("btn-warning").addClass("btn-danger");
+        } else {
+            $('#nilaiGaji').val(nilaiGaji);
+            $('#nilaiGaji').keyup();
+            $('#nilaiGaji').prop('readonly', true);
+            $("#ubahGaji").html('Ubah');
+            $("#ubahGaji").removeClass("btn-danger").addClass("btn-warning");
+        }
+    })
 
 </script>
 {{-- <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>

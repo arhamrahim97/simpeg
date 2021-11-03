@@ -31,8 +31,7 @@ class CreateProfileGuruPegawaisTable extends Migration
             $table->string('status');
             $table->string('jenis_jabatan');
             $table->integer('jabatan_pangkat_golongan');
-            $table->integer('jumlah_tahun_kerja');
-            $table->integer('jumlah_bulan_kerja');
+            $table->date('tanggal_kerja');
             $table->bigInteger('nilai_gaji');
             $table->date('tmt_gaji');
             $table->date('tmt_pangkat');
