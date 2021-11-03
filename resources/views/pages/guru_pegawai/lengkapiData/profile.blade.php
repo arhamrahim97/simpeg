@@ -13,7 +13,7 @@
 				<div class="col-12 col-md-12 col-lg-6">
 					<div class="form-group @error('nama') has-error @enderror">
 						<label>Nama Lengkap :</label>
-						<input name="nama" type="text" class="form-control" placeholder="Masukkan Nama Lengkap" value="{{ Auth::user()->nama }}" readonly>
+						<input name="nama" type="text" class="form-control" placeholder="Masukkan Nama Lengkap" value="{{ old('nama', Auth::user()->nama) }}">
 						@error('nama')
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
@@ -34,7 +34,7 @@
 					</div>
 					<div class="row">
 						<div class="col-12 col-md-12 col-lg-6">
-							<div class="form-group @error('tempat_lahir') has-error @enderror">
+							<div class="form-group py-0 @error('tempat_lahir') has-error @enderror">
 								<label>Tempat Lahir : </label>
 								<input name="tempat_lahir" type="text" class="form-control" id="tempat_lahir" placeholder="Masukkan Tempat Lahir" value="{{ old('tempat_lahir') }}" >
 								@error('tempat_lahir')
@@ -43,7 +43,7 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group @error('tanggal_lahir') has-error @enderror">
+							<div class="form-group py-0 @error('tanggal_lahir') has-error @enderror">
 								<label>Tanggal Lahir (contoh: <span style="color: seagreen">01-01-1991</span>) : </label>
 								<input name="tanggal_lahir" type="text" class="form-control tanggal" id="tanggal_lahir" placeholder="Masukkan Tanggal Lahir" value="{{ old('tanggal_lahir') }}">
 								@error('tanggal_lahir')
@@ -53,15 +53,22 @@
 						</div>
 					</div>
 					<div class="form-group @error('no_hp') has-error @enderror">
-						<label>Nomor Telepon/Handphone :</label>
-						<input name="no_hp" id="no_hp" type="text" class="form-control" placeholder="Masukkan Nomor Telepon/Handphone" value="{{ old('no_hp') }}">
+						<label>Nomor HP (Wa Aktif) :</label>
+						<input name="no_hp" id="no_hp" type="text" class="form-control" placeholder="Masukkan Nomor HP" value="{{ old('no_hp') }}">
 						@error('no_hp')
+							<small class="form-text text-danger">{{ $message }}</small>
+						@enderror
+					</div>
+					<div class="form-group @error('email') has-error @enderror">
+						<label>Email :</label>
+						<input name="email" id="email" type="text" class="form-control" placeholder="Masukkan Email" value="{{ old('email') }}">
+						@error('email')
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
 					</div>
 					<div class="form-group @error('alamat') has-error @enderror">
 						<label>Alamat :</label>
-						<textarea name="alamat" class="form-control" rows="4">{{ old('alamat') }}</textarea>
+						<textarea name="alamat" class="form-control" rows="4" placeholder="Masukkan Alamat">{{ old('alamat') }}</textarea>
 						@error('alamat')
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
@@ -116,11 +123,13 @@
 					</div>
 					<div class="form-group @error('nip') has-error @enderror">
 						<label>NIP <span style="color: red">(Tidak Wajib)</span> :</label>
-						<input name="nip" id="nip" type="text" class="form-control" placeholder="Masukkan NIP" value="{{ auth()->user()->nip }}">
+						<input name="nip" id="nip" type="text" class="form-control" placeholder="Masukkan NIP" value="{{ old('nip', Auth::user()->nip) }}">
 						@error('nip')
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
 					</div>
+				</div>
+				<div class="col-12 col-md-12 col-lg-6">
 					<div class="form-group @error('nuptk') has-error @enderror">
 						<label>NUPTK @if($role == 'Pegawai')
 							<span style="color: red">(Tidak Wajib)</span>
@@ -130,8 +139,6 @@
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
 					</div>
-				</div>
-				<div class="col-12 col-md-12 col-lg-6">
 					<div class="form-group @error('unit_kerja') has-error @enderror">
 						<label>Unit Kerja (Sekolah) :</label>
 						<select class="form-control" name="unit_kerja">
@@ -165,7 +172,7 @@
 					<div class="form-group @error('jabatan_pangkat_golongan') has-error @enderror">
 						<label>Jabatan - Golongan - Pangkat :</label>
 						<select class="form-control" name="jabatan_pangkat_golongan" id="jabatan_pangkat_golongan">
-							<option value=""> - Pilih Jenis ASN terlebih dahulu -</option>
+							<option value=""> - Pilih Salah Satu -</option>
 							@forelse ($jabatanGolonganPangkat as $row)
 								@if (old('jabatan_pangkat_golongan') == $row->id)
 									<option value="{{ $row->id }}" selected>{{ $row->jabatan }} - {{ $row->golongan }} - {{ $row->pangkat }}</option>  
@@ -179,8 +186,15 @@
 						@error('jabatan_pangkat_golongan')
 							<small class="form-text text-danger">{{ $message }}</small>
 						@enderror
-					</div>
-					<div class="row">
+					</div>									
+					<div class="form-group @error('tanggal_kerja') has-error @enderror">
+						<label>Tanggal Awal Kerja (contoh: <span style="color: seagreen">01-12-2012</span>) : </label>
+						<input name="tanggal_kerja" type="text" class="form-control tanggal" id="tanggal_kerja" placeholder="Masukkan Tanggal Awal Kerja" value="{{ old('tanggal_kerja') }}">
+						@error('tanggal_kerja')
+							<small class="form-text text-danger">{{ $message }}</small>
+						@enderror
+					</div>											
+					{{-- <div class="row">
 						<div class="col-md-6">
 							<div class="form-group @error('jumlah_tahun_kerja') has-error @enderror">
 								<label>Lama Masa Kerja (Tahun) : </label>
@@ -199,7 +213,7 @@
 								@enderror
 							</div>
 						</div>
-					</div>
+					</div> --}}
 					<div class="form-group @error('nilai_gaji') has-error @enderror">
 						<label>Nilai Gaji Terakhir (Rp) :</label>
 						<input name="nilai_gaji" type="text" class="form-control rupiah" placeholder="Masukkan Nilai Gaji Terakhir" value="{{ old('nilai_gaji') }}">
@@ -227,9 +241,9 @@
 							<div class="row">							
 								<div class="col-lg-6 col-md-9 col-sm-8">
 									<div class="input-file input-file-image">
-										<img class="img-upload-preview img-circle" src="{{ old('foto', '/assets/dashboard/img/user.png') }}" alt="preview" width="150" height="150">
+										<img class="img-upload-preview img-circle" src="{{ old('foto', '/assets/dashboard/img/blank_photo.png') }}" alt="preview" width="150" height="150">
 										<input type="file" class="form-control form-control-file" id="foto" name="foto" accept="image/*" value="{{ old('foto') }}">
-										<label for="foto" class="btn btn-primary btn-sm btn-round btn-lg"><i class="fa fa-file-image"></i> Upload a Image</label>
+										<label for="foto" class="btn btn-primary btn-sm btn-round btn-lg"><i class="fa fa-file-image"></i> Pilih Gambar</label>
 										@error('foto')
 											<small class="form-text text-danger">{{ $message }}</small>
 										@enderror

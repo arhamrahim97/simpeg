@@ -20,17 +20,27 @@ class User extends Authenticatable
     protected $guarded = ['id'];
 
 
-    protected $hidden = [
-        'password',
-    ];
+    // protected $hidden = [
+    //     'password',
+    // ];
 
     public function profile()
     {
         return $this->hasOne(ProfileGuruPegawai::class, 'id_user', 'id');
     }
 
+    public function profilePejabat()
+    {
+        return $this->hasOne(ProfilePejabat::class, 'id_user', 'id');
+    }
+
+    // public function berkasDasar()
+    // {
+    //     return $this->hasOne(BerkasDasar::class, 'id_user', 'id');
+    // }
+
     public function berkasDasar()
     {
-        return $this->hasOne(BerkasDasar::class, 'id_user', 'id');
+        return $this->hasMany(BerkasDasar::class, 'id_user', 'id');
     }
 }

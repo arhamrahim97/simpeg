@@ -18,8 +18,8 @@ class CreatePersyaratansTable extends Migration
             $table->string('jenis_asn');
             $table->string('kategori');
             $table->string('ke_golongan')->default('-')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

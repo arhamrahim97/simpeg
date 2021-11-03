@@ -28,9 +28,8 @@
             <div class="col-lg-6 col-12 px-4">                
                 <form method="POST" id="formBerkas"
                     enctype="multipart/form-data" action="/berkas-dasar">
-                    @csrf
-                    <div class="border border-warning text-center rounded shadow-sm py-5 px-4"><img
-                            src="/assets/dashboard/img/file-upload.png" alt="" width="100" class="img-fluid">
+                    @csrf         
+                    <div class="border border-grey shadow text-center rounded shadow-sm py-5 px-4"><img src="/assets/dashboard/img/pdf.png" alt="" class="img-fluid" width="100">
                         <h5 class="mb-0">Upload Berkas Dasar</h5>
                         <span class="small text-uppercase">
                             File harus berekstensi .PDF dengan ukuran maksimal 1 MB
@@ -164,7 +163,7 @@
     $('#btnTambahBerkas').on('click', function () {
         i++;
         var formBerkas =
-            ' <div class="form-group border border-success rounded p-3" id="daftarBerkas' + i +
+            ' <div class="form-group border border-grey shadow rounded p-3" id="daftarBerkas' + i +
             '"><label for="exampleInputEmail1">Nama Berkas</label><input type="text" class="form-control namaBerkas" id="exampleInputEmail1" aria-describedby="emailHelp"placeholder="Contoh : Kartu Pegawai" name="namaBerkas[]"><div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm" type="file" name="fileBerkas[]"></div><div class="div d-flex justify-content-end"><button href="" class="btn btn-danger btn-sm btnHapusFitur" id="' +
             i +
             '"><i class="fas fa-trash-alt"></i> Hapus</button></div></div>';

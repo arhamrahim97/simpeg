@@ -31,13 +31,14 @@
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="/assets/dashboard/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/dashboard/css/atlantis.css">
-
+    <link rel="stylesheet" href="/assets/dashboard/css/atlantis.css">    
+    
+    
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="/assets/dashboard/css/demo.css">
     <link rel="stylesheet" href="/assets/dashboard/css/toastr.min.css">
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     {{-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     <style>
@@ -77,8 +78,12 @@
 
         @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) 
             @include('components.dashboard.guru_pegawai.sidebar')          
-        @elseif ((Auth::user()->role == 'Admin'))
-            @include('components.dashboard.admin.sidebar')                  
+        @else
+            @if ((Auth::user()->role == 'Admin'))
+                @include('components.dashboard.admin.sidebar')                  
+            @else
+                @include('components.dashboard.pejabat.sidebar')                  
+            @endif
         @endif
         
         @include('components.dashboard.navbarHeader')
@@ -180,6 +185,9 @@
 
     <!-- Sweet Alert -->
     <script src="/assets/dashboard/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+     <!-- Jquery Mask -->
+	 <script src="/assets/dashboard/js/plugin/jquery.mask/jquery.mask.min.js"></script>
 
     <!-- Owl Carousel -->
     <script src="/assets/dashboard/js/plugin/owl-carousel/owl.carousel.min.js"></script>

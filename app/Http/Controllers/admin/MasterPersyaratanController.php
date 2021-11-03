@@ -23,23 +23,6 @@ class MasterPersyaratanController extends Controller
      */
     public function index(Request $request)
     {
-        // if ($request->ajax()) {
-        //     $data = Persyaratan::all();
-        //     return DataTables::of($data)
-        //         ->addIndexColumn()
-        //         ->addColumn('action', function ($row) {
-        //             $actionBtn = '<a href="' . route('master-persyaratan.edit', $row->id) . '" class="edit btn btn-success btn-sm my-2">Edit</a>';
-
-        //             $actionBtn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm hapusData">Hapus</a>';
-        //             return $actionBtn;
-        //         })
-        //         ->rawColumns(['action'])
-        //         ->make(true);
-        // }
-        // $data = Persyaratan::all();
-        // dd(collect($data->deskripsiPersyaratan));
-
-
         if ($request->ajax()) {
             $data = Persyaratan::with(['jabatanFungsional', 'deskripsiPersyaratan']);
             return DataTables::of($data)

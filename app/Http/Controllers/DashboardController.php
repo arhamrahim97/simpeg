@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BerkasDasar;
+use App\Models\ProfileGuruPegawai;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -11,24 +13,42 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user = User::find(Auth::user()->id);
+        $data2 = [
+            'user' => $user,
+        ];
         if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
-            if ((User::find(Auth::user()->id)->profile) == null) {
+            // if ((User::find(Auth::user()->id)->profile) == null) {
+            //     return redirect('/profile-guru-pegawai');
+            // } else if (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0) {
+            //     return redirect('/berkas-dasar');
+            // } else {
+            //     $user = User::find(Auth::user()->id);
+            //     $data = [
+            //         'user' => $user,
+            //     ];
+            //     return view('pages.dashboard.dashboardGuru', $data);
+            // }
+            $user = User::find(Auth::user()->id);
+
+            if (($user->profile) == null) {
                 return redirect('/profile-guru-pegawai');
-            } else if ((User::find(Auth::user()->id)->berkasDasar) == null) {
+            } else if (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0) {
                 return redirect('/berkas-dasar');
             } else {
-                $profile = User::with('Profile')->where('id', Auth::user()->id)->get();
-                foreach ($profile as $row) {
-                    $status_berkas_dasar = $row->profile->status_berkas_dasar;
+                if ($user->profile != null) {
+                    if (($user->profile->status_profile != 1) || ($user->profile->status_berkas_dasar != 1)) {
+                        return view('pages.guru_pegawai.lengkapiData.index', ['user' => $user]);
+                    } else {
+                        return view('pages.dashboard.dashboardGuru', $data2);
+                    }
                 }
-                $data = [
-                    'profile' => collect($profile),
-                    'status_berkas_dasar' => $status_berkas_dasar
-                ];
-                return view('pages.dashboard.dashboardGuru', $data);
             }
-        } else if (Auth::user()->role == 'Admin') { // Selain role GURU atau PEGAWAI
-            return view('pages.dashboard.dashboardAdmin');
+        } else {
+            if (Auth::user()->role == 'Admin') { // Selain role GURU atau PEGAWAI
+                return view('pages.dashboard.dashboardAdmin', $data2);
+            }
+            return view('pages.dashboard.dashboardAdmin', $data2);
         }
     }
 

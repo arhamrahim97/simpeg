@@ -24,7 +24,7 @@ class ProfileGuruPegawaiFactory extends Factory
         $jenis_kelamin = array('Laki-laki', 'Perempuan');
         $pendidikan_terakhir = array('SLTA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/Sarjana Muda', 'Diploma IV/Strata I', 'Strata II');
         $jenis_asn = array('Guru', 'Pegawai');
-        $jenis_guru = array('Guru Kelas' . 'Guru Mata Pelajaran', 'Guru Bimbingan dan Konseling');
+        $jenis_guru = array('Guru Kelas', 'Guru Mata Pelajaran', 'Guru Bimbingan dan Konseling');
         $status = array('PNS', 'PKKK', 'Honorer');
         $jenis_jabatan = array('Struktural', 'Fungsional');
 
@@ -37,21 +37,21 @@ class ProfileGuruPegawaiFactory extends Factory
             'tempat_lahir' => $this->faker->state(),
             'tanggal_lahir' => $this->faker->date('Y-m-d', 'now'),
             'no_hp' => $this->faker->unique()->numerify('08##########'),
+            'email' => $this->faker->email(),
             'alamat' => $this->faker->address(),
             'pendidikan_terakhir' => $pendidikan_terakhir[array_rand($pendidikan_terakhir)],
             'jenis_asn' => $jenis_asn[array_rand($jenis_asn)],
             'jenis_guru' => $jenis_guru[array_rand($jenis_guru)],
             'nip' => $this->faker->unique()->numerify('##################'),
             'nuptk' => $this->faker->unique()->numerify('################'),
-            'unit_kerja' => mt_rand(1, 10),
+            'unit_kerja' => mt_rand(1, 4),
             'status' => $status[array_rand($status)],
             'jenis_jabatan' => $jenis_jabatan[array_rand($jenis_jabatan)],
             'jabatan_pangkat_golongan' => mt_rand(1, 9),
-            'jumlah_tahun_kerja' => mt_rand(1, 20),
-            'jumlah_bulan_kerja' => mt_rand(1, 12),
+            'tanggal_kerja' => '2005-08-16',
             'nilai_gaji' => mt_rand(1, 19) . '000000',
-            'tmt_gaji' => $this->faker->date('Y-m-d', 'now'),
-            'tmt_pangkat' => $this->faker->date('Y-m-d', 'now'),
+            'tmt_gaji' => date('Y-m-d H:i:s'),
+            'tmt_pangkat' => date('Y-m-d H:i:s'),
             'foto' => 'test.jpg'
         ];
     }

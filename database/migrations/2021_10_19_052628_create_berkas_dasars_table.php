@@ -19,6 +19,7 @@ class CreateBerkasDasarsTable extends Migration
             $table->text('nama');
             $table->text('file');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
