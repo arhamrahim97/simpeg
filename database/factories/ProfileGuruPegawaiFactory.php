@@ -24,7 +24,7 @@ class ProfileGuruPegawaiFactory extends Factory
         $jenis_kelamin = array('Laki-laki', 'Perempuan');
         $pendidikan_terakhir = array('SLTA/Sederajat', 'Diploma I/II', 'Akademi/Diploma III/Sarjana Muda', 'Diploma IV/Strata I', 'Strata II');
         $jenis_asn = array('Guru', 'Pegawai');
-        $jenis_guru = array('Guru Kelas' . 'Guru Mata Pelajaran', 'Guru Bimbingan dan Konseling');
+        $jenis_guru = array('Guru Kelas', 'Guru Mata Pelajaran', 'Guru Bimbingan dan Konseling');
         $status = array('PNS', 'PKKK', 'Honorer');
         $jenis_jabatan = array('Struktural', 'Fungsional');
 
@@ -37,6 +37,7 @@ class ProfileGuruPegawaiFactory extends Factory
             'tempat_lahir' => $this->faker->state(),
             'tanggal_lahir' => $this->faker->date('Y-m-d', 'now'),
             'no_hp' => $this->faker->unique()->numerify('08##########'),
+            'email' => $this->faker->email(),
             'alamat' => $this->faker->address(),
             'pendidikan_terakhir' => $pendidikan_terakhir[array_rand($pendidikan_terakhir)],
             'jenis_asn' => $jenis_asn[array_rand($jenis_asn)],

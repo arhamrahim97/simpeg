@@ -18,6 +18,7 @@ class CreateDeskripsiPersyaratansTable extends Migration
             $table->integer('id_persyaratan');
             $table->string('deskripsi');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
