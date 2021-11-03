@@ -1,40 +1,36 @@
 <?php
 
+use Barryvdh\DomPDF\PDF;
 use App\Models\BerkasDasar;
-use App\Http\Controllers\admin\MasterJabatanFungsionalController;
-use App\Http\Controllers\admin\MasterJabatanStrukturalController;
-use App\Http\Controllers\admin\MasterUnitKerjaController;
-use App\Http\Controllers\admin\MasterPersyaratanController;
-use App\Http\Controllers\admin\ProsesUsulanKenaikanGajiAdmin;
-use App\Http\Controllers\admin\ProsesUsulanKenaikanPangkatAdmin;
-use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanGajiAdminKepegawaian;
-use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanPangkatAdminKepegawaian;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\semua\CetakUsulanController;
 use App\Http\Controllers\admin\ProfilePejabatController;
+use App\Http\Controllers\admin\DataBerkasDasarController;
 use App\Http\Controllers\admin\MasterUnitKerjaController;
 use App\Http\Controllers\admin\MasterPersyaratanController;
-use App\Http\Controllers\admin\DataBerkasDasarController;
-use App\Http\Controllers\admin\MasterJabatanFungsionalController;
-use App\Http\Controllers\admin\MasterJabatanStrukturalController;
-
 use App\Http\Controllers\guru_pegawai\BerkasDasarController;
+use App\Http\Controllers\admin\ProsesUsulanKenaikanGajiAdmin;
+use App\Http\Controllers\admin\ProsesUsulanKenaikanPangkatAdmin;
 
-use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanGajiAdminKepegawaian;
-use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
-use App\Http\Controllers\guru_pegawai\UsulanKenaikanPangkatController;
+use App\Http\Controllers\admin\MasterJabatanFungsionalController;
+
+use App\Http\Controllers\admin\MasterJabatanStrukturalController;
 use App\Http\Controllers\kasubag\ProsesUsulanKenaikanGajiKasubag;
+use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
+use App\Http\Controllers\guru_pegawai\UsulanKenaikanGajiController;
 use App\Http\Controllers\kasubag\ProsesUsulanKenaikanPangkatKasubag;
-use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanGajiKepalaDinas;
-use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanPangkatKepalaDinas;
+use App\Http\Controllers\guru_pegawai\UsulanKenaikanPangkatController;
 use App\Http\Controllers\sekretaris\ProsesUsulanKenaikanGajiSekretaris;
+use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanGajiKepalaDinas;
 use App\Http\Controllers\sekretaris\ProsesUsulanKenaikanPangkatSekretaris;
-use App\Http\Controllers\semua\CetakUsulanController;
 use App\Http\Controllers\tim_penilai\ProsesUsulanKenaikanPangkatTimPenilai;
-use Barryvdh\DomPDF\PDF;
+use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanPangkatKepalaDinas;
+use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanGajiAdminKepegawaian;
+use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanPangkatAdminKepegawaian;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -222,4 +218,3 @@ Route::post('get-timeline-usulan-kenaikan-pangkat-kepala-dinas', [ProsesUsulanKe
 
 // Cetak Surat Usulan
 Route::get('cetak-usulan-kenaikan-gaji/{usulan_gaji}', [CetakUsulanController::class, 'cetakUsulanKenaikanGaji']);
-

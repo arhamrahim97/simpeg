@@ -70,7 +70,7 @@ Tambah Akun Guru atau Pegawai
 
 <!-- Import Excel -->
 <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <form method="post" action="/import-excel" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">

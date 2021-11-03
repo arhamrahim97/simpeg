@@ -5,7 +5,7 @@
                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                     <div class="avatar-sm">
                         @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai'))
-                            <img src="{{'/storage/upload/foto-profil/'.$user->profile->foto }}" alt="Foto" class="avatar-img rounded-circle">                            
+                            <img src="{{'/storage/upload/foto-profil/'.Auth::user()->profile->foto }}" alt="Foto" class="avatar-img rounded-circle">                            
                         @else
                             @if (Auth::user()->role == 'Admin')
                                 <img src="/assets/dashboard/img/user.png" alt="Foto" class="avatar-img rounded-circle">                                                                                            
@@ -20,12 +20,12 @@
                         <li>
                             <div class="user-box">
                                 @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai'))                                    
-                                    <div class="avatar-lg"><img src="{{'/storage/upload/foto-profil/'.$user->profile->foto }}" alt="Foto" class="avatar-img rounded"></div>                                        
+                                    <div class="avatar-lg"><img src="{{'/storage/upload/foto-profil/'.Auth::user()->profile->foto }}" alt="Foto" class="avatar-img rounded"></div>                                        
                                 @else
                                     @if (Auth::user()->role == 'Admin')                                                                                                     
                                         <div class="avatar-lg"><img src="/assets/dashboard/img/user.png" alt="image profile" class="avatar-img rounded"></div>
                                     @else
-                                        <div class="avatar-lg"><img src="{{'/storage/upload/foto-profil/'.$user->profilePejabat->foto }}" alt="Foto" class="avatar-img rounded"></div>                                        
+                                        <div class="avatar-lg"><img src="{{'/storage/upload/foto-profil/'.Auth::user()->profilePejabat->foto }}" alt="Foto" class="avatar-img rounded"></div>                                        
                                     @endif                    
                                 @endif
                                 <div class="u-text">

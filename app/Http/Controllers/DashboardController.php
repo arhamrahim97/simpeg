@@ -18,17 +18,6 @@ class DashboardController extends Controller
             'user' => $user,
         ];
         if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
-            // if ((User::find(Auth::user()->id)->profile) == null) {
-            //     return redirect('/profile-guru-pegawai');
-            // } else if (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0) {
-            //     return redirect('/berkas-dasar');
-            // } else {
-            //     $user = User::find(Auth::user()->id);
-            //     $data = [
-            //         'user' => $user,
-            //     ];
-            //     return view('pages.dashboard.dashboardGuru', $data);
-            // }
             $user = User::find(Auth::user()->id);
 
             if (($user->profile) == null) {
