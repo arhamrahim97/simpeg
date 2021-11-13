@@ -2,7 +2,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="./index.html">
+      <a class="navbar-brand" href="/">
         <!-- <img src="assets/welcome/img/brand.svg" class="navbar-brand-img" alt="..."> -->
         <p class=""><b>SIMPEG</b></p>
       </a>
@@ -23,17 +23,17 @@
         <!-- Navigation -->
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" id="navbarLandings" href="index.html" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link" id="navbarLandings" href="/" aria-haspopup="true" aria-expanded="false">
               Beranda
             </a>
           </li>
           <li>
-            <a class="nav-link" id="navbarLandings" href="kenaikan_gaji.html" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link" id="navbarLandings" href="/daftar-usulan-kenaikan-gaji" aria-haspopup="true" aria-expanded="false">
               Kenaikan Gaji
             </a>
           </li>
           <li>
-            <a class="nav-link" id="navbarLandings" href="kenaikan_pangkat.html" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link" id="navbarLandings" href="/daftar-usulan-kenaikan-pangkat" aria-haspopup="true" aria-expanded="false">
               Kenaikan Pangkat
             </a>
           </li>

@@ -5,6 +5,7 @@ use App\Models\BerkasDasar;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\semua\CetakUsulanController;
@@ -14,10 +15,10 @@ use App\Http\Controllers\admin\MasterUnitKerjaController;
 use App\Http\Controllers\admin\MasterPersyaratanController;
 use App\Http\Controllers\guru_pegawai\BerkasDasarController;
 use App\Http\Controllers\admin\ProsesUsulanKenaikanGajiAdmin;
+
 use App\Http\Controllers\admin\ProsesUsulanKenaikanPangkatAdmin;
 
 use App\Http\Controllers\admin\MasterJabatanFungsionalController;
-
 use App\Http\Controllers\admin\MasterJabatanStrukturalController;
 use App\Http\Controllers\kasubag\ProsesUsulanKenaikanGajiKasubag;
 use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
@@ -66,9 +67,7 @@ Route::middleware(['auth'])->group(function () {
     ]);
 });
 
-Route::get('/', function () {
-    return view('pages.welcome.welcome');
-});
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::middleware(['admin'])->group(function () {
     Route::resource('master-jabatan-struktural', MasterJabatanStrukturalController::class)->parameters([
@@ -82,6 +81,9 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('master-unit-kerja', MasterUnitKerjaController::class)->parameters([
         'master-unit-kerja' => 'unit_kerja'
     ]);
+
+    Route::post('/import-excel-unit-kerja',  [MasterUnitKerjaController::class, 'importExcel']);
+
 
     Route::resource('/user', UserController::class);
     Route::get('/user-tambah-guru-pegawai',  [UserController::class, 'createGuru']);
@@ -218,3 +220,16 @@ Route::post('get-timeline-usulan-kenaikan-pangkat-kepala-dinas', [ProsesUsulanKe
 
 // Cetak Surat Usulan
 Route::get('cetak-usulan-kenaikan-gaji/{usulan_gaji}', [CetakUsulanController::class, 'cetakUsulanKenaikanGaji']);
+
+
+
+
+Route::get('/info-profile/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'infoProfileNonPNS'])->name('info-profile');
+
+Route::get('/daftar-usulan-kenaikan-gaji', [WelcomeController::class, 'daftarUsulanKenaikanGaji']);
+
+Route::get('/daftar-usulan-kenaikan-pangkat', [WelcomeController::class, 'daftarUsulanKenaikanPangkat']);
+
+Route::get('/daftar-usulan-kenaikan-gaji-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanGaji']);
+
+Route::get('/daftar-usulan-kenaikan-pangkat-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanPangkat']);

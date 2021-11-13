@@ -10,7 +10,7 @@
                             @if (Auth::user()->role == 'Admin')
                                 <img src="/assets/dashboard/img/user.png" alt="Foto" class="avatar-img rounded-circle">                                                                                            
                             @else
-                                <img src="{{'/storage/upload/foto-profil/'.$user->profilePejabat->foto }}" alt="Foto" class="avatar-img rounded-circle">                            
+                                <img src="{{'/storage/upload/foto-profil/'.Auth::user()->profilePejabat->foto }}" alt="Foto" class="avatar-img rounded-circle">                            
                             @endif                    
                         @endif
                     </div>

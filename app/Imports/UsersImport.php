@@ -21,6 +21,8 @@ class UsersImport implements ToModel, WithHeadingRow
             'nip'    => $row['nip'],
             'username' => $row['username'],
             'password' => Hash::make($row['password']),
+            'jenis_guru' => $row['jenis_guru'],
+            'status_kepegawaian' => $row['status_kepegawaian'],
             'role' => $row['role']
         ]);
     }

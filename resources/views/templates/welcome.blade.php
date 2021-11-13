@@ -16,6 +16,25 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/assets/welcome/css/theme.bundle.css" />
+    <!-- Fonts and icons -->
+    <script src="/assets/dashboard/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                "families": ["Lato:300,400,700,900"]
+            },
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands", "simple-line-icons"
+                ],
+                urls: ['/assets/dashboard/css/fonts.min.css']
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+
+    </script>
     @stack('style')
 
     <!-- Title -->
@@ -48,7 +67,7 @@
 
                     <!-- Text -->
                     <p class="text-gray-700 mb-2">
-                        Sistem Informasi Manajemen Pegawai
+                        SIMPEG Dinas Pendidikan Kota Palu
                     </p>
 
                 </div>
@@ -57,6 +76,9 @@
     </footer>
 
     <!-- JAVASCRIPT -->
+    <script src="/assets/dashboard/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/assets/dashboard/js/plugin/sweetalert/sweetalert.min.js"></script>
+
     <!-- Map JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
 

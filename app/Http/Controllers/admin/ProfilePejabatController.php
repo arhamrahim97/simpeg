@@ -29,7 +29,7 @@ class ProfilePejabatController extends Controller
     public function indexNonProfileGuruPegawai(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProfilePejabat::with(['jabatanStruktural', 'user'])->orderBy('created_at', 'desc');
+            $data = ProfilePejabat::with(['jabatanStruktural', 'user'])->orderBy('updated_at', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (ProfilePejabat $profilePejabat) {

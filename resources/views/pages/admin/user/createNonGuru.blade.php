@@ -10,6 +10,7 @@ Tambah Akun Non Guru atau Pegawai
     @csrf         
     <div class="row">										
         <div class="col-12 col-md-12 col-lg-6">
+            <input type="hidden" name="createAkun" value="2">
             <div class="form-group @error('nama') has-error @enderror">
                 <label>Nama Lengkap :</label>
                 <input name="nama" type="text" class="form-control" placeholder="Masukkan Nama Lengkap" value="{{ old('nama') }}">

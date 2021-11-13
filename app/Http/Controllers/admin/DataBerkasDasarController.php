@@ -4,12 +4,14 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\User;
 use App\Models\BerkasDasar;
+use App\Models\Persyaratan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\JabatanFungsional;
 use App\Models\JabatanStruktural;
 use App\Models\ProfileGuruPegawai;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
@@ -122,7 +124,7 @@ class DataBerkasDasarController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProfileGuruPegawai::with('berkasDasar')->whereIn('jenis_asn', ['Guru', 'Pegawai']);
+            $data = ProfileGuruPegawai::with('berkasDasar')->whereIn('status', ['PNS', 'PNS Depag', 'PNS Diperbantukan'])->orderBy('updated_at', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('file_upload', function (ProfileGuruPegawai $profile) {
@@ -175,10 +177,12 @@ class DataBerkasDasarController extends Controller
                     //         $query->where('profile_guru_pegawai.jenis_asn', $request->jenisAsn);
                     //     });
                     // }
+                    if (!empty($request->jenisGuru)) {
+                        $query->where('jenis_guru', $request->jenisGuru);
+                    }
 
-
-                    if (!empty($request->jenisAsn)) {
-                        $query->where('jenis_asn', $request->jenisAsn);
+                    if (!empty($request->statusKepegawaian)) {
+                        $query->where('status', $request->statusKepegawaian);
                     }
 
                     if (!empty($request->statusBerkas)) {
@@ -254,6 +258,8 @@ class DataBerkasDasarController extends Controller
             $jabatan = JabatanStruktural::find($profile_guru_pegawai->jabatan_pangkat_golongan);
         }
         $data = [
+            'persyaratan' => Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $profile_guru_pegawai->jenis_asn)
+                ->where('kategori', 'Berkas Dasar')->get(),
             'berkasDasar' => $profile_guru_pegawai->berkasDasar,
             'profile' => $profile_guru_pegawai,
             'jabatan' => $jabatan

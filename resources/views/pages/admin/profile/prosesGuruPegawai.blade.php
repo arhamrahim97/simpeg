@@ -12,33 +12,45 @@ Konfirmasi Profil
         <table class="table mt-3">
             <tbody>
                 <tr>
-                    <th width="210">Nama Lengkap :</th>                    
+                    <th width="210">Nama Lengkap:</th>                    
                     <td>{{$profile->nama}}</td>
                 </tr>
                 <tr>
-                    <th>Jenis Kelamin :</th>
+                    <th width="210">NIK:</th>                    
+                    <td>{{$profile->nik}}</td>
+                </tr>
+                <tr>
+                    <th>Jenis Kelamin:</th>
                     <td>{{$profile->jenis_kelamin}}</td>
                 </tr>
                 <tr>
-                    <th>Tempat, Tanggal Lahir :</th>
+                    <th>Tempat, Tanggal Lahir:</th>
                     <td>{{$profile->tempat_lahir}}, {{ date( 'd F Y', strtotime($profile->tanggal_lahir))}}</td>
                 </tr>
                 <tr> 
-                    <th>No. Hp/WA : </th>
+                    <th>No. Hp/WA: </th>
                     <td>{{$profile->no_hp}}</td>
                 </tr>
                 <tr> 
-                    <th>Email : </th>
+                    <th>Email: </th>
                     <td>{{$profile->email}}</td>
                 </tr>
                 <tr> 
-                    <th>Alamat : </th>
+                    <th>Alamat: </th>
                     <td>{{$profile->alamat}}</td>
                 </tr>
                 <tr> 
-                    <th>Pendidikan Terakhir : </th>
+                    <th>Pendidikan: </th>
                     <td>{{$profile->pendidikan_terakhir}}</td>
                 </tr>            
+                <tr>
+                    <th>Jenis ASN: </th>
+                    <td>{{$profile->jenis_asn}}</td>
+                </tr>    
+                <tr>
+                    <th>Jenis PTK: </th>
+                    <td>{{$profile->jenis_guru}}</td>
+                </tr>    
             </tbody>
         </table>
     </div>
@@ -46,67 +58,71 @@ Konfirmasi Profil
         <table class="table mt-3">
             <tbody>
                 <tr>
-                    <th>Jenis ASN : </th>
-                    <td>{{$profile->jenis_asn}}</td>
-                </tr>    
+                    <th>Status Kepegawaian:</th>
+                    <td>{{$profile->status}}</td>
+                </tr>
                 <tr class="@if ($profile->jenis_asn == 'Pegawai')
                     d-none
                 @endif">
-                    <th>Jenis Guru : </th>
+                    <th>Jenis PTK: </th>
                     <td>{{$profile->jenis_guru}}</td>
                 </tr>               
                 <tr>
-                    <th>NIP : </th>
-                    <td>{{$profile->nip}}</td>
+                    <th>Bidang Studi Pendidikan:</th>
+                    <td>{{$profile->bidang_studi}}</td>
                 </tr>
                 <tr>
-                    <th>NUPTK : </th>                    
-                    <td>@if ($profile->nuptk)
-                        {{$profile->nuptk}}
+                    <th>Mata Pelajaran yang Diajarkan:</th>
+                    <td>{{$profile->mata_pelajaran}}</td>
+                </tr>
+                <tr>
+                    <th>NIPSN: </th>
+                    <td>{{$profile->npsn}}</td>
+                </tr>
+                <tr>
+                    <th>NIP: </th>
+                    <td>@if ($profile->nip)
+                        {{$profile->nip}}
                     @else
                         -
                     @endif</td>
                 </tr>
                 <tr>
-                    <th>Unit Kerja :</th>
-                    <td>{{$profile->unitKerja->nama}}</td>
-                </tr>
+                    <th>NUPTK: </th>                    
+                    <td>@if ($profile->nuptk)
+                        {{$profile->nuptk}}
+                    @else
+                        -
+                    @endif</td>
+                </tr>                                
                 <tr>
-                    <th>Status :</th>
-                    <td>{{$profile->status}}</td>
-                </tr>
-                <tr>
-                    <th>Jabatan / Golongan :</th>
+                    <th>Pangkat / Golongan:</th>
                     @if ($profile->jabatan_pangkat_golongan)
-                        <td>{{ $jabatan->jabatan }} / {{ $jabatan->golongan }}</td>
+                        <td>{{ $jabatan->pangkat }} / {{ $jabatan->golongan }}</td>
                     @else
                         <td>-</td>
                     @endif
                 </tr>
                 <tr>
-                    <th>Tanggal Awal Kerja :</th>
-                    <td>{{ date( 'd F Y', strtotime($profile->tanggal_kerja))}}</td>
+                    <th>Unit Kerja:</th>
+                    <td>{{$profile->unitKerja->nama}}</td>
                 </tr>
-            <tbody>
-        </table>
-    </div>
+                <tr>
+                    <th>Kecamatan:</th>
+                    <td>{{$profile->kecamatan}}</td>
+                </tr>
+                <tbody>
+                </table>
+            </div>
     <div class="col-lg-4 col-12">       
         <table class="table mt-3">
             <tbody>
                 <tr>
-                    <th>Gaji Terakhir :</th>
-                    <td>{{"Rp " . number_format($profile->nilai_gaji,0,',','.');}}</td>
+                    <th>Tanggal Awal Kerja:</th>
+                    <td>{{ date( 'd F Y', strtotime($profile->tanggal_kerja))}}</td>
                 </tr>
                 <tr>
-                    <th>TMT Gaji Berkala : </th>
-                    <td>{{date("d F Y", strtotime($profile->tmt_gaji))}}</td>
-                </tr>    
-                <tr>
-                    <th>TMT Pangkat : </th>
-                    <td>{{date("d F Y", strtotime($profile->tmt_pangkat))}}</td>
-                </tr>   
-                <tr>
-                    <th scope="row" width="40%">Lama Kerja : </th>
+                    <th scope="row" width="40%">Lama Kerja: </th>
                     <td>
                         @php
                             $tanggal_kerja = new DateTime($profile->tanggal_kerja);
@@ -116,13 +132,37 @@ Konfirmasi Profil
                             echo $thn . " Tahun " . $bln . " Bulan ";                        
                         @endphp
                     </td>
-                </tr>     
+                </tr>  
+                <tr>
+                    <th>TMT Pengangkatan: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_pengangkatan))}}</td>
+                </tr>    
+                <tr>
+                    <th>TMT Pangkat: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_pangkat))}}</td>
+                </tr> 
+                <tr>
+                    <th>TMT Gaji Berkala: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_gaji))}}</td>
+                </tr>    
+                <tr>
+                    <th>Gaji Terakhir:</th>
+                    <td>{{"Rp " . number_format($profile->nilai_gaji,0,',','.');}}</td>
+                </tr>  
+                <tr>
+                    <th>
+                        Foto:
+                    </th>
+                    <td>
+                        <div class="input-file input-file-image text-center mt-3">
+                            <img class="img-upload-preview img-circle" src="{{ old('foto', '/storage/upload/foto-profil/'.$profile->foto) }}" alt="preview" width="150" height="150">
+                            <input type="file" class="form-control form-control-file" id="foto" name="foto" accept="image/*">                                       
+                        </div>                         
+                    </td>                    
+                </tr>
+               
             <tbody>
         </table>
-        <div class="input-file input-file-image text-center">
-            <img class="img-upload-preview img-circle" src="{{ old('foto', '/storage/upload/foto-profil/'.$profile->foto) }}" alt="preview" width="150" height="150">
-            <input type="file" class="form-control form-control-file" id="foto" name="foto" accept="image/*">                                       
-        </div> 
     </div>   
 </div>
 <div class="row">
@@ -144,7 +184,7 @@ Konfirmasi Profil
                 style="display: none;  
             @endif ">
                 <label for="exampleFormControlTextarea1" class="form-label">Alasan Ditolak</label>
-                <textarea class="form-control" required="" name="alasan_profile" id="alasan-ditolak">@if ($profile->status_profile == '2') {{ $profile->alasan_profile }} @else  @endif</textarea>
+                <textarea class="form-control" name="alasan_profile" required=""  id="alasan-ditolak">@if ($profile->status_profile == '2') {{ $profile->alasan_profile }} @endif</textarea>
             </div>
 
             <div class="div d-flex justify-content-end mt-3">
