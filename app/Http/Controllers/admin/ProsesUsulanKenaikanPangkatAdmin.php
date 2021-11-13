@@ -195,7 +195,7 @@ class ProsesUsulanKenaikanPangkatAdmin extends Controller
     public function show(UsulanPangkat $usulanPangkat)
     {
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user);
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {
@@ -279,7 +279,7 @@ class ProsesUsulanKenaikanPangkatAdmin extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                         <a href=" ' . route('proses-usulan-kenaikan-pangkat-admin.show', $usulanPangkat->id) . '" class="btn btn-sm btn-primary mt-2">Lihat Berkas</a>
                                                     </div>
@@ -696,7 +696,7 @@ class ProsesUsulanKenaikanPangkatAdmin extends Controller
                                                     <div class="timeline-icon timeline-icon"><i
                                                             class="far fa-clock"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Berkas</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <p>Berkas Masih Diproses</p>
                                                     </div>
                                                 </div>
@@ -716,9 +716,9 @@ class ProsesUsulanKenaikanPangkatAdmin extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Berkas</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Berkas</button>
+                                                        <a href="' . url('cetak-usulan-kenaikan-pangkat', $usulanPangkat->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                         </div>
                                                     </div>
                                                 </div>

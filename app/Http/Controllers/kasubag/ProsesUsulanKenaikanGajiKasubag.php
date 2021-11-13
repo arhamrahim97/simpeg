@@ -109,8 +109,8 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
      */
     public function show(UsulanGaji $usulanGaji)
     {
-        $user = User::find($usulanGaji->id_user);
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $user = User::where('id', $usulanGaji->id_user)->first();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
         return view('pages.kasubag.kenaikanGaji.show', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
@@ -126,8 +126,8 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
         if (!($usulanGaji->status_sekretaris == 0 && $usulanGaji->status_kasubag != 0 && $usulanGaji->status_kepegawaian == 1)) {
             return redirect()->route('proses-usulan-kenaikan-gaji-kasubag.index');
         }
-        $user = User::find($usulanGaji->id_user);
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $user = User::where('id', $usulanGaji->id_user)->first();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
         return view('pages.kasubag.kenaikanGaji.edit', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
@@ -153,7 +153,11 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
         $usulanGaji->save();
 
         Toastr::success('Berhasil Memproses Berkas', 'Success');
-        return redirect()->route('proses-usulan-kenaikan-gaji-kasubag.index');
+        if (Auth::user()->role == "KASUBAG Kepegawaian dan Umum") {
+            return redirect()->route('proses-usulan-kenaikan-gaji-kasubag.index');
+        } else if (Auth::user()->role == "Admin") {
+            return redirect()->route('proses-usulan-kenaikan-gaji-admin.index');
+        }
     }
 
     /**
@@ -200,7 +204,7 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                     </div>
                                                 </div>
@@ -531,8 +535,7 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Unduh Berkas</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Berkas</button>
-                                                        </div>
+                                                        <a href="' . url('cetak-usulan-kenaikan-gaji', $usulanGaji->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -554,9 +557,9 @@ class ProsesUsulanKenaikanGajiKasubag extends Controller
         if (!($usulanGaji->status_kasubag == 0 && $usulanGaji->status_kepegawaian == 1)) {
             return redirect()->route('proses-usulan-kenaikan-gaji-kasubag.index');
         }
-        $user = User::find($usulanGaji->id_user);
+        $user = User::where('id', $usulanGaji->id_user)->first();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         return view('pages.kasubag.kenaikanGaji.proses', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
 }

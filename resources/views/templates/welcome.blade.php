@@ -16,6 +16,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/assets/welcome/css/theme.bundle.css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('style')
 
     <!-- Title -->
@@ -65,6 +66,9 @@
 
     <!-- Theme JS -->
     <script src="/assets/welcome/js/theme.bundle.js"></script>
+    <script src="/assets/dashboard/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/assets/dashboard/js/core/popper.min.js"></script>
+    <script src="/assets/dashboard/js/core/bootstrap.min.js"></script>
     @stack('script')
 
 </body>

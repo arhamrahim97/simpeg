@@ -364,31 +364,21 @@ Lihat Berkas
         if (pangkat != '') {
             $.ajax({
                 type: "POST",
-                url: "/get-persyaratan-berkas",
+                url: "/get-cek-berkas",
                 dataType: 'json',
                 data: {
-                    pangkat: pangkat
+                    pangkat: pangkat,
+                    role: '{{$user->role}}'
                 },
                 success: function (data) {
-                    if (data.res == 'success') {
-                        $('#persyaratanBerkas').empty();
-                        $('#persyaratanBerkas').append(data.html);
-                    } else {
-                        $('#persyaratanBerkas').empty();
-                    }
+                    // if (data.res == 'success') {
+                    //     $('#persyaratanBerkas').empty();
+                    //     $('#persyaratanBerkas').append(data.daftarPersyaratan);
+                    // } else {
+                    //     $('#persyaratanBerkas').empty();
+                    // }
                 },
-                error: function (data) {
-                    // swal({
-                    // title: 'Gagal',
-                    // text: 'Gagal Menghapus Data',
-                    // icon: 'warning',
-                    // buttons: {
-                    // confirm: {
-                    // className: 'btn btn-success'
-                    // }
-                    // }
-                    // });
-                }
+                error: function (data) {}
             });
         } else {
             $('#persyaratanBerkas').empty();

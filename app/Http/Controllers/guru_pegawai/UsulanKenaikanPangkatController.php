@@ -36,9 +36,16 @@ class UsulanKenaikanPangkatController extends Controller
         $cekUsulanPangkat = UsulanPangkat::where('tmt_pangkat_sebelumnya', Auth::user()->profile->tmt_pangkat)->first();
         // Cek Apakah TMT Gaji sudah lebih dari 2 tahun dan cek apakah usulan dengan tmt user sekarang sudah ada atau belum
         $usulan = '';
-        if ($tahun >= 2 && !($cekUsulanPangkat)) {
-            $usulan = true;
+        if (Auth::user()->role == "Guru") {
+            if ($tahun >= 2 && !($cekUsulanPangkat)) {
+                $usulan = true;
+            }
+        } else if (Auth::user()->role == "Pegawai") {
+            if ($tahun >= 4 && !($cekUsulanPangkat)) {
+                $usulan = true;
+            }
         }
+
 
         if ($request->ajax()) {
             $data = UsulanPangkat::with('berkasUsulanPangkat')->where('id_user', Auth::id())->orderBy('id', 'desc')->get();
@@ -113,8 +120,14 @@ class UsulanKenaikanPangkatController extends Controller
 
         $cekUsulanPangkat = UsulanPangkat::where('tmt_pangkat_sebelumnya', Auth::user()->profile->tmt_pangkat)->first();
         // Cek Apakah TMT Pangkat sudah lebih dari 2 tahun dan cek apakah usulan dengan tmt user sekarang sudah ada atau belum
-        if ($tahun < 2) {
-            return redirect()->route('usulan-kenaikan-pangkat.index');
+        if (Auth::user()->role == "Guru") {
+            if ($tahun < 2 && !($cekUsulanPangkat)) {
+                return redirect()->route('usulan-kenaikan-pangkat.index');
+            }
+        } else if (Auth::user()->role == "Pegawai") {
+            if ($tahun < 4 && !($cekUsulanPangkat)) {
+                return redirect()->route('usulan-kenaikan-pangkat.index');
+            }
         }
         if ($cekUsulanPangkat) {
             return redirect()->route('usulan-kenaikan-pangkat.index');
@@ -361,7 +374,12 @@ class UsulanKenaikanPangkatController extends Controller
     public function getPersyaratanBerkas(Request $request)
     {
         $pangkat = $request->pangkat;
-        $persyaratan = Persyaratan::where('jenis_asn', Auth::user()->role)->where('kategori', 'Usulan Kenaikan Pangkat')->where('ke_golongan', $pangkat)->first();
+        if (Auth::user()->role == "Guru" || Auth::user()->role == "Pegawai") {
+            $role = Auth::user()->role;
+        } else {
+            $role = $request->role;
+        }
+        $persyaratan = Persyaratan::where('jenis_asn', $role)->where('kategori', 'Usulan Kenaikan Pangkat')->where('ke_golongan', $pangkat)->first();
         $daftarPersyaratan = '<h6 class="my-2 font-weight-bold">Berikut beberapa berkas yang harus di upload:</h6><ul class="list-group list-group-bordered list my-4">';
         $form = '';
 
@@ -445,7 +463,7 @@ class UsulanKenaikanPangkatController extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                         <div class="row">
                                                             <a target="_blank" href=" ' . route('usulan-kenaikan-pangkat.show', $usulanPangkat->id) . ' " class="btn btn-sm btn-primary mt-2 mr-2 ml-3">Lihat
@@ -848,7 +866,7 @@ class UsulanKenaikanPangkatController extends Controller
                                                     <div class="timeline-icon timeline-icon"><i
                                                             class="far fa-clock"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Berkas</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <p>Berkas Masih Diperiksa</p>
                                                     </div>
                                                 </div>
@@ -868,9 +886,9 @@ class UsulanKenaikanPangkatController extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Surat Pengantar Kenaikan Gaji</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</button>
+                                                        <a href="' . url('cetak-usulan-kenaikan-pangkat', $usulanPangkat->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                         </div>
                                                     </div>
                                                 </div>

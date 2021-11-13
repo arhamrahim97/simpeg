@@ -112,7 +112,7 @@ class ProsesUsulanKenaikanPangkatTimPenilai extends Controller
     public function show(UsulanPangkat $usulanPangkat)
     {
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {
@@ -142,7 +142,7 @@ class ProsesUsulanKenaikanPangkatTimPenilai extends Controller
             return redirect()->route('proses-usulan-kenaikan-pangkat-tim-penilai.index');
         }
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {
@@ -184,7 +184,11 @@ class ProsesUsulanKenaikanPangkatTimPenilai extends Controller
         $usulanPangkat->save();
 
         Toastr::success('Berhasil Memproses Berkas', 'Success');
-        return redirect()->route('proses-usulan-kenaikan-pangkat-tim-penilai.index');
+        if (Auth::user()->role == "Tim Penilai") {
+            return redirect()->route('proses-usulan-kenaikan-pangkat-tim-penilai.index');
+        } else if (Auth::user()->role == "Admin") {
+            return redirect()->route('proses-usulan-kenaikan-pangkat-admin.index');
+        }
     }
 
     /**
@@ -643,7 +647,7 @@ class ProsesUsulanKenaikanPangkatTimPenilai extends Controller
             return redirect()->route('proses-usulan-kenaikan-pangkat-tim-penilai.index');
         }
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {

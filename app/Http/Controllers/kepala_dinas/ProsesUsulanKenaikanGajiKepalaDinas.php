@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
@@ -111,8 +112,8 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
      */
     public function show(UsulanGaji $usulanGaji)
     {
-        $user = User::find($usulanGaji->id_user);
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $user = User::where('id', $usulanGaji->id_user)->first();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
         return view('pages.kepala_dinas.kenaikanGaji.show', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
@@ -128,8 +129,8 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
         if (!($usulanGaji->status_kepala_dinas != 0 && $usulanGaji->status_kepegawaian == 1 && $usulanGaji->status_kasubag == 1 && $usulanGaji->status_sekretaris == 1)) {
             return redirect()->route('proses-usulan-kenaikan-gaji-kepala-dinas.index');
         }
-        $user = User::find($usulanGaji->id_user);
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $user = User::where('id', $usulanGaji->id_user)->first();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
         return view('pages.kepala_dinas.kenaikanGaji.edit', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
@@ -157,11 +158,25 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
             $usulanGaji->alasan_tolak_kepala_dinas = NULL;
         }
 
+        $totalUsulanGaji = UsulanGaji::count();
+        $usulanGajiTerakhir = DB::table('usulan_gaji')->where('nomor_surat', '!=', NULL)->latest('id')->first();
+        if (!$usulanGaji->nomor_surat) {
+            if ($totalUsulanGaji == 1) {
+                $usulanGaji->nomor_surat = 1;
+            } else {
+                $usulanGaji->nomor_surat = ($usulanGajiTerakhir->nomor_surat + 1);
+            }
+        }
+
         $usulanGaji->save();
         $profile->save();
 
         Toastr::success('Berhasil Memproses Berkas', 'Success');
-        return redirect()->route('proses-usulan-kenaikan-gaji-kepala-dinas.index');
+        if (Auth::user()->role == "Kepala Dinas") {
+            return redirect()->route('proses-usulan-kenaikan-gaji-kepala-dinas.index');
+        } else if (Auth::user()->role == "Admin") {
+            return redirect()->route('proses-usulan-kenaikan-gaji-admin.index');
+        }
     }
 
     /**
@@ -208,7 +223,7 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                     </div>
                                                 </div>
@@ -540,8 +555,7 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Unduh Surat Pengantar Kenaikan Gaji</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</button>
-                                                        </div>
+                                                        <a href="' . url('cetak-usulan-kenaikan-gaji', $usulanGaji->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -563,8 +577,8 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
         if (!($usulanGaji->status_kepala_dinas == 0 && $usulanGaji->status_kepegawaian == 1 && $usulanGaji->status_kasubag == 1 && $usulanGaji->status_sekretaris == 1)) {
             return redirect()->route('proses-usulan-kenaikan-gaji-kepala-dinas.index');
         }
-        $user = User::find($usulanGaji->id_user);
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $user = User::where('id', $usulanGaji->id_user)->first();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
         return view('pages.kepala_dinas.kenaikanGaji.proses', compact(['usulanGaji', 'user', 'berkasDasar', 'persyaratan']));
     }
