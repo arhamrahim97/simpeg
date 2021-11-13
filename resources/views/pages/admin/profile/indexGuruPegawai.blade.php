@@ -11,28 +11,47 @@ Profil Guru/Pegawai
     <div class="row">
         <div class="col-lg-4 col-12">
             <div class="form-group px-0">
-                <label for="my-select" class="font-weight-bold">Role</label>
-                <select id="role" class="form-control">
+                <label for="my-select" class="font-weight-bold">Jenis PTK</label>
+                <select id="jenis-guru" class="form-control">
                     <option value="">Semua</option>
-                    <option value="Guru">Guru</option>
-                    <option value="Pegawai">Pegawai</option>                        
+                    <option value="Guru BK">Guru BK</option>
+                    <option value="Guru Kelas">Guru Kelas</option>
+                    <option value="Guru Mapel">Guru Mapel</option>
+                    <option value="Guru Pendamping">Guru Pendamping</option>
+                    <option value="Guru Pendamping Khusus">Guru Pendamping Khusus</option>
+                    <option value="Guru Pengganti">Guru Pengganti</option>
+                    <option value="Guru TIK">Guru TIK</option>
+                    <option value="Instruktur">Instruktur</option>
+                    <option value="Kepala Sekolah">Kepala Sekolah</option>
+                    <option value="Kepala Sekolah">Laboran</option>
+                    <option value="Penjaga Sekolah">Penjaga Sekolah</option>
+                    <option value="Pesuruh/Office Boy">Pesuruh/Office Boy</option>
+                    <option value="Petugas Keamanan">Petugas Keamanan</option>
+                    <option value="Tenaga Administrasi Sekolah">Tenaga Administrasi Sekolah</option>
+                    <option value="Tenaga Perpustakaan">Tenaga Perpustakaan</option>
+                    <option value="Tukang Kebun">Tukang Kebun</option>
+                    <option value="Tutor">Tutor</option>	
+                    <option value="Lainnya">Lainnya</option>    
                 </select>
             </div>
-        </div>       
+        </div>     
         <div class="col-lg-4 col-12">
             <div class="form-group px-0">
-                <label for="my-select" class="font-weight-bold">Unit Kerja</label>
-                <select id="unit-kerja" class="form-control">
+                <label for="my-select" class="font-weight-bold">Status Kepegawaian</label>
+                <select id="status-kepegawaian" class="form-control">
                     <option value="">Semua</option>
-                    @forelse ($unit_kerja as $row)
-                        <option value="{{ $row->id }}">{{ $row->nama }}</option>                   
-                    @empty
-                        <option value="">Tidak Ada Data</option>
-                    @endforelse
-                                        
+                    <option value="GTY/PTY">GTY/PTY</option>
+                    <option value="Guru Honor Sekolah">Guru Honor Sekolah</option>
+                    <option value="Honor Daerah TK.I Provinsi">Honor Daerah TK.I Provinsi</option>
+                    <option value="Honor Daerah TK.II Kab/Kota">Honor Daerah TK.II Kab/Kota</option>
+                    <option value="PNS">PNS</option>
+                    <option value="PNS Depag">PNS Depag</option>
+                    <option value="PNS Diperbantukan">PNS Diperbantukan</option>
+                    <option value="Tenaga Honor Sekolah">Tenaga Honor Sekolah</option>
+                    <option value="Lainnya">Lainnya</option>       
                 </select>
             </div>
-        </div>       
+        </div>    
         <div class="col-lg-4 col-12">
             <div class="form-group px-0">
                 <label for="my-select" class="font-weight-bold">Status Profil</label>
@@ -51,9 +70,10 @@ Profil Guru/Pegawai
                 <th>No</th>
                 <th>Nama</th>
                 <th>NIP</th>
-                <th>Golongan - Jabatan - Pangkat</th>            
-                <th>Unit Kerja</th>
-                <th>Role</th>
+                <th>Golongan</th>   
+                <th>Jenis PTK</th>   
+                <th>Status Kepegawaian</th>   
+                {{-- <th>Unit Kerja</th>                 --}}
                 <th>Status Profil</th>
                 <th>Aksi</th>
             </tr>
@@ -107,10 +127,11 @@ Profil Guru/Pegawai
             ajax: {
                 url: "{{ url('/profile-guru-pegawai-') }}",
                 data: function (d) {
-                    d.search = $('input[type="search"]').val();
-                    d.jenisAsn = $('#role').val();                    
-                    d.unitKerja = $('#unit-kerja').val();
+                    // d.unitKerja = $('#unit-kerja').val();                    
+                    d.statusKepegawaian = $('#status-kepegawaian').val();
+                    d.jenisGuru = $('#jenis-guru').val();                  
                     d.statusProfile = $('#status-profile').val();
+                    d.search = $('input[type="search"]').val();
                 }
             },
             dom: 'lBfrtip',
@@ -146,18 +167,24 @@ Profil Guru/Pegawai
                 },
                 {
                     data: 'golongan_jabatan_pangkat',
-                    name: 'golongan_jabatan_pangkat'
-                },                
+                    name: 'golongan_jabatan_pangkat',
+                    className: 'text-center'
+                },  
                 {
-                    data: 'unit_kerja',
-                    name: 'unit_kerja',
-                    // className: 'text-center'
-                },
-                {
-                    data: 'jenis_asn',
-                    name: 'jenis_asn',
+                    data: 'jenis_guru',
+                    name: 'jenis_guru',
                     className: 'text-center'
                 },
+                {
+                    data: 'status',
+                    name: 'status',
+                    className: 'text-center'
+                },              
+                // {
+                //     data: 'unit_kerja',
+                //     name: 'unit_kerja',
+                //     // className: 'text-center'
+                // },    
                 {
                     data: 'status_profile_',
                     name: 'status_profile_',
@@ -179,11 +206,11 @@ Profil Guru/Pegawai
             }
         });
 
-        $('#role').change(function () {
+        $('#status-kepegawaian').change(function () {
             table.draw();
         })
 
-        $('#unit-kerja').change(function () {
+        $('#jenis-guru').change(function () {
             table.draw();
         })
 

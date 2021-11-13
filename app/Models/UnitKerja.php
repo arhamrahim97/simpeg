@@ -12,4 +12,6 @@ class UnitKerja extends Model
     use SoftDeletes;
 
     protected $table = 'unit_kerja';
+
+    protected $guarded = ['id'];
 }

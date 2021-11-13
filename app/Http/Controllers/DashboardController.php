@@ -11,25 +11,35 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = User::find(Auth::user()->id);
         $data2 = [
             'user' => $user,
         ];
-        if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
-            $user = User::find(Auth::user()->id);
 
+        if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
+            // $status_kepegawaian = Auth::user()->status_kepegawaian;
+            $user = User::find(Auth::user()->id);
             if (($user->profile) == null) {
                 return redirect('/profile-guru-pegawai');
-            } else if (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0) {
-                return redirect('/berkas-dasar');
             } else {
-                if ($user->profile != null) {
-                    if (($user->profile->status_profile != 1) || ($user->profile->status_berkas_dasar != 1)) {
-                        return view('pages.guru_pegawai.lengkapiData.index', ['user' => $user]);
-                    } else {
-                        return redirect('/dashboard-guru-pegawai');
+                if ((in_array($user->status_kepegawaian, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) && (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0)) {
+                    // if ((($user->status_kepegawaian == 'PNS') || ($user->status_kepegawaian == 'PNS Depag') || ($user->status_kepegawaian == 'PNS Diperbantukan')) && (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0)) {
+                    return redirect('/berkas-dasar');
+                } //
+                else {
+                    if ($user->profile != null) {
+                        if (!in_array($user->status_kepegawaian, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) { //Non PNS
+                            return redirect(route('info-profile', $user->profile->id));
+                        } else { // PNS
+                            if (($user->profile->status_profile != 1) || ($user->profile->status_berkas_dasar != 1)) {
+                                return view('pages.guru_pegawai.lengkapiData.index', ['user' => $user]);
+                            }  //
+                            else {
+                                return view('pages.dashboard.dashboardGuru', $data2);
+                            }
+                        }
                     }
                 }
             }

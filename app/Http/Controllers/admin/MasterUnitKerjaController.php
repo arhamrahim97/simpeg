@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\UnitKerja;
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Controller;
+use App\Imports\UnitKerjaImport;
 use Brian2694\Toastr\Facades\Toastr;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class MasterUnitKerjaController extends Controller
 {
@@ -34,7 +37,6 @@ class MasterUnitKerjaController extends Controller
 
         return view('pages.admin.masterUnitKerja.index');
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -75,6 +77,14 @@ class MasterUnitKerjaController extends Controller
 
         Toastr::success('Berhasil Menambahkan Unit Kerja', 'Success');
         return redirect()->route('master-unit-kerja.index');
+    }
+
+    public function importExcel(Request $request)
+    {
+        Excel::import(new UnitKerjaImport, $request->file('file'));
+        Toastr::success('Berhasil Menambahkan Unit Kerja Dengan Proses Impor File Excel', 'Success');
+        return redirect('/master-unit-kerja');
+        //     ddd($request);
     }
 
     /**

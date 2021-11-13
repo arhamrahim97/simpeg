@@ -8,72 +8,105 @@ Lihat Berkas
 
 
 <div class="row">
-    <div class="col-xl-5">
+    <div class="col-xl-5 mt-2">
         <table class="table">
             <tbody>
                 <tr>
-                    <th scope="row" width="40%">Nama : </th>
+                    <th scope="row" width="40%">Nama: </th>
                     <td>{{$profile->nama}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Jenis Kelamin : </th>
+                    <th scope="row" width="40%">NIK: </th>
+                    <td>{{$profile->nik}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" width="40%">Jenis Kelamin: </th>
                     <td>{{$profile->jenis_kelamin}}</td>
                 </tr>
-                <tr> 
-                    <th scope="row" width="40%">Pendidikan Terakhir : </th>
-                    <td>{{$profile->pendidikan_terakhir}}</td>
-                </tr>
                 <tr>
-                    <th scope="row" width="40%">Jenis ASN : </th>
+                    <th scope="row" width="40%">Tempat, Tanggal Lahir : </th>
+                    <td>{{$profile->tempat_lahir}}, {{ date( 'd F Y', strtotime($profile->tanggal_lahir))}}</td>
+                </tr>
+                <tr> 
+                    <th>No. Hp/WA: </th>
+                    <td>{{$profile->no_hp}}</td>
+                </tr>
+                <tr> 
+                    <th>Email: </th>
+                    <td>{{$profile->email}}</td>
+                </tr>
+                <tr> 
+                    <th>Alamat: </th>
+                    <td>{{$profile->alamat}}</td>
+                </tr>
+                <tr> 
+                    <th>Pendidikan: </th>
+                    <td>{{$profile->pendidikan_terakhir}}</td>
+                </tr>            
+                <tr>
+                    <th>Jenis ASN: </th>
                     <td>{{$profile->jenis_asn}}</td>
+                </tr>    
+                <tr>
+                    <th>Jenis PTK: </th>
+                    <td>{{$profile->jenis_guru}}</td>
+                </tr>  
+                <tr>
+                    <th>Status Kepegawaian:</th>
+                    <td>{{$profile->status}}</td>
+                </tr>
+                <tr class="@if ($profile->jenis_asn == 'Pegawai')
+                    d-none
+                @endif">
+                    <th>Jenis PTK: </th>
+                    <td>{{$profile->jenis_guru}}</td>
                 </tr>               
                 <tr>
-                    <th scope="row" width="40%">NIP : </th>
+                    <th>Bidang Studi Pendidikan:</th>
+                    <td>{{$profile->bidang_studi}}</td>
+                </tr>
+                <tr>
+                    <th>Mata Pelajaran yang Diajarkan:</th>
+                    <td>{{$profile->mata_pelajaran}}</td>
+                </tr>
+                <tr>
+                    <th>NIPSN: </th>
+                    <td>{{$profile->npsn}}</td>
+                </tr>
+                <tr>
+                    <th>NIP: </th>
                     <td>{{$profile->nip}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">NUPTK : </th>                    
+                    <th>NUPTK: </th>                    
                     <td>@if ($profile->nuptk)
                         {{$profile->nuptk}}
                     @else
                         -
                     @endif</td>
+                </tr>         
+                <tr>
+                    <th>Pangkat / Golongan:</th>
+                    @if ($profile->jabatan_pangkat_golongan)
+                        <td>{{ $jabatan->pangkat }} / {{ $jabatan->golongan }}</td>
+                    @else
+                        <td>-</td>
+                    @endif
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Unit Kerja : </th>
+                    <th>Unit Kerja:</th>
                     <td>{{$profile->unitKerja->nama}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Jabatan/Golongan : </th>
-                    <td>@if ($profile->jabatan_pangkat_golongan != 0)
-                        {{ $jabatan->jabatan }} / {{ $jabatan->golongan }}
-                    @else
-                        -
-                    @endif</td>
+                    <th>Kecamatan:</th>
+                    <td>{{$profile->kecamatan}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Status : </th>
-                    <td>{{$profile->status}}</td>
+                    <th>Tanggal Awal Kerja:</th>
+                    <td>{{ date( 'd F Y', strtotime($profile->tanggal_kerja))}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" width="40%">Gaji Terakhir : </th>
-                    <td>{{"Rp " . number_format($profile->nilai_gaji,0,',','.');}}</td>
-                </tr>
-                {{-- <tr>
-                    <th scope="row" width="40%">Lama Kerja : </th>
-                    <td>{{$profile->jumlah_tahun_kerja}} Tahun {{$profile->jumlah_bulan_kerja}}
-                        Bulan</td>
-                </tr> --}}
-                <tr>
-                    <th scope="row" width="40%">TMT Gaji Berkala : </th>
-                    <td>{{date("d-m-Y", strtotime($profile->tmt_gaji))}}</td>
-                </tr>    
-                <tr>
-                    <th scope="row" width="40%">TMT Pangkat : </th>
-                    <td>{{date("d-m-Y", strtotime($profile->tmt_pangkat))}}</td>
-                </tr>     
-                <tr>
-                    <th scope="row" width="40%">Lama Kerja : </th>
+                    <th scope="row" width="40%">Lama Kerja: </th>
                     <td>
                         @php
                             $tanggal_kerja = new DateTime($profile->tanggal_kerja);
@@ -83,7 +116,34 @@ Lihat Berkas
                             echo $thn . " Tahun " . $bln . " Bulan ";                        
                         @endphp
                     </td>
-                </tr>   
+                </tr>  
+                <tr>
+                    <th>TMT Pengangkatan: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_pengangkatan))}}</td>
+                </tr>    
+                <tr>
+                    <th>TMT Pangkat: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_pangkat))}}</td>
+                </tr> 
+                <tr>
+                    <th>TMT Gaji Berkala: </th>
+                    <td>{{date("d F Y", strtotime($profile->tmt_gaji))}}</td>
+                </tr>    
+                <tr>
+                    <th>Gaji Terakhir:</th>
+                    <td>{{"Rp " . number_format($profile->nilai_gaji,0,',','.');}}</td>
+                </tr>  
+                <tr>
+                    <th>
+                        Foto:
+                    </th>
+                    <td>
+                        <div class="input-file input-file-image text-center mt-3">
+                            <img class="img-upload-preview img-circle" src="{{ old('foto', '/storage/upload/foto-profil/'.$profile->foto) }}" alt="preview" width="150" height="150">
+                            <input type="file" class="form-control form-control-file" id="foto" name="foto" accept="image/*">                                       
+                        </div>                         
+                    </td>                    
+                </tr>
                 
                 
             </tbody>
@@ -91,7 +151,24 @@ Lihat Berkas
 
     </div>
 
-    <div class="col-xl-7 col-sm-12 mb-5">        
+    <div class="col-xl-7 col-sm-12 mb-5">    
+        <h6 class="mb-2 font-weight-bold">Berikut persyaratan berkas dasar:</h6>
+        <ul class="list-group list-group-bordered list">
+            @php
+            $i = 1
+            @endphp
+            @forelse ($persyaratan as $row)                    
+                @foreach ($row->deskripsiPersyaratan as $deskripsi)                      
+                    <li class="list-group-item">
+                        <span class="name">{{ $i++ }}. {{ $deskripsi->deskripsi }}</span>
+                    </li>  
+                @endforeach
+            @empty
+                <h5>Tidak ada persyaratan</h5>
+            @endforelse
+        </ul>                
+            
+        <h6 class="mt-4 mb-2 font-weight-bold">Berikut berkas dasar yang diupload oleh {{ $profile->nama }}:</h6>
         <div class="row gx-4">
             @foreach ($berkasDasar as $berkas)
             <div class="col-lg-4 mb-4">

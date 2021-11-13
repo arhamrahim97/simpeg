@@ -25,8 +25,8 @@ class ProfileGuruPegawaiController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::user()->id)->profile;
-        if ($user == null) {
+        $profile = User::find(Auth::user()->id)->profile;
+        if ($profile == null) {
             if (Auth::user()->role == 'Guru') {
                 $jabatanGolonganPangkat = JabatanFungsional::all();
             } else if (Auth::user()->role == 'Pegawai') {
@@ -68,17 +68,27 @@ class ProfileGuruPegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user()->role == 'Guru') {
-            $jenis_guru_req = ['required'];
-            $nuptk_req = ['required'];
+        if ((Auth::user()->status_kepegawaian == 'PNS') || (Auth::user()->status_kepegawaian == 'PNS Depag') || (Auth::user()->status_kepegawaian == 'PNS Diperbantukan')) {
+            $nip_req = ['required', 'size:18'];
+            $golongan_req = ['required'];
+            $nilai_gaji_req = ['required'];
+            $tmt_gaji_req = ['required'];
+            $tmt_pangkat_req = ['required'];
+            $tanggal_kerja_req = ['required'];
         } else {
-            $jenis_guru_req = '';
-            $nuptk_req = '';
+            $nip_req = '';
+            $golongan_req = '';
+            $nilai_gaji_req = '';
+            $tmt_gaji_req = '';
+            $tmt_pangkat_req = '';
+            $tanggal_kerja_req = '';
         }
+
 
         $data = $request->validate(
             [
                 'nama' => 'required',
+                'nik' => 'required|size:16|unique:profile_guru_pegawai,nik',
                 'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
@@ -86,21 +96,29 @@ class ProfileGuruPegawaiController extends Controller
                 'email' => 'required|email',
                 'alamat' => 'required',
                 'pendidikan_terakhir' => 'required',
-                'jenis_asn' => 'required',
-                'jenis_guru' => $jenis_guru_req,
-                // 'nip' => 'required',
-                'nuptk' => $nuptk_req,
+                // 'jenis_asn' => 'required',
+                // 'jenis_guru' => $jenis_guru_req,
+                'nip' => $nip_req,
+                'nuptk' => '',
+                'npsn' => 'required',
                 'unit_kerja' => 'required',
-                'status' => 'required',
-                'jabatan_pangkat_golongan' => 'required',
-                'tanggal_kerja' => 'required',
-                'nilai_gaji' => 'required',
-                'tmt_gaji' => 'required',
-                'tmt_pangkat' => 'required',
+                'bidang_studi' => 'required',
+                'mata_pelajaran' => 'required',
+                // 'status' => 'required',
+                'kecamatan' => 'required',
+                'jabatan_pangkat_golongan' => $golongan_req,
+                'tanggal_kerja' => $tanggal_kerja_req,
+                'nilai_gaji' => $nilai_gaji_req,
+                'tmt_gaji' => $tmt_gaji_req,
+                'tmt_pangkat' => $tmt_pangkat_req,
+                'tmt_pengangkatan' => 'required',
                 'foto' => 'required|image|file|max:1024'
             ],
             [
                 'nama.required' => 'Nama Tidak Boleh Kosong',
+                'nik.required' => 'NIK Tidak Boleh Kosong',
+                'nik.size' => 'NIK Harus 16 Karakter',
+                'nik.unique' => 'NIK Sudah Ada',
                 'jenis_kelamin.required' => 'Jenis Kelamin Tidak Boleh Kosong',
                 'tempat_lahir.required' => 'Tempat Lahir Tidak Boleh Kosong',
                 'tanggal_lahir.required' => 'Tanggal Lahir Tidak Boleh Kosong',
@@ -109,20 +127,25 @@ class ProfileGuruPegawaiController extends Controller
                 'email.email' => 'Email Tidak Valid',
                 'alamat.required' => 'Alamat Tidak Boleh Kosong',
                 'pendidikan_terakhir.required' => 'Pendidikan Terakhir Tidak Boleh Kosong',
-                'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
-                'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
-                // 'nip.required' => 'Kategori Tidak Boleh Kosong',
-                'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
+                // 'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
+                'jenis_guru.required' => 'Jenis PTK Tidak Boleh Kosong',
+                'nip.required' => 'NIP Tidak Boleh Kosong',
+                'nip.size' => 'NIP Harus 18 Karakter',
+                // 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
+                'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',
+                'bidang_studi.required' => 'Bidang Studi Tidak Boleh Kosong',
+                'mata_pelajaran.required' => 'Mata Pelajaran Tidak Boleh Kosong',
                 'status.required' => 'Status Tidak Boleh Kosong',
+                'kecamatan.required' => 'Kecamatan Tidak Boleh Kosong',
                 'jabatan_pangkat_golongan.required' => 'Jabatan - Pangkat - Golongan Tidak Boleh Kosong',
                 'tanggal_kerja.required' => 'Tanggal Awal Kerja Tidak Boleh Kosong',
                 'nilai_gaji.required' => 'Nilai Gaji Tidak Boleh Kosong',
                 'tmt_gaji.required' => 'TMT Gaji Tidak Boleh Kosong',
                 'tmt_pangkat.required' => 'TMT Pangkat Tidak Boleh Kosong',
+                'tmt_pengangkatan.required' => 'TMT Pengangkatan Tidak Boleh Kosong',
                 'foto.required' => 'Foto Profil Tidak Boleh Kosong',
                 'foto.max' => 'Foto Profil Tidak Boleh Melebihi 1MB',
-
             ]
         );
 
@@ -137,24 +160,47 @@ class ProfileGuruPegawaiController extends Controller
             $data['jenis_jabatan'] = 'Fungsional';
         } else {
             $data['jenis_jabatan'] = 'Struktural';
-            $data['jenis_guru'] = '-';
         }
-        $data['nip'] = $request->nip;
+
+        if ((Auth::user()->status_kepegawaian == 'PNS') || (Auth::user()->status_kepegawaian == 'PNS Depag') || (Auth::user()->status_kepegawaian == 'PNS Diperbantukan')) {
+            $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
+            $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
+            $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
+            $data['nilai_gaji'] = $request->nilai_gaji;
+            $data['status_profile'] = 0;
+        } else {
+            $data['tanggal_kerja'] = NULL;
+            $data['tmt_gaji'] = NULL;
+            $data['tmt_pangkat'] = NULL;
+            $data['nilai_gaji'] = NULL;
+            $data['status_profile'] = 1;
+            $data['status_berkas_dasar'] = 0;
+        }
+        // $data['nip'] = $request->nip;
+        $data['jenis_asn'] = Auth::user()->role;
+        $data['jenis_guru'] = Auth::user()->jenis_guru;
+        $data['status'] = Auth::user()->status_kepegawaian;
         $data['tanggal_lahir'] = date("Y-m-d", strtotime($request->tanggal_lahir));
-        $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
-        $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
-        $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
+        $data['tmt_pengangkatan'] = date("Y-m-d", strtotime($request->tmt_pengangkatan));
         $data['foto'] = Auth::user()->id . '.' . $request->file('foto')->extension();
-        $data['status_profile'] = 0;
+        // $data['status_profile'] = 0;
         $data['konfirmasi_profile'] = Carbon::now();
+
 
         ProfileGuruPegawai::create($data);
 
         User::where('id', Auth::user()->id)
             ->update(['nama' => $request->nama, 'nip' => $request->nip]);
 
-        Toastr::success('Berhasil Melengkapi Profil, Data Anda Akan di Cek Terlebih Dahulu Oleh Admin', 'Success');
-        return redirect('/berkas-dasar');
+        // dd($data);
+        if ((Auth::user()->status_kepegawaian == 'PNS') || (Auth::user()->status_kepegawaian == 'PNS Depag') || (Auth::user()->status_kepegawaian == 'PNS Diperbantukan')) {
+            Toastr::success('Berhasil Melengkapi Profil, Data Anda Akan di Cek Terlebih Dahulu Oleh Admin', 'Success');
+            return redirect('/dashboard');
+        } else {
+            $profile = ProfileGuruPegawai::where('id_user', Auth::user()->id)->first();
+            Toastr::success('Terima Kasih, Data Profil anda telah berhasil disimpan', 'Success');
+            return redirect(route('info-profile', $profile->id));
+        }
 
 
         // dd($data);
@@ -172,7 +218,7 @@ class ProfileGuruPegawaiController extends Controller
     public function indexProfileGuruPegawai(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProfileGuruPegawai::with(['jabatanStruktural', 'jabatanFungsional', 'unitKerja'])->orderBy('created_at', 'desc');
+            $data = ProfileGuruPegawai::with(['jabatanStruktural', 'jabatanFungsional', 'unitKerja'])->orderBy('updated_at', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (ProfileGuruPegawai $profileGuruPegawai) {
@@ -190,6 +236,9 @@ class ProfileGuruPegawaiController extends Controller
                     if ($profileGuruPegawai->status_profile == 0) {
                         $actionBtn = '<span class="badge badge-warning p-2">Menunggu Konfirmasi</span>';
                         return $actionBtn;
+                    } else if (($profileGuruPegawai->status_profile == 1) && (!in_array($profileGuruPegawai->status, array('PNS', 'PNS Depag', 'PNS Diperbantukan')))) {
+                        $actionBtn = '<span class="badge badge-success p-2">Sudah Lengkap (Non PNS)</span>';
+                        return $actionBtn;
                     } else if ($profileGuruPegawai->status_profile == 1) {
                         $actionBtn = '<span class="badge badge-success p-2">Sudah Lengkap dan Disetujui</span>';
                         return $actionBtn;
@@ -198,20 +247,20 @@ class ProfileGuruPegawaiController extends Controller
                         return $actionBtn;
                     }
                 })
-                ->addColumn('unit_kerja', function (ProfileGuruPegawai $profileGuruPegawai) {
-                    $actionBtn = $profileGuruPegawai->unitKerja->nama;
-                    return $actionBtn;
-                })
+                // ->addColumn('unit_kerja', function (ProfileGuruPegawai $profileGuruPegawai) {
+                //     $actionBtn = $profileGuruPegawai->unitKerja->nama;
+                //     return $actionBtn;
+                // })
                 ->addColumn('golongan_jabatan_pangkat', function (ProfileGuruPegawai $profileGuruPegawai) {
                     if ($profileGuruPegawai->jabatan_pangkat_golongan == 0) {
                         return 'Belum Ada Data';
                     }
                     if ($profileGuruPegawai->jenis_asn == 'Pegawai') {
-                        $actionBtn = $profileGuruPegawai->jabatanStruktural->golongan . ' - ' . $profileGuruPegawai->jabatanStruktural->jabatan . ' - ' . $profileGuruPegawai->jabatanStruktural->pangkat;
+                        $actionBtn = $profileGuruPegawai->jabatanStruktural->golongan;
                         return $actionBtn;
                     } else if ($profileGuruPegawai->jenis_asn == 'Guru') {
 
-                        $actionBtn = $profileGuruPegawai->jabatanFungsional->golongan . ' - ' . $profileGuruPegawai->jabatanFungsional->jabatan . ' - ' . $profileGuruPegawai->jabatanFungsional->pangkat;
+                        $actionBtn = $profileGuruPegawai->jabatanFungsional->golongan;
                         return $actionBtn;
                     }
                 })
@@ -220,13 +269,17 @@ class ProfileGuruPegawaiController extends Controller
                         $query->where('nama', "LIKE", "%$request->search%")->orWhere('nip', "LIKE", "%$request->search%");
                     }
 
-                    if (!empty($request->jenisAsn)) {
-                        $query->where('jenis_asn', $request->jenisAsn);
+                    if (!empty($request->jenisGuru)) {
+                        $query->where('jenis_guru', $request->jenisGuru);
                     }
 
-                    if (!empty($request->unitKerja)) {
-                        $query->where('unit_kerja', $request->unitKerja);
+                    if (!empty($request->statusKepegawaian)) {
+                        $query->where('status', $request->statusKepegawaian);
                     }
+
+                    // if (!empty($request->unitKerja)) {
+                    //     $query->where('unit_kerja', $request->unitKerja);
+                    // }
 
                     if (!empty($request->statusProfile)) {
                         if ($request->statusProfile == 3) {
@@ -265,14 +318,43 @@ class ProfileGuruPegawaiController extends Controller
         return view('pages.admin.profile.editGuruPegawai', $data);
     }
 
+    public function infoProfileNonPNS(ProfileGuruPegawai $profileGuruPegawai)
+    {
+        if (($profileGuruPegawai->id_user != Auth::user()->id)) {
+            abort(404);
+        }
+        if ($profileGuruPegawai->jenis_asn == 'Guru') {
+            $jabatanGolonganPangkat = JabatanFungsional::all();
+        } else if ($profileGuruPegawai->jenis_asn == 'Pegawai') {
+            $jabatanGolonganPangkat = JabatanStruktural::all();
+        }
+        $data = [
+            'profile' => $profileGuruPegawai,
+            'jabatanGolonganPangkat' => $jabatanGolonganPangkat,
+            'unit_kerja' => UnitKerja::all()
+        ];
+        if (in_array($profileGuruPegawai->status, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) {
+            return redirect('/dashboard');
+        }
+        return view('pages.guru_pegawai.lengkapiData.infoNonPNS', $data);
+    }
+
     public function updateProfileGuruPegawai(Request $request, ProfileGuruPegawai $profileGuruPegawai)
     {
-        if ($profileGuruPegawai->jenis_asn == 'Guru') {
-            $jenis_guru_req = ['required'];
-            $nuptk_req = ['required'];
+        if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
+            $nip_req = ['required', 'size:18'];
+            $golongan_req = ['required'];
+            $nilai_gaji_req = ['required'];
+            $tmt_gaji_req = ['required'];
+            $tmt_pangkat_req = ['required'];
+            $tanggal_kerja_req = ['required'];
         } else {
-            $jenis_guru_req = '';
-            $nuptk_req = '';
+            $nip_req = '';
+            $golongan_req = '';
+            $nilai_gaji_req = '';
+            $tmt_gaji_req = '';
+            $tmt_pangkat_req = '';
+            $tanggal_kerja_req = '';
         }
 
         if ($request->file('foto') != null) {
@@ -281,9 +363,16 @@ class ProfileGuruPegawaiController extends Controller
             $foto_req = '';
         }
 
+        if ($request->nik != $profileGuruPegawai->nik) {
+            $nik_req = ['required', 'size:16', 'unique:profile_guru_pegawai,nik'];
+        } else {
+            $nik_req = '';
+        }
+
         $data = $request->validate(
             [
                 'nama' => 'required',
+                'nik' => $nik_req,
                 'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
@@ -291,21 +380,29 @@ class ProfileGuruPegawaiController extends Controller
                 'email' => 'required|email',
                 'alamat' => 'required',
                 'pendidikan_terakhir' => 'required',
-                'jenis_asn' => 'required',
-                'jenis_guru' => $jenis_guru_req,
-                // 'nip' => 'required',
-                'nuptk' => $nuptk_req,
+                // 'jenis_asn' => 'required',
+                // 'jenis_guru' => $jenis_guru_req,
+                'nip' => $nip_req,
+                'nuptk' => '',
+                'npsn' => 'required',
                 'unit_kerja' => 'required',
-                'status' => 'required',
-                'jabatan_pangkat_golongan' => 'required',
-                'tanggal_kerja' => 'required',
-                'nilai_gaji' => 'required',
-                'tmt_gaji' => 'required',
-                'tmt_pangkat' => 'required',
+                'bidang_studi' => 'required',
+                'mata_pelajaran' => 'required',
+                // 'status' => 'required',
+                'kecamatan' => 'required',
+                'jabatan_pangkat_golongan' => $golongan_req,
+                'tanggal_kerja' => $tanggal_kerja_req,
+                'nilai_gaji' => $nilai_gaji_req,
+                'tmt_gaji' => $tmt_gaji_req,
+                'tmt_pangkat' => $tmt_pangkat_req,
+                'tmt_pengangkatan' => 'required',
                 'foto' => $foto_req,
             ],
             [
                 'nama.required' => 'Nama Tidak Boleh Kosong',
+                'nik.required' => 'NIK Tidak Boleh Kosong',
+                'nik.size' => 'NIK Harus 16 Karakter',
+                'nik.unique' => 'NIK Sudah Ada',
                 'jenis_kelamin.required' => 'Jenis Kelamin Tidak Boleh Kosong',
                 'tempat_lahir.required' => 'Tempat Lahir Tidak Boleh Kosong',
                 'tanggal_lahir.required' => 'Tanggal Lahir Tidak Boleh Kosong',
@@ -314,20 +411,25 @@ class ProfileGuruPegawaiController extends Controller
                 'email.email' => 'Email Tidak Valid',
                 'alamat.required' => 'Alamat Tidak Boleh Kosong',
                 'pendidikan_terakhir.required' => 'Pendidikan Terakhir Tidak Boleh Kosong',
-                'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
+                // 'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
                 'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
-                // 'nip.required' => 'Kategori Tidak Boleh Kosong',
+                'nip.required' => 'NIP Tidak Boleh Kosong',
+                'nip.size' => 'NIP Harus 18 Karakter',
                 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
+                'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',
+                'bidang_studi.required' => 'Bidang Studi Tidak Boleh Kosong',
+                'mata_pelajaran.required' => 'Mata Pelajaran Tidak Boleh Kosong',
                 'status.required' => 'Status Tidak Boleh Kosong',
+                'kecamatan.required' => 'Kecamatan Tidak Boleh Kosong',
                 'jabatan_pangkat_golongan.required' => 'Jabatan - Pangkat - Golongan Tidak Boleh Kosong',
                 'tanggal_kerja.required' => 'Tanggal Awal Kerja Tidak Boleh Kosong',
                 'nilai_gaji.required' => 'Nilai Gaji Tidak Boleh Kosong',
                 'tmt_gaji.required' => 'TMT Gaji Tidak Boleh Kosong',
                 'tmt_pangkat.required' => 'TMT Pangkat Tidak Boleh Kosong',
+                'tmt_pengangkatan.required' => 'TMT Pengangkatan Tidak Boleh Kosong',
                 'foto.required' => 'Foto Profil Tidak Boleh Kosong',
                 'foto.max' => 'Foto Profil Tidak Boleh Melebihi 1MB',
-
             ]
         );
 
@@ -336,7 +438,6 @@ class ProfileGuruPegawaiController extends Controller
             $data['jenis_jabatan'] = 'Fungsional';
         } else {
             $data['jenis_jabatan'] = 'Struktural';
-            $data['jenis_guru'] = '-';
         }
 
         if ($request->file('foto')) {
@@ -353,13 +454,19 @@ class ProfileGuruPegawaiController extends Controller
             $data['foto'] = $profileGuruPegawai->foto;
         }
 
-
-        $data['nip'] = $request->nip;
+        if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
+            $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
+            $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
+            $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
+            $data['nilai_gaji'] = $request->nilai_gaji;
+        } else {
+            $data['tanggal_kerja'] = NULL;
+            $data['tmt_gaji'] = NULL;
+            $data['tmt_pangkat'] = NULL;
+            $data['nilai_gaji'] = NULL;
+        }
         $data['tanggal_lahir'] = date("Y-m-d", strtotime($request->tanggal_lahir));
-        $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
-        $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
-        $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
-        $data['status_profile'] = "1";
+        $data['tmt_pengangkatan'] = date("Y-m-d", strtotime($request->tmt_pengangkatan));
         $data['konfirmasi_profile'] = Carbon::now();
 
         ProfileGuruPegawai::where('id', $profileGuruPegawai->id)
@@ -432,7 +539,7 @@ class ProfileGuruPegawaiController extends Controller
      */
     public function edit(ProfileGuruPegawai $profileGuruPegawai)
     {
-        if ($profileGuruPegawai->id_user == Auth::user()->id) {
+        if (($profileGuruPegawai->id_user == Auth::user()->id) && ($profileGuruPegawai->status_profile == 2)) {
             if ($profileGuruPegawai->jenis_asn == 'Guru') {
                 $jabatanGolonganPangkat = JabatanFungsional::all();
             } else if ($profileGuruPegawai->jenis_asn == 'Pegawai') {
@@ -445,6 +552,8 @@ class ProfileGuruPegawaiController extends Controller
             ];
             return view('pages.guru_pegawai.lengkapiData.profileEdit', $data);
             // dd($profileGuruPegawai);
+        } else {
+            abort(404);
         }
     }
 
@@ -457,14 +566,20 @@ class ProfileGuruPegawaiController extends Controller
      */
     public function update(Request $request, ProfileGuruPegawai $profileGuruPegawai)
     {
-
-
-        if ($profileGuruPegawai->jenis_asn == 'Guru') {
-            $jenis_guru_req = ['required'];
-            $nuptk_req = ['required'];
+        if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
+            $nip_req = ['required', 'size:18'];
+            $golongan_req = ['required'];
+            $nilai_gaji_req = ['required'];
+            $tmt_gaji_req = ['required'];
+            $tmt_pangkat_req = ['required'];
+            $tanggal_kerja_req = ['required'];
         } else {
-            $jenis_guru_req = '';
-            $nuptk_req = '';
+            $nip_req = '';
+            $golongan_req = '';
+            $nilai_gaji_req = '';
+            $tmt_gaji_req = '';
+            $tmt_pangkat_req = '';
+            $tanggal_kerja_req = '';
         }
 
         if ($request->file('foto') != null) {
@@ -473,9 +588,16 @@ class ProfileGuruPegawaiController extends Controller
             $foto_req = '';
         }
 
+        if ($request->nik != $profileGuruPegawai->nik) {
+            $nik_req = ['required', 'size:16'];
+        } else {
+            $nik_req = '';
+        }
+
         $data = $request->validate(
             [
                 'nama' => 'required',
+                'nik' => $nik_req,
                 'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
@@ -483,21 +605,29 @@ class ProfileGuruPegawaiController extends Controller
                 'email' => 'required|email',
                 'alamat' => 'required',
                 'pendidikan_terakhir' => 'required',
-                'jenis_asn' => 'required',
-                'jenis_guru' => $jenis_guru_req,
-                // 'nip' => 'required',
-                'nuptk' => $nuptk_req,
+                // 'jenis_asn' => 'required',
+                // 'jenis_guru' => $jenis_guru_req,
+                'nip' => $nip_req,
+                'nuptk' => '',
+                'npsn' => 'required',
                 'unit_kerja' => 'required',
-                'status' => 'required',
-                'jabatan_pangkat_golongan' => 'required',
-                'tanggal_kerja' => 'required',
-                'nilai_gaji' => 'required',
-                'tmt_gaji' => 'required',
-                'tmt_pangkat' => 'required',
+                'bidang_studi' => 'required',
+                'mata_pelajaran' => 'required',
+                // 'status' => 'required',
+                'kecamatan' => 'required',
+                'jabatan_pangkat_golongan' => $golongan_req,
+                'tanggal_kerja' => $tanggal_kerja_req,
+                'nilai_gaji' => $nilai_gaji_req,
+                'tmt_gaji' => $tmt_gaji_req,
+                'tmt_pangkat' => $tmt_pangkat_req,
+                'tmt_pengangkatan' => 'required',
                 'foto' => $foto_req,
             ],
             [
                 'nama.required' => 'Nama Tidak Boleh Kosong',
+                'nik.required' => 'NIK Tidak Boleh Kosong',
+                'nik.size' => 'NIK Harus 16 Karakter',
+                'nik.unique' => 'NIK Sudah Ada',
                 'jenis_kelamin.required' => 'Jenis Kelamin Tidak Boleh Kosong',
                 'tempat_lahir.required' => 'Tempat Lahir Tidak Boleh Kosong',
                 'tanggal_lahir.required' => 'Tanggal Lahir Tidak Boleh Kosong',
@@ -506,17 +636,23 @@ class ProfileGuruPegawaiController extends Controller
                 'email.email' => 'Email Tidak Valid',
                 'alamat.required' => 'Alamat Tidak Boleh Kosong',
                 'pendidikan_terakhir.required' => 'Pendidikan Terakhir Tidak Boleh Kosong',
-                'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
+                // 'jenis_asn.required' => 'Jenis Asn Tidak Boleh Kosong',
                 'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
-                // 'nip.required' => 'Kategori Tidak Boleh Kosong',
+                'nip.required' => 'NIP Tidak Boleh Kosong',
+                'nip.size' => 'NIP Harus 18 Karakter',
                 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
+                'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',
+                'bidang_studi.required' => 'Bidang Studi Tidak Boleh Kosong',
+                'mata_pelajaran.required' => 'Mata Pelajaran Tidak Boleh Kosong',
                 'status.required' => 'Status Tidak Boleh Kosong',
+                'kecamatan.required' => 'Kecamatan Tidak Boleh Kosong',
                 'jabatan_pangkat_golongan.required' => 'Jabatan - Pangkat - Golongan Tidak Boleh Kosong',
                 'tanggal_kerja.required' => 'Tanggal Awal Kerja Tidak Boleh Kosong',
                 'nilai_gaji.required' => 'Nilai Gaji Tidak Boleh Kosong',
                 'tmt_gaji.required' => 'TMT Gaji Tidak Boleh Kosong',
                 'tmt_pangkat.required' => 'TMT Pangkat Tidak Boleh Kosong',
+                'tmt_pengangkatan.required' => 'TMT Pengangkatan Tidak Boleh Kosong',
                 'foto.required' => 'Foto Profil Tidak Boleh Kosong',
                 'foto.max' => 'Foto Profil Tidak Boleh Melebihi 1MB',
 
@@ -528,7 +664,7 @@ class ProfileGuruPegawaiController extends Controller
             $data['jenis_jabatan'] = 'Fungsional';
         } else {
             $data['jenis_jabatan'] = 'Struktural';
-            $data['jenis_guru'] = '-';
+            // $data['jenis_guru'] = '-';
         }
 
         if ($request->file('foto')) {
@@ -545,13 +681,27 @@ class ProfileGuruPegawaiController extends Controller
             $data['foto'] = $profileGuruPegawai->foto;
         }
 
+        if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
+            $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
+            $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
+            $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
+            $data['nilai_gaji'] = $request->nilai_gaji;
+            $data['status_profile'] = "0";
+        } else {
+            $data['tanggal_kerja'] = NULL;
+            $data['tmt_gaji'] = NULL;
+            $data['tmt_pangkat'] = NULL;
+            $data['nilai_gaji'] = NULL;
+            $data['status_profile'] = "1";
+        }
 
-        $data['nip'] = $request->nip;
+
+        // $data['nip'] = $request->nip;        
+        // $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
+        // $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
+        // $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
         $data['tanggal_lahir'] = date("Y-m-d", strtotime($request->tanggal_lahir));
-        $data['tanggal_kerja'] = date("Y-m-d", strtotime($request->tanggal_kerja));
-        $data['tmt_gaji'] = date("Y-m-d", strtotime($request->tmt_gaji));
-        $data['tmt_pangkat'] = date("Y-m-d", strtotime($request->tmt_pangkat));
-        $data['status_profile'] = "0";
+        $data['tmt_pengangkatan'] = date("Y-m-d", strtotime($request->tmt_pengangkatan));
         $data['konfirmasi_profile'] = Carbon::now();
 
         ProfileGuruPegawai::where('id', $profileGuruPegawai->id)
@@ -560,8 +710,13 @@ class ProfileGuruPegawaiController extends Controller
         User::where('id', $profileGuruPegawai->id_user)
             ->update(['nip' => $request->nip, 'nama' => $request->nama]);
 
-        Toastr::success('Berhasil Melengkapi Profil, Data Anda Akan di Cek Terlebih Dahulu Oleh Admin', 'Success');
-        return redirect('/dashboard');
+        if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
+            Toastr::success('Berhasil Mengubah Profil, Data Anda Akan di Cek Terlebih Dahulu Oleh Admin', 'Success');
+            return redirect('/dashboard');
+        } else {
+            Toastr::success('Berhasil Mengubah Profil', 'Success');
+            return redirect(route('info-profile', $profileGuruPegawai->id));
+        }
     }
 
     /**

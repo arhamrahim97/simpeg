@@ -16,6 +16,23 @@ Akun
   </div>
 <div class="table-responsive">
     <div class="row">
+        {{-- <div class="col-lg-4 col-12">
+            <div class="form-group px-0">
+                <label for="my-select" class="font-weight-bold">Status Kepegawaian</label>
+                <select id="status-kepegawaian" class="form-control">
+                    <option value="">Semua</option>
+                    <option value="GTY/PTY">GTY/PTY</option>
+                    <option value="Guru Honor Sekolah">Guru Honor Sekolah</option>
+                    <option value="Honor Daerah TK.I Provinsi">Honor Daerah TK.I Provinsi</option>
+                    <option value="Honor Daerah TK.II Kab/Kota">Honor Daerah TK.II Kab/Kota</option>
+                    <option value="PNS">PNS</option>
+                    <option value="PNS Depag">PNS Depag</option>
+                    <option value="PNS Diperbantukan">PNS Diperbantukan</option>
+                    <option value="Tenaga Honor Sekolah">Tenaga Honor Sekolah</option>
+                    <option value="Lainnya">Lainnya</option>       
+                </select>
+            </div>
+        </div>   --}}
         <div class="col-lg-6 col-12">
             <div class="form-group px-0">
                 <label for="my-select" class="font-weight-bold">Role</label>
@@ -48,7 +65,8 @@ Akun
             <tr class="text-center">
                 <th>No</th>
                 <th>Nama</th>
-                {{-- <th>NIP</th> --}}
+                <th>NIP</th>
+                {{-- <th>Status Kepegawaian</th> --}}
                 <th>Username</th>                            
                 <th>Role</th>
                 <th>Status Akun</th>
@@ -140,9 +158,13 @@ Akun
                     data: 'nama',
                     name: 'nama'
                 },
+                {
+                    data: 'nip',
+                    name: 'nip'
+                },
                 // {
-                //     data: 'nip',
-                //     name: 'nip'
+                //     data: 'status_kepegawaian',
+                //     name: 'status_kepegawaian'
                 // },
                 {
                     data: 'username',
@@ -174,6 +196,11 @@ Akun
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // $('#status-kepegawaian').change(function () {
+        //     table.draw();
+        // })
+
 
         $('#role').change(function () {
             table.draw();

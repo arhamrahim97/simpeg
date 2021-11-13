@@ -9,7 +9,7 @@
 	<div class="card-body">
         <div class="row">
             <div class="col-lg-6 col-12 px-4 mb-3">
-                <h6>Berikut beberapa berkas yang harus di upload:</h6>
+                <h6 class="mb-3 font-weight-bold">Berikut beberapa berkas yang harus di upload:</h6>
                 <ul class="list-group list-group-bordered list">
                     @php
                     $i = 1
@@ -38,6 +38,27 @@
         
                     <div class="row gx-4 d-flex justify-content-center">
                         <div class="col-lg-12 mt-3" id="listBerkas">
+                            @forelse ($persyaratan as $row)
+                                @foreach ($row->deskripsiPersyaratan as $deskripsi)
+                                    <div class="form-group border border-grey shadow-lg rounded p-3"
+                                        id="daftarBerkas{{$loop->iteration}}">
+                                        <label for="exampleInputEmail1">Nama Berkas</label>
+                                        <input type="text" class="form-control namaBerkas" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkas[]"
+                                            value="{{$deskripsi->deskripsi}}">
+                                        <div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File
+                                                Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm"
+                                                type="file" name="fileBerkas[]"></div>
+                                        <div class="div d-flex justify-content-end">
+                                            <button href="" class="btn btn-danger btn-sm btnHapusFitur" id="{{$loop->iteration}}">
+                                                <i class="fas fa-trash-alt"></i>
+                                                Hapus</button>
+                                        </div>
+                                    </div>
+                                @endforeach                                                        
+                            @empty
+                                <h1>Belum Ada Persyaratan</h1>
+                            @endforelse ($persyaratan as $row)
                         </div>
         
                         <div class="div">

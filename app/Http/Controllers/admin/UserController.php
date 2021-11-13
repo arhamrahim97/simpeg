@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with(['profile', 'profilePejabat'])->orderBy('created_at', 'desc');
+            $data = User::with(['profile', 'profilePejabat'])->orderBy('updated_at', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (User $user) {
@@ -129,12 +129,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (($request->role == 'Guru') || ($request->role == 'Pegawai')) {
+        // if (($request->role == 'Guru') || ($request->role == 'Pegawai')) {
+        if (($request->createAkun == 1)) {
             $request->validate(
                 [
                     'nama' => 'required',
                     'username' => 'required|min:6|unique:user',
                     'password_text' => 'required|min:6',
+                    'status_kepegawaian' => 'required',
+                    'jenis_guru' => 'required',
                     'role' => 'required',
                     'status' => 'required',
                 ],
@@ -145,6 +148,8 @@ class UserController extends Controller
                     'username.unique' => 'Username Telah Digunakan',
                     'password_text.required' => 'Password Tidak Boleh Kosong',
                     'password_text.min' => 'Password Minimal 6 Karakter',
+                    'status_kepegawaian.required' => 'Status Kepegawaian Tidak Boleh Kosong',
+                    'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
                     'role.required' => 'Role Tidak Boleh Kosong',
                     'status.required' => 'Status Tidak Boleh Kosong',
                 ]
@@ -154,9 +159,13 @@ class UserController extends Controller
                 'nama' => $request->nama,
                 'username' => $request->username,
                 'password' =>  Hash::make($request->password_text),
+                'status_kepegawaian' => $request->status_kepegawaian,
+                'jenis_guru' => $request->jenis_guru,
                 'role' => $request->role,
                 'status' => $request->status,
             ];
+
+            // dd($user);
 
             User::create($user);
             Toastr::success('Berhasil Menambahkan Akun', 'Success');
@@ -172,7 +181,7 @@ class UserController extends Controller
                     'no_hp' => 'required',
                     'email' => 'required|email',
                     'alamat' => 'required',
-                    'nip' => 'required|unique:user',
+                    'nip' => 'required|unique:user|size:18',
                     'jabatan_pangkat_golongan' => 'required',
                     'role' => 'required',
                     'username' => 'required|min:6|unique:user',
@@ -214,6 +223,8 @@ class UserController extends Controller
                 'nip' => $request->nip,
                 'username' => $request->username,
                 'password' =>  Hash::make($request->password_text),
+                'status_kepegawaian' => '-',
+                'jenis_guru' => '-',
                 'role' => $request->role,
                 'status' => $request->status,
             ];
@@ -313,6 +324,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // dd($request->old_status_kepegawaian);
         if ($request->username != $user->username) {
             $username_req = ['required', 'min:6', 'unique:user'];
         } else {
@@ -322,9 +334,18 @@ class UserController extends Controller
         if ($user->role != 'Admin') {
             $role_req = ['required'];
             $status_req = ['required'];
+            if (($user->role == 'Guru') || ($user->role == 'Pegawai')) {
+                $jenis_guru_req = ['required'];
+                $status_kepegawaian_req = ['required'];
+            } else {
+                $jenis_guru_req = '';
+                $status_kepegawaian_req = '';
+            }
         } else {
             $role_req = '';
             $status_req = '';
+            $jenis_guru_req = '';
+            $status_kepegawaian_req = '';
         }
 
         $request->validate(
@@ -332,6 +353,8 @@ class UserController extends Controller
                 'nama' => 'required',
                 'username' => $username_req,
                 'password_text' => 'required|min:6',
+                'jenis_guru' => $jenis_guru_req,
+                'status_kepegawaian' => $status_kepegawaian_req,
                 'role' => $role_req,
                 'status' => $status_req,
             ],
@@ -342,6 +365,8 @@ class UserController extends Controller
                 'username.unique' => 'Username Telah Digunakan',
                 'password_text.required' => 'Password Tidak Boleh Kosong',
                 'password_text.min' => 'Password Minimal 6 Karakter',
+                'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
+                'status_kepegawaian.required' => 'Status Kepegawaian Tidak Boleh Kosong',
                 'role.required' => 'Role Tidak Boleh Kosong',
                 'status.required' => 'Status Tidak Boleh Kosong',
             ]
@@ -359,6 +384,17 @@ class UserController extends Controller
                 'username' => $request->username,
                 'password' => $password,
             ];
+        } else if (($user->role == 'Guru') || ($user->role == 'Pegawai')) {
+            $data = [
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'password' => $password,
+                'jenis_guru' => $request->jenis_guru,
+                'status_kepegawaian' => $request->status_kepegawaian,
+                'password' => $password,
+                'role' => $request->role,
+                'status' => $request->status,
+            ];
         } else {
             $data = [
                 'nama' => $request->nama,
@@ -369,13 +405,6 @@ class UserController extends Controller
             ];
         }
 
-        // $data = [
-        //     'nama' => $request->nama,
-        //     'username' => $request->username,
-        //     'password' => $password,
-        //     'role' => $request->role,
-        //     'status' => $request->status,
-        // ];
 
         User::where('id', $user->id)
             ->update($data);
@@ -386,12 +415,45 @@ class UserController extends Controller
         } //
 
         if (($request->role == 'Guru') || ($request->role == 'Pegawai')) {
-            if ($request->role != $user->role) {
-                ProfileGuruPegawai::where('id_user', $user->id)
-                    ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jabatan_pangkat_golongan' => 0]);
+            if (($request->old_status_kepegawaian == 'PNS') || ($request->old_status_kepegawaian == 'PNS Depag') || ($request->old_status_kepegawaian == 'PNS Diperbantukan')) {
+                if (!in_array($request->status_kepegawaian, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) { //ke non pns
+                    if ($request->role != $user->role) {
+                        $user->berkasDasar()->delete();
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jabatan_pangkat_golongan' => 0, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian, 'status_berkas_dasar' => -1]);
+                    } else {
+                        $user->berkasDasar()->delete();
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian, 'status_berkas_dasar' => -1]);
+                    }
+                } else {
+                    if ($request->role != $user->role) {
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jabatan_pangkat_golongan' => 0, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian]);
+                    } else {
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian]);
+                    }
+                }
             } else {
-                ProfileGuruPegawai::where('id_user', $user->id)
-                    ->update(['nama' => $request->nama, 'jenis_asn' => $request->role]);
+                if (in_array($request->status_kepegawaian, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) { //ke pns
+                    if ($request->role != $user->role) {
+                        $user->berkasDasar()->delete();
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jabatan_pangkat_golongan' => 0, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian, 'status_profile' => 2, 'alasan_profile' => 'Lengkapi Kembali Profile', 'status_berkas_dasar' => -1]);
+                    } else {
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian, 'status_profile' => 2, 'alasan_profile' => 'Lengkapi Kembali Profile', 'status_berkas_dasar' => -1]);
+                    }
+                } else {
+                    if ($request->role != $user->role) {
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jabatan_pangkat_golongan' => 0, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian]);
+                    } else {
+                        ProfileGuruPegawai::where('id_user', $user->id)
+                            ->update(['nama' => $request->nama, 'jenis_asn' => $request->role, 'jenis_guru' => $request->jenis_guru, 'status' => $request->status_kepegawaian]);
+                    }
+                }
             }
         } //
 

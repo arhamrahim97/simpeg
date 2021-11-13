@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(4)->create();
-        // ProfileGuruPegawai::factory(2)->create();
+//         User::factory(60)->create();
+//         ProfileGuruPegawai::factory(50)->create();
         $this->call(JabatanFungsionalSeeder::class);
         $this->call(JabatanStrukturalSeeder::class);
         $this->call(UnitKerjaSeeder::class);
