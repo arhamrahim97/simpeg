@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\DashboardAdmin;
 use Barryvdh\DomPDF\PDF;
 use App\Models\BerkasDasar;
 use Brian2694\Toastr\Facades\Toastr;
@@ -20,6 +21,7 @@ use App\Http\Controllers\admin\ProsesUsulanKenaikanPangkatAdmin;
 
 use App\Http\Controllers\admin\MasterJabatanFungsionalController;
 use App\Http\Controllers\admin\MasterJabatanStrukturalController;
+use App\Http\Controllers\admin_kepegawaian\DashboardAdminKepegawaianController;
 use App\Http\Controllers\kasubag\ProsesUsulanKenaikanGajiKasubag;
 use App\Http\Controllers\guru_pegawai\ProfileGuruPegawaiController;
 use App\Http\Controllers\guru_pegawai\UsulanKenaikanGajiController;
@@ -32,6 +34,14 @@ use App\Http\Controllers\tim_penilai\ProsesUsulanKenaikanPangkatTimPenilai;
 use App\Http\Controllers\kepala_dinas\ProsesUsulanKenaikanPangkatKepalaDinas;
 use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanGajiAdminKepegawaian;
 use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanPangkatAdminKepegawaian;
+use App\Http\Controllers\CekBerkasController;
+use App\Http\Controllers\guru_pegawai\DashboardGuruPegawaiController;
+use App\Http\Controllers\kasubag\DashboardKasubagController;
+use App\Http\Controllers\kepala_dinas\DashboardKepalaDinasController;
+use App\Http\Controllers\sekretaris\DashboardSekretaris;
+use App\Http\Controllers\sekretaris\DashboardSekretarisController;
+use App\Http\Controllers\tim_penilai\DashboardTimPenilaiController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,8 +56,17 @@ use App\Http\Controllers\admin_kepegawaian\ProsesUsulanKenaikanPangkatAdminKepeg
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-
+Route::get('cek-berkas', [CekBerkasController::class, 'index']);
+Route::post('get-cek-berkas', [CekBerkasController::class, 'getCekBerkas']);
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::get('/daftar-usulan-kenaikan-gaji', [WelcomeController::class, 'daftarUsulanKenaikanGaji']);
+
+Route::get('/daftar-usulan-kenaikan-pangkat', [WelcomeController::class, 'daftarUsulanKenaikanPangkat']);
+
+Route::get('/daftar-usulan-kenaikan-gaji-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanGaji']);
+
+Route::get('/daftar-usulan-kenaikan-pangkat-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanPangkat']);
 
 
 Route::middleware(['auth'])->group(function () {
@@ -61,10 +80,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/logout', [LoginController::class, 'logout']);
 
-    // Role Admin
-    Route::resource('/master-persyaratan', MasterPersyaratanController::class)->parameters([
-        'master-persyaratan' => 'persyaratan'
-    ]);
+    Route::post('get-persyaratan-berkas', [UsulanKenaikanPangkatController::class, 'getPersyaratanBerkas']);
+    // Cetak Surat Usulan
+    Route::get('cetak-usulan-kenaikan-gaji/{usulan_gaji}', [CetakUsulanController::class, 'cetakUsulanKenaikanGaji']);
+    Route::get('cetak-usulan-kenaikan-pangkat/{usulan_pangkat}', [CetakUsulanController::class, 'cetakUsulanKenaikanPangkat']);
 });
 
 Route::get('/', [WelcomeController::class, 'index']);
@@ -89,17 +108,59 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/user-tambah-guru-pegawai',  [UserController::class, 'createGuru']);
     Route::get('/user-tambah-non-guru-pegawai',  [UserController::class, 'createNonGuru']);
 
+    Route::get('/profile-non-guru-pegawai',  [ProfilePejabatController::class, 'indexNonProfileGuruPegawai']);
+    Route::get('/edit-profile-non-guru-pegawai/{profile_non_guru_pegawai}',  [ProfilePejabatController::class, 'editProfileNonGuruPegawai'])->name('edit-profile-non-guru-pegawai');
+    Route::put('/update-profile-non-guru-pegawai/{profile_non_guru_pegawai}',  [ProfilePejabatController::class, 'updateProfileNonGuruPegawai'])->name('update-profile-non-guru-pegawai');
+
+    Route::post('/import-excel',  [UserController::class, 'importExcel']);
+
+    // Proses Usulan Gaji Admin
+    Route::resource('proses-usulan-kenaikan-gaji-admin', ProsesUsulanKenaikanGajiAdmin::class)->parameters([
+        'proses-usulan-kenaikan-gaji-admin' => 'usulan_gaji'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-gaji-admin/{usulan_gaji}', [ProsesUsulanKenaikanGajiAdmin::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-gaji-admin', [ProsesUsulanKenaikanGajiAdmin::class, 'getTimelineUsulanGaji']);
+
+    // Usulan Pangkat
+    // Proses Usulan Pangkat Admin
+    Route::resource('proses-usulan-kenaikan-pangkat-admin', ProsesUsulanKenaikanPangkatAdmin::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-admin' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-admin/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatAdmin::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-admin', [ProsesUsulanKenaikanPangkatAdmin::class, 'getTimelineUsulanPangkat']);
+
+    // Role Admin
+    Route::resource('/master-persyaratan', MasterPersyaratanController::class)->parameters([
+        'master-persyaratan' => 'persyaratan'
+    ]);
+
+    Route::get('/dashboard-admin', [DashboardAdmin::class, 'index']);
+});
+
+// Admin dan Admin Kepegawaian
+Route::middleware(['admindanadminkepegawaian'])->group(function () {
     Route::get('/profile-guru-pegawai-',  [ProfileGuruPegawaiController::class, 'indexProfileGuruPegawai']);
     Route::get('/edit-profile-guru-pegawai/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'editProfileGuruPegawai'])->name('edit-profile-guru-pegawai');
     Route::put('/update-profile-guru-pegawai/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'updateProfileGuruPegawai'])->name('update-profile-guru-pegawai');
     Route::get('/proses-profile-guru-pegawai/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'prosesProfileGuruPegawai'])->name('proses-profile-guru-pegawai');
     Route::put('/konfirmasi-profile-guru-pegawai/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'konfirmasiProfileGuruPegawai'])->name('konfirmasi-profile-guru-pegawai');
 
-    Route::get('/profile-non-guru-pegawai',  [ProfilePejabatController::class, 'indexNonProfileGuruPegawai']);
-    Route::get('/edit-profile-non-guru-pegawai/{profile_non_guru_pegawai}',  [ProfilePejabatController::class, 'editProfileNonGuruPegawai'])->name('edit-profile-non-guru-pegawai');
-    Route::put('/update-profile-non-guru-pegawai/{profile_non_guru_pegawai}',  [ProfilePejabatController::class, 'updateProfileNonGuruPegawai'])->name('update-profile-non-guru-pegawai');
+    // Proses Usulan Gaji Admin Kepegawaian
+    Route::resource('proses-usulan-kenaikan-gaji-admin-kepegawaian', ProsesUsulanKenaikanGajiAdminKepegawaian::class)->parameters([
+        'proses-usulan-kenaikan-gaji-admin-kepegawaian' => 'usulan_gaji'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-gaji-admin-kepegawaian/{usulan_gaji}', [ProsesUsulanKenaikanGajiAdminKepegawaian::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-gaji-admin-kepegawaian', [ProsesUsulanKenaikanGajiAdminKepegawaian::class, 'getTimelineUsulanGaji']);
+    Route::resource('data-berkas-dasar', DataBerkasDasarController::class)->parameters([
+        'data-berkas-dasar' => 'profile_guru_pegawai'
+    ]);
 
-    Route::post('/import-excel',  [UserController::class, 'importExcel']);
+    // Proses Usulan Pangkat Admin Kepegawaian
+    Route::resource('proses-usulan-kenaikan-pangkat-admin-kepegawaian', ProsesUsulanKenaikanPangkatAdminKepegawaian::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-admin-kepegawaian' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-admin-kepegawaian/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatAdminKepegawaian::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-admin-kepegawaian', [ProsesUsulanKenaikanPangkatAdminKepegawaian::class, 'getTimelineUsulanPangkat']);
 });
 
 
@@ -129,107 +190,99 @@ Route::middleware(['gurudanpegawai'])->group(function () {
 
     Route::get('/user/{user}/edit-akun',  [UserController::class, 'editAkun'])->name('user.edit_akun');
     Route::put('/user/{user}/update-akun',  [UserController::class, 'updateAkun'])->name('user.update_akun');
-    Route::post('get-persyaratan-berkas', [UsulanKenaikanPangkatController::class, 'getPersyaratanBerkas']);
+
+    Route::get('dashboard-guru-pegawai', [DashboardGuruPegawaiController::class, 'index']);
+  
+    Route::get('/info-profile/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'infoProfileNonPNS'])->name('info-profile');
 });
 
-// Proses Usulan Gaji Admin
-Route::resource('proses-usulan-kenaikan-gaji-admin', ProsesUsulanKenaikanGajiAdmin::class)->parameters([
-    'proses-usulan-kenaikan-gaji-admin' => 'usulan_gaji'
-]);
-Route::get('proses-berkas-usulan-kenaikan-gaji-admin/{usulan_gaji}', [ProsesUsulanKenaikanGajiAdmin::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-gaji-admin', [ProsesUsulanKenaikanGajiAdmin::class, 'getTimelineUsulanGaji']);
+Route::middleware(['admindantimpenilai'])->group(function () {
+    // Proses Usulan Pangkat Tim Penilai
+    Route::resource('proses-usulan-kenaikan-pangkat-tim-penilai', ProsesUsulanKenaikanPangkatTimPenilai::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-tim-penilai' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-tim-penilai/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatTimPenilai::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-tim-penilai', [ProsesUsulanKenaikanPangkatTimPenilai::class, 'getTimelineUsulanPangkat']);
+});
 
-// Proses Usulan Gaji Admin Kepegawaian
-Route::resource('proses-usulan-kenaikan-gaji-admin-kepegawaian', ProsesUsulanKenaikanGajiAdminKepegawaian::class)->parameters([
-    'proses-usulan-kenaikan-gaji-admin-kepegawaian' => 'usulan_gaji'
-]);
-Route::get('proses-berkas-usulan-kenaikan-gaji-admin-kepegawaian/{usulan_gaji}', [ProsesUsulanKenaikanGajiAdminKepegawaian::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-gaji-admin-kepegawaian', [ProsesUsulanKenaikanGajiAdminKepegawaian::class, 'getTimelineUsulanGaji']);
-Route::resource('data-berkas-dasar', DataBerkasDasarController::class)->parameters([
-    'data-berkas-dasar' => 'profile_guru_pegawai'
-]);
+Route::middleware(['admindankasubag'])->group(function () {
+    // Proses Usulan Gaji Kasubag
+    Route::resource('proses-usulan-kenaikan-gaji-kasubag', ProsesUsulanKenaikanGajiKasubag::class)->parameters([
+        'proses-usulan-kenaikan-gaji-kasubag' => 'usulan_gaji'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-gaji-kasubag/{usulan_gaji}', [ProsesUsulanKenaikanGajiKasubag::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-gaji-kasubag', [ProsesUsulanKenaikanGajiKasubag::class, 'getTimelineUsulanGaji']);
+
+    // Proses Usulan Pangkat Kasubag
+    Route::resource('proses-usulan-kenaikan-pangkat-kasubag', ProsesUsulanKenaikanPangkatKasubag::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-kasubag' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-kasubag/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatKasubag::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-kasubag', [ProsesUsulanKenaikanPangkatKasubag::class, 'getTimelineUsulanPangkat']);
+});
 
 
+Route::middleware(['admindansekretaris'])->group(function () {
+    // Proses Usulan Gaji Sekretaris
+    Route::resource('proses-usulan-kenaikan-gaji-sekretaris', ProsesUsulanKenaikanGajiSekretaris::class)->parameters([
+        'proses-usulan-kenaikan-gaji-sekretaris' => 'usulan_gaji'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-gaji-sekretaris/{usulan_gaji}', [ProsesUsulanKenaikanGajiSekretaris::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-gaji-sekretaris', [ProsesUsulanKenaikanGajiSekretaris::class, 'getTimelineUsulanGaji']);
 
-// Proses Usulan Gaji Kasubag
-Route::resource('proses-usulan-kenaikan-gaji-kasubag', ProsesUsulanKenaikanGajiKasubag::class)->parameters([
-    'proses-usulan-kenaikan-gaji-kasubag' => 'usulan_gaji'
-]);
-Route::get('proses-berkas-usulan-kenaikan-gaji-kasubag/{usulan_gaji}', [ProsesUsulanKenaikanGajiKasubag::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-gaji-kasubag', [ProsesUsulanKenaikanGajiKasubag::class, 'getTimelineUsulanGaji']);
+    // Proses Usulan Pangkat Sekretaris
+    Route::resource('proses-usulan-kenaikan-pangkat-sekretaris', ProsesUsulanKenaikanPangkatSekretaris::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-sekretaris' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-sekretaris/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatSekretaris::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-sekretaris', [ProsesUsulanKenaikanPangkatSekretaris::class, 'getTimelineUsulanPangkat']);
+});
 
-// Proses Usulan Gaji Sekretaris
-Route::resource('proses-usulan-kenaikan-gaji-sekretaris', ProsesUsulanKenaikanGajiSekretaris::class)->parameters([
-    'proses-usulan-kenaikan-gaji-sekretaris' => 'usulan_gaji'
-]);
-Route::get('proses-berkas-usulan-kenaikan-gaji-sekretaris/{usulan_gaji}', [ProsesUsulanKenaikanGajiSekretaris::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-gaji-sekretaris', [ProsesUsulanKenaikanGajiSekretaris::class, 'getTimelineUsulanGaji']);
+Route::middleware(['admindankepaladinas'])->group(function () {
+    // Proses Usulan Gaji Kepala Dinas
+    Route::resource('proses-usulan-kenaikan-gaji-kepala-dinas', ProsesUsulanKenaikanGajiKepalaDinas::class)->parameters([
+        'proses-usulan-kenaikan-gaji-kepala-dinas' => 'usulan_gaji'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-gaji-kepala-dinas/{usulan_gaji}', [ProsesUsulanKenaikanGajiKepalaDinas::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-gaji-kepala-dinas', [ProsesUsulanKenaikanGajiKepalaDinas::class, 'getTimelineUsulanGaji']);
 
-// Proses Usulan Gaji Kepala Dinas
-Route::resource('proses-usulan-kenaikan-gaji-kepala-dinas', ProsesUsulanKenaikanGajiKepalaDinas::class)->parameters([
-    'proses-usulan-kenaikan-gaji-kepala-dinas' => 'usulan_gaji'
-]);
-Route::get('proses-berkas-usulan-kenaikan-gaji-kepala-dinas/{usulan_gaji}', [ProsesUsulanKenaikanGajiKepalaDinas::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-gaji-kepala-dinas', [ProsesUsulanKenaikanGajiKepalaDinas::class, 'getTimelineUsulanGaji']);
+    // Proses Usulan Pangkat Kepala Dinas
+    Route::resource('proses-usulan-kenaikan-pangkat-kepala-dinas', ProsesUsulanKenaikanPangkatKepalaDinas::class)->parameters([
+        'proses-usulan-kenaikan-pangkat-kepala-dinas' => 'usulan_pangkat'
+    ]);
+    Route::get('proses-berkas-usulan-kenaikan-pangkat-kepala-dinas/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatKepalaDinas::class, 'prosesBerkas']);
+    Route::post('get-timeline-usulan-kenaikan-pangkat-kepala-dinas', [ProsesUsulanKenaikanPangkatKepalaDinas::class, 'getTimelineUsulanPangkat']);
+});
 
-Route::get('/user/{user}/edit-akun-pejabat',  [UserController::class, 'editAkunPejabat'])->name('user.edit_akun_pejabat');
-Route::put('/user/{user}/update-akun-pejabat',  [UserController::class, 'updateAkunPejabat'])->name('user.update_akun_pejabat');
-
-// Usulan Pangkat
-// Proses Usulan Pangkat Admin
-Route::resource('proses-usulan-kenaikan-pangkat-admin', ProsesUsulanKenaikanPangkatAdmin::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-admin' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-admin/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatAdmin::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-admin', [ProsesUsulanKenaikanPangkatAdmin::class, 'getTimelineUsulanPangkat']);
-
-// Proses Usulan Pangkat Tim Penilai
-Route::resource('proses-usulan-kenaikan-pangkat-tim-penilai', ProsesUsulanKenaikanPangkatTimPenilai::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-tim-penilai' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-tim-penilai/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatTimPenilai::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-tim-penilai', [ProsesUsulanKenaikanPangkatTimPenilai::class, 'getTimelineUsulanPangkat']);
-
-// Proses Usulan Pangkat Admin Kepegawaian
-Route::resource('proses-usulan-kenaikan-pangkat-admin-kepegawaian', ProsesUsulanKenaikanPangkatAdminKepegawaian::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-admin-kepegawaian' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-admin-kepegawaian/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatAdminKepegawaian::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-admin-kepegawaian', [ProsesUsulanKenaikanPangkatAdminKepegawaian::class, 'getTimelineUsulanPangkat']);
-
-// Proses Usulan Pangkat Kasubag
-Route::resource('proses-usulan-kenaikan-pangkat-kasubag', ProsesUsulanKenaikanPangkatKasubag::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-kasubag' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-kasubag/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatKasubag::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-kasubag', [ProsesUsulanKenaikanPangkatKasubag::class, 'getTimelineUsulanPangkat']);
-
-// Proses Usulan Pangkat Sekretaris
-Route::resource('proses-usulan-kenaikan-pangkat-sekretaris', ProsesUsulanKenaikanPangkatSekretaris::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-sekretaris' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-sekretaris/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatSekretaris::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-sekretaris', [ProsesUsulanKenaikanPangkatSekretaris::class, 'getTimelineUsulanPangkat']);
-
-// Proses Usulan Pangkat Kepala Dinas
-Route::resource('proses-usulan-kenaikan-pangkat-kepala-dinas', ProsesUsulanKenaikanPangkatKepalaDinas::class)->parameters([
-    'proses-usulan-kenaikan-pangkat-kepala-dinas' => 'usulan_pangkat'
-]);
-Route::get('proses-berkas-usulan-kenaikan-pangkat-kepala-dinas/{usulan_pangkat}', [ProsesUsulanKenaikanPangkatKepalaDinas::class, 'prosesBerkas']);
-Route::post('get-timeline-usulan-kenaikan-pangkat-kepala-dinas', [ProsesUsulanKenaikanPangkatKepalaDinas::class, 'getTimelineUsulanPangkat']);
-
-// Cetak Surat Usulan
-Route::get('cetak-usulan-kenaikan-gaji/{usulan_gaji}', [CetakUsulanController::class, 'cetakUsulanKenaikanGaji']);
+Route::middleware(['pejabat'])->group(function () {
+    Route::get('/user/{user}/edit-akun-pejabat',  [UserController::class, 'editAkunPejabat'])->name('user.edit_akun_pejabat');
+    Route::put('/user/{user}/update-akun-pejabat',  [UserController::class, 'updateAkunPejabat'])->name('user.update_akun_pejabat');
+});
 
 
 
+// Dashboard
+// Dashboard Tim Penilai
+Route::middleware(['timpenilai'])->group(function () {
+    Route::get('/dashboard-tim-penilai', [DashboardTimPenilaiController::class, 'index']);
+});
 
-Route::get('/info-profile/{profile_guru_pegawai}',  [ProfileGuruPegawaiController::class, 'infoProfileNonPNS'])->name('info-profile');
+// Dashboard Admin Kepegawaian
+Route::middleware(['adminkepegawaian'])->group(function () {
+    Route::get('/dashboard-admin-kepegawaian', [DashboardAdminKepegawaianController::class, 'index']);
+});
 
-Route::get('/daftar-usulan-kenaikan-gaji', [WelcomeController::class, 'daftarUsulanKenaikanGaji']);
+// Dashboard Kasubag
+Route::middleware(['kasubag'])->group(function () {
+    Route::get('/dashboard-kasubag', [DashboardKasubagController::class, 'index']);
+});
 
-Route::get('/daftar-usulan-kenaikan-pangkat', [WelcomeController::class, 'daftarUsulanKenaikanPangkat']);
+// Dashboard Sekretaris
+Route::middleware(['sekretaris'])->group(function () {
+    Route::get('/dashboard-sekretaris', [DashboardSekretarisController::class, 'index']);
+});
 
-Route::get('/daftar-usulan-kenaikan-gaji-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanGaji']);
-
-Route::get('/daftar-usulan-kenaikan-pangkat-export', [WelcomeController::class, 'exportDaftarUsulanKenaikanPangkat']);
+// Dashboard Kepala Dinas
+Route::middleware(['kepaladinas'])->group(function () {
+    Route::get('/dashboard-kepala-dinas', [DashboardKepalaDinasController::class, 'index']);
+});

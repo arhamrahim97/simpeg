@@ -75,7 +75,8 @@
 <body>
     <table width="100%" style="border-bottom: 3px solid black">
         <tr>
-            <td width="20%" align="center"><img src="{{asset('assets/dashboard/img/kota_palu.png')}}" width="50px"></td>
+            <td width="20%" align="center"><img src="{{public_path('assets/dashboard/img/kota_palu.png')}}"
+                    width="50px"></td>
             <td width="80%" align="center" class="mb-2">
                 <p class="mb-0 fw-bold" style="font-size: 15px">PEMERINTAH KOTA PALU</p>
                 <p class="mb-0 fw-bold" style="font-size: 17px">DINAS PENDIDIKAN DAN KEBUDAYAAN</p>
@@ -95,12 +96,13 @@
                 Perihal
             </td>
             <td width="40%">
-                : 822.3 / 149-KB/ PT / DIKBUD <br>
+                : {{$usulanGaji->nomor_surat}}.3 / 149-KB/ PT / DIKBUD <br>
                 : Kenaikan Gaji Berkala
             </td>
             <td width="20%"></td>
             <td width="30%">
-                <p class="mb-0"><span class="tab3"></span>Palu, <span class="tab2"></span> 2021</p>
+                <p class="mb-0"><span class="tab3"></span>Palu,
+                    {{$hariIni->day . ' ' . $hariIni->monthName . ' ' . $hariIni->year;}}</p>
                 <p class="mb-0"><span class="tab3"></span>Kepada</p>
                 <p class="mb-0"> Yth. Kepala Pengelolaan Keuangan</p>
                 <p class="mb-0"><span class="tab3"></span>dan Aset Daerah Kota Palu</p>
@@ -140,7 +142,12 @@
             </td>
             <td width="75%">
                 <p class=""> :
-                    {{$user->profile->tempat_lahir}},{{date("d-m-Y", strtotime($user->profile->tanggal_lahir))}}
+                    {{$user->profile->tempat_lahir}},
+                    @php
+                    $tanggalLahir = \Carbon\Carbon::createFromFormat('Y-m-d',
+                    $user->profile->tanggal_lahir)->locale('id');
+                    echo $tanggalLahir->day . ' ' . $tanggalLahir->monthName . ' ' . $tanggalLahir->year;
+                    @endphp
                 </p>
             </td>
         </tr>
@@ -214,8 +221,8 @@
                 <p class=""><span class="tab"></span>b. Nomor dan Tanggal</p>
             </td>
             <td width="75%">
-                <p class=""> : 813.3 / 186/PS/Dikbud <span class="tab2"></span>05 Mei
-                    2020</p>
+                <p class=""> : {{$usulanGaji->nomor_surat}} / 186/PS/Dikbud <span
+                        class="tab2"></span>{{$hariIni->day . ' ' . $hariIni->monthName . ' ' . $hariIni->year;}}</p>
             </td>
         </tr>
         <tr>
@@ -224,7 +231,13 @@
                     Tersebut </p>
             </td>
             <td width="75%" class="align-bottom">
-                <p class=""> : {{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_sebelumnya))}}</p>
+                <p class=""> :
+                    @php
+                    $mulaiBerlaku = \Carbon\Carbon::createFromFormat('Y-m-d',
+                    $usulanGaji->tmt_gaji_sebelumnya)->locale('id');
+                    echo $mulaiBerlaku->day . ' ' . $mulaiBerlaku->monthName . ' ' .
+                    $mulaiBerlaku->year;
+                    @endphp
             </td>
         </tr>
         <tr>
@@ -280,7 +293,14 @@
                 <p class=""><span class="tab"></span>h. Mulai Tanggal</p>
             </td>
             <td width="75%">
-                <p class=""> : {{date("d-m-Y", strtotime($usulanGaji->tmt_gaji_selanjutnya))}}</p>
+                <p class=""> :
+                    @php
+                    $mulaiTanggal = \Carbon\Carbon::createFromFormat('Y-m-d',
+                    $usulanGaji->tmt_gaji_selanjutnya)->locale('id');
+                    echo $mulaiTanggal->day . ' ' . $mulaiTanggal->monthName . ' ' .
+                    $mulaiTanggal->year;
+                    @endphp
+                </p>
             </td>
         </tr>
     </table>
@@ -299,12 +319,13 @@
                     <br>
                     <br>
                     <br>
-                    <p class="mb-0 fw-bold text-uppercase" style="border-bottom:2px solid black ">Abdul Hafid
-                        Djakatare.,S.Ag.M.Adm.KP</p>
-                    <p class="mb-0">Pembina Tkt I</p>
-                    <p class="mb-0">NIP. 1231232312323 </p>
+                    <p class="mb-0 fw-bold text-uppercase" style="border-bottom:1px solid black ">{{$kepalaDinas->nama}}
+                    </p>
+                    <p class="mb-0">{{$kepalaDinas->profilePejabat->jabatanStruktural->jabatan}}</p>
+                    <p class="mb-0">NIP. {{$kepalaDinas->profilePejabat->nip}}</p>
                     <div class="gambarTtd">
-                        <img src="assets/dashboard/img/ttd.png" alt="" width="225px">
+                        <img src="{{public_path('storage/upload/foto-ttd/' . $kepalaDinas->profilePejabat->foto_ttd)}}"
+                            alt="" width="225px">
                     </div>
                     <div class="cap">
                         <img src="assets/dashboard/img/cap.png" alt="" width="125px">
@@ -332,7 +353,8 @@
             </td>
             <td width="10%" class="text-center align-items-center">
                 <img src="data:image/png;base64,{{DNS2D::getBarcodePNG($usulanGaji->unique_id, 'QRCODE')}}"
-                    alt="barcode" /><br><br>
+                    alt="barcode" /><br>
+                <p>ID Dokumen : {{$usulanGaji->unique_id}}</p><br>
             </td>
         </tr>
     </table>

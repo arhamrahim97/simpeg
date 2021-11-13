@@ -14,12 +14,13 @@
 
       <!-- Collapse -->
       <div class="collapse navbar-collapse" id="navbarCollapse">
-
+            
         <!-- Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fe fe-x"></i>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fe fe-x"></i>
         </button>
-
+      
         <!-- Navigation -->
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
@@ -42,14 +43,20 @@
               Statistik
             </a>
           </li>
+          <li>
+              <a class="nav-link" id="navbarLandings" href="{{url('cek-berkas')}}" aria-haspopup="true"
+                  aria-expanded="false">
+                  Cek Berkas
+              </a>
+          </li>
         </ul>
-
+                    
         <!-- Button -->
         <a class="navbar-btn btn btn-sm btn-primary lift ms-auto" href="/login">
-          Masuk
+            Masuk
         </a>
 
-      </div>
+        </div>
 
     </div>
-  </nav>
+</nav>

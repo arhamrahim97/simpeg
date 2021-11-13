@@ -18,7 +18,6 @@ class DashboardController extends Controller
             'user' => $user,
         ];
 
-
         if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
             // $status_kepegawaian = Auth::user()->status_kepegawaian;
             $user = User::find(Auth::user()->id);
@@ -29,7 +28,6 @@ class DashboardController extends Controller
                     // if ((($user->status_kepegawaian == 'PNS') || ($user->status_kepegawaian == 'PNS Depag') || ($user->status_kepegawaian == 'PNS Diperbantukan')) && (BerkasDasar::where('id_user', '=', Auth::user()->id)->count() == 0)) {
                     return redirect('/berkas-dasar');
                 } //
-
                 else {
                     if ($user->profile != null) {
                         if (!in_array($user->status_kepegawaian, array('PNS', 'PNS Depag', 'PNS Diperbantukan'))) { //Non PNS
@@ -47,7 +45,17 @@ class DashboardController extends Controller
             }
         } else {
             if (Auth::user()->role == 'Admin') { // Selain role GURU atau PEGAWAI
-                return view('pages.dashboard.dashboardAdmin', $data2);
+                return redirect('/dashboard-admin');
+            } else if (Auth::user()->role == "Tim Penilai") {
+                return redirect('/dashboard-tim-penilai');
+            } else if (Auth::user()->role == "Admin Kepegawaian") {
+                return redirect('/dashboard-admin-kepegawaian');
+            } else if (Auth::user()->role == "KASUBAG Kepegawaian dan Umum") {
+                return redirect('/dashboard-kasubag');
+            } else if (Auth::user()->role == "Sekretaris") {
+                return redirect('/dashboard-sekretaris');
+            } else if (Auth::user()->role == "Kepala Dinas") {
+                return redirect('/dashboard-kepala-dinas');
             }
             return view('pages.dashboard.dashboardAdmin', $data2);
         }

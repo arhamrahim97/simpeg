@@ -334,7 +334,7 @@ Usulan Kenaikan Gaji
 
 <script>
     $(document).ready(function () {
-        $('.nav-unit-kerja').addClass('active');
+        $('.nav-usulan-kenaikan-gaji').addClass('active');
     })
 
 </script>

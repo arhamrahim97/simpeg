@@ -2,7 +2,31 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav">
-                <li class="nav-section">                   
+                <li class="nav-item nav-dashboard">
+                    <a href="{{url('dashboard-admin')}}">
+                        <i class="fas fa-home"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Usulan</h4>
+                </li>
+                <li class="nav-item nav-usulan-kenaikan-gaji">
+                    <a href="{{url('proses-usulan-kenaikan-gaji-admin')}}">
+                        <i class="fas fa-briefcase"></i>
+                        <p>Kenaikan Gaji</p>
+                    </a>
+                </li>
+                <li class="nav-item nav-usulan-kenaikan-pangkat">
+                    <a href="{{url('proses-usulan-kenaikan-pangkat-admin')}}">
+                        <i class="fas fa-briefcase"></i>
+                        <p>Kenaikan Pangkat</p>
+                    </a>
+                </li>
+                <li class="nav-section">
                     <h4 class="text-section">Master</h4>
                 </li>
                 <li class="nav-item nav-jabatan-fungsional">
@@ -29,17 +53,16 @@
                         <p>Persyaratan</p>
                     </a>
                 </li>
-            </ul>
-            <ul class="nav mt-5">
-                <li class="nav-section">                   
+
+                <li class="nav-section">
                     <h4 class="text-section">Berkas Dasar, Profile, Akun</h4>
-                </li>   
+                </li>
                 <li class="nav-item nav-berkas-dasar">
                     <a href="{{url('data-berkas-dasar')}}">
                         <i class="fas fa-file"></i>
                         <p>Berkas Dasar</p>
                     </a>
-                </li>              
+                </li>
                 <li class="nav-item nav-profile">
                     <a data-toggle="collapse" href="#profile-nav" class="collapsed" aria-expanded="false">
                         <i class="far fa-address-book"></i>
@@ -57,7 +80,7 @@
                                 <a href="/profile-non-guru-pegawai">
                                     <span class="sub-item">Non Guru/Pegawai</span>
                                 </a>
-                            </li>                         
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -66,7 +89,7 @@
                         <i class="fas fa-users"></i>
                         <p>Akun</p>
                     </a>
-                </li>                
+                </li>
             </ul>
         </div>
     </div>

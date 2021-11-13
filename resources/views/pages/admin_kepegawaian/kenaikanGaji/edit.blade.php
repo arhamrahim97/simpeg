@@ -121,22 +121,20 @@ Edit Proses Berkas
         </ul>
         <h4 class="page-title">Berkas Dasar</h4>
         <div class="row gx-4">
-            <div class="row">
-                @foreach ($berkasDasar as $berkas)
-                <div class="col-lg-6 mt-3">
-                    <a href="{{Storage::url('upload/berkas-dasar/' . $berkas->file)}}" class="text-decoration-none">
-                        <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
-                            style="height: 200px">
-                            <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
-                            <br>
-                            <span class="small text-uppercase">
-                                {{$berkas->nama}}
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                @endforeach
+            @foreach ($berkasDasar as $berkas)
+            <div class="col-lg-4 mt-3">
+                <a href="{{Storage::url('upload/berkas-dasar/' . $berkas->file)}}" class="text-decoration-none">
+                    <div class="shadow-lg text-decoration-none text-center rounded shadow-sm py-5 px-4"
+                        style="height: 200px">
+                        <img src="/assets/dashboard/img/pdf.png" alt="" width="50" class="img-fluid">
+                        <br>
+                        <span class="small text-uppercase">
+                            {{$berkas->nama}}
+                        </span>
+                    </div>
+                </a>
             </div>
+            @endforeach
         </div>
         <h4 class="page-title mt-4">Berkas Tambahan</h4>
         <div class="row gx-4">

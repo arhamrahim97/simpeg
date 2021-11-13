@@ -401,10 +401,10 @@ Proses Berkas
                 url: "/get-persyaratan-berkas",
                 dataType: 'json',
                 data: {
-                    pangkat: pangkat
+                    pangkat: pangkat,
+                    role: '{{$user->role}}'
                 },
                 success: function (data) {
-                    console.log(data);
                     if (data.res == 'success') {
                         $('#persyaratanBerkas').empty();
                         $('#persyaratanBerkas').append(data.daftarPersyaratan);
@@ -412,18 +412,7 @@ Proses Berkas
                         $('#persyaratanBerkas').empty();
                     }
                 },
-                error: function (data) {
-                    // swal({
-                    // title: 'Gagal',
-                    // text: 'Gagal Menghapus Data',
-                    // icon: 'warning',
-                    // buttons: {
-                    // confirm: {
-                    // className: 'btn btn-success'
-                    // }
-                    // }
-                    // });
-                }
+                error: function (data) {}
             });
         } else {
             $('#persyaratanBerkas').empty();

@@ -112,7 +112,7 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
     public function show(UsulanPangkat $usulanPangkat)
     {
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {
@@ -142,7 +142,7 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
             return redirect()->route('proses-usulan-kenaikan-pangkat-admin-kepegawaian.index');
         }
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {
@@ -185,7 +185,11 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
         $usulanPangkat->save();
 
         Toastr::success('Berhasil Memproses Berkas', 'Success');
-        return redirect()->route('proses-usulan-kenaikan-pangkat-admin-kepegawaian.index');
+        if (Auth::user()->role == "Admin Kepegawaian") {
+            return redirect()->route('proses-usulan-kenaikan-pangkat-admin-kepegawaian.index');
+        } else if (Auth::user()->role == "Admin") {
+            return redirect()->route('proses-usulan-kenaikan-pangkat-admin.index');
+        }
     }
 
     /**
@@ -233,7 +237,7 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                     </div>
                                                 </div>
@@ -602,7 +606,7 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
                                                     <div class="timeline-icon timeline-icon"><i
                                                             class="far fa-clock"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Berkas</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <p>Berkas Masih Diproses</p>
                                                     </div>
                                                 </div>
@@ -622,9 +626,9 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Unduh Berkas</h6>
+                                                        <h6>Unduh Surat Pengantar Kenaikan Pangkat</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Berkas</button>
+                                                        <a href="' . url('cetak-usulan-kenaikan-pangkat', $usulanPangkat->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -648,7 +652,7 @@ class ProsesUsulanKenaikanPangkatAdminKepegawaian extends Controller
             return redirect()->route('proses-usulan-kenaikan-pangkat-admin-kepegawaian.index');
         }
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::find($usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {

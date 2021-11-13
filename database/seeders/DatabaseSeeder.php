@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+
+
 use Illuminate\Database\Seeder;
-use App\Models\ProfileGuruPegawai;
 use Database\Seeders\UnitKerjaSeeder;
 use Database\Seeders\PersyaratanSeeder;
 use Database\Seeders\JabatanFungsionalSeeder;
@@ -20,12 +20,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(60)->create();
-        ProfileGuruPegawai::factory(50)->create();
+//         User::factory(60)->create();
+//         ProfileGuruPegawai::factory(50)->create();
         $this->call(JabatanFungsionalSeeder::class);
         $this->call(JabatanStrukturalSeeder::class);
         $this->call(UnitKerjaSeeder::class);
         $this->call(PersyaratanSeeder::class);
         $this->call(DeskripsiPersyaratanSeeder::class);
+
+        $this->call(UserSeeder::class);
+        $this->call(ProfileSeeder::class);
+        $this->call(BerkasDasarSeeder::class);
+        $this->call(ProfilePejabatSeeder::class);
     }
 }
