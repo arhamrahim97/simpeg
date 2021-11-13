@@ -334,7 +334,7 @@ Usulan Kenaikan Pangkat
 
 <script>
     $(document).ready(function () {
-        $('.nav-unit-kerja').addClass('active');
+        $('.nav-usulan-kenaikan-pangkat').addClass('active');
     })
 
 </script>

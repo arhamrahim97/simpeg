@@ -31,14 +31,14 @@
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="/assets/dashboard/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/dashboard/css/atlantis.css">    
-    
-    
+    <link rel="stylesheet" href="/assets/dashboard/css/atlantis.css">
+
+
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="/assets/dashboard/css/demo.css">
     <link rel="stylesheet" href="/assets/dashboard/css/toastr.min.css">
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     {{-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     <style>
@@ -58,7 +58,8 @@
         <div class="logo-header position-fixed" data-background-color="blue">
 
             <a href="index.html" class="logo">
-                <img src="/assets/dashboard/img/logo.svg" alt="navbar brand" class="navbar-brand">
+                <h3 class="navbar-brand fw-bold text-light mt-1">SIMPEG</h3>
+                {{-- <img src="/assets/dashboard/img/logo.svg" alt="navbar brand" class="navbar-brand"> --}}
             </a>
             <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                 data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,16 +77,24 @@
         <!-- End Logo Header -->
         <!-- Sidebar -->
 
-        @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) 
-            @include('components.dashboard.guru_pegawai.sidebar')          
+        @if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai'))
+        @include('components.dashboard.guru_pegawai.sidebar')
         @else
-            @if ((Auth::user()->role == 'Admin'))
-                @include('components.dashboard.admin.sidebar')                  
-            @else
-                @include('components.dashboard.pejabat.sidebar')                  
-            @endif
+        @if ((Auth::user()->role == 'Admin'))
+        @include('components.dashboard.admin.sidebar')
+        @elseif (Auth::user()->role == "Tim Penilai")
+        @include('components.dashboard.tim_penilai.sidebar')
+        @elseif (Auth::user()->role == "Admin Kepegawaian")
+        @include('components.dashboard.admin_kepegawaian.sidebar')
+        @elseif (Auth::user()->role == "KASUBAG Kepegawaian dan Umum")
+        @include('components.dashboard.kasubag.sidebar')
+        @elseif (Auth::user()->role == "Sekretaris")
+        @include('components.dashboard.sekretaris.sidebar')
+        @elseif (Auth::user()->role == "Kepala Dinas")
+        @include('components.dashboard.kepala_dinas.sidebar')
         @endif
-        
+        @endif
+
         @include('components.dashboard.navbarHeader')
         <!-- End Navbar -->
 
@@ -186,8 +195,8 @@
     <!-- Sweet Alert -->
     <script src="/assets/dashboard/js/plugin/sweetalert/sweetalert.min.js"></script>
 
-     <!-- Jquery Mask -->
-	 <script src="/assets/dashboard/js/plugin/jquery.mask/jquery.mask.min.js"></script>
+    <!-- Jquery Mask -->
+    <script src="/assets/dashboard/js/plugin/jquery.mask/jquery.mask.min.js"></script>
 
     <!-- Owl Carousel -->
     <script src="/assets/dashboard/js/plugin/owl-carousel/owl.carousel.min.js"></script>

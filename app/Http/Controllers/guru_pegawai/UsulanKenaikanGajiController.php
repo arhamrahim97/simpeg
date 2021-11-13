@@ -327,7 +327,7 @@ class UsulanKenaikanGajiController extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                         <div class="row">
                                                             <a target="_blank" href=" ' . route('usulan-kenaikan-gaji.show', $usulanGaji->id) . ' " class="btn btn-sm btn-primary mt-2 mr-2 ml-3">Lihat

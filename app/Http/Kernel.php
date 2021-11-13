@@ -68,6 +68,17 @@ class Kernel extends HttpKernel
         'guru' => \App\Http\Middleware\Guru::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'pegawai' => \App\Http\Middleware\Pegawai::class,
+        'pejabat' => \App\Http\Middleware\Pejabat::class,
+        'timpenilai' => \App\Http\Middleware\TimPenilai::class,
+        'kasubag' => \App\Http\Middleware\Kasubag::class,
+        'sekretaris' => \App\Http\Middleware\Sekretaris::class,
+        'kepaladinas' => \App\Http\Middleware\KepalaDinas::class,
         'gurudanpegawai' => \App\Http\Middleware\GuruDanPegawai::class,
+        'adminkepegawaian' => \App\Http\Middleware\AdminKepegawaian::class,
+        'admindanadminkepegawaian' => \App\Http\Middleware\AdminDanAdminKepegawaian::class,
+        'admindantimpenilai' => \App\Http\Middleware\AdminDanTimPenilai::class,
+        'admindankasubag' => \App\Http\Middleware\AdminDanKasubag::class,
+        'admindansekretaris' => \App\Http\Middleware\AdminDanSekretaris::class,
+        'admindankepaladinas' => \App\Http\Middleware\AdminDanKepalaDinas::class,
     ];
 }

@@ -30,13 +30,13 @@ class CreateUsulanGajiTable extends Migration
             $table->integer('status_kepala_dinas');
             $table->text('alasan_tolak_kepala_dinas')->nullable();
             $table->dateTime('tanggal_konfirmasi_kepala_dinas')->nullable();
-            $table->text('nomor_surat')->nullable();
             $table->date('tmt_gaji_selanjutnya')->nullable();
             $table->date('tmt_gaji_sebelumnya')->nullable();
             $table->integer('jumlah_tahun_kerja_lama');
             $table->integer('jumlah_bulan_kerja_lama');
             $table->bigInteger('nilai_gaji_selanjutnya')->nullable();
             $table->bigInteger('nilai_gaji_sebelumnya')->nullable();
+            $table->text('nomor_surat')->nullable();
             $table->timestamps();
         });
     }

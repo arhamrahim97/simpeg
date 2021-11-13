@@ -167,9 +167,9 @@ class ProsesUsulanKenaikanGajiAdmin extends Controller
      */
     public function show(UsulanGaji $usulanGaji)
     {
-        $user = User::find($usulanGaji->id_user);
+        $user = User::where('id', $usulanGaji->id_user)->first();
         $persyaratan = Persyaratan::with('deskripsiPersyaratan')->where('jenis_asn', $user->role)->where('kategori', 'Usulan Kenaikan Gaji Berkala')->get();
-        $berkasDasar = BerkasDasar::where('id_user', Auth::id())->get();
+        $berkasDasar = BerkasDasar::where('id_user', $user->id)->get();
         return view('pages.admin.kenaikanGaji.show', compact(['usulanGaji', 'user', 'persyaratan', 'berkasDasar']));
     }
 
@@ -238,7 +238,7 @@ class ProsesUsulanKenaikanGajiAdmin extends Controller
                                                     <div class="timeline-icon timeline-icon-accept"><i
                                                             class="fas fa-check"></i></div>
                                                     <div class="timeline-text">
-                                                        <h6>Guru</h6>
+                                                        <h6>Guru/Pegawai</h6>
                                                         <p>Berkas Selesai Diupload</p>
                                                         <a href=" ' . route('proses-usulan-kenaikan-gaji-admin.show', $usulanGaji->id) . '" class="btn btn-sm btn-primary mt-2 mr-1">Lihat Berkas</a>
                                                     </div>
@@ -604,7 +604,7 @@ class ProsesUsulanKenaikanGajiAdmin extends Controller
                                                     <div class="timeline-text">
                                                         <h6>Unduh Berkas</h6>
                                                         <div class="row">
-                                                        <button class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Berkas</button>
+                                                        <a href="' . url('cetak-usulan-kenaikan-gaji', $usulanGaji->id) . '"class="btn btn-sm btn-success mt-2 mr-2 ml-3">Unduh Surat</a>
                                                         </div>
                                                     </div>
                                                 </div>
