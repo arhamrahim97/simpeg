@@ -4,8 +4,8 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>@yield('title')</title>
-    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-    <link rel="icon" href="/assets/dashboard/img/icon.ico" type="image/x-icon" />
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />    
+    <link rel="icon" href="/assets/welcome/favicon/favicon.ico" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- <link rel="stylesheet" href="/assets/dashboard/css/theme.bundle.css" /> --}}
 

@@ -228,7 +228,7 @@ Konfirmasi Profil
 
 <script>
     $(document).ready(function () {
-        $('.nav-usulan-kenaikan-gaji').addClass('active');
+        $('.nav-profile').addClass('active');
         @if($profile->status_profile != 2)
         $('#konfirmasi-profile').change();
         @endif

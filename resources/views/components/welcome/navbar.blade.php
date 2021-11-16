@@ -39,11 +39,6 @@
             </a>
           </li>
           <li>
-            <a class="nav-link" id="navbarLandings" href="statistik.html" aria-haspopup="true" aria-expanded="false">
-              Statistik
-            </a>
-          </li>
-          <li>
               <a class="nav-link" id="navbarLandings" href="{{url('cek-berkas')}}" aria-haspopup="true"
                   aria-expanded="false">
                   Cek Berkas
