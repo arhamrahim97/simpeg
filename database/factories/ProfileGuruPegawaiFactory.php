@@ -24,10 +24,10 @@ class ProfileGuruPegawaiFactory extends Factory
         $jenis_kelamin = array('Laki-laki', 'Perempuan');
         $pendidikan_terakhir = array('SMP / Sederajat', 'SMA / Sederajat', 'D3', 'S1', 'S2');
         $jenis_asn = array('Guru', 'Pegawai');
-        $jenis_guru = array('Guru Kelas', 'Guru Mapel', 'Guru BK', 'Guru Pendamping');
+        $jenis_guru = array('Guru BK', 'Guru Kelas', 'Guru Mapel', 'Guru Pendamping', 'Guru Pendamping Khusus', 'Guru Pengganti', 'Guru TIK', 'Instruktur', 'Kepala Sekolah', 'Laboran', 'Penjaga Sekolah', 'Pesuruh/Office Boy', 'Petugas Keamanan', 'Tenaga Administrasi Sekolah', 'Tenaga Perpustakaan', 'Tukang Kebun', 'Tutor', 'Lainnya');
         $bidang_studi = array('Administrasi dan Supervisi pendidikan', 'Akuntansi Manajemen', 'Arsitektur', 'Bahasa Dan Sastra Indonesia', 'Bahasa Inggris', 'Biologi', 'Ekonomi', 'Manajemen Informatika dan Komputer', 'Pendidikan Agama Islam', 'Lainnya');
         $mata_pelajaran = array('Bahasa Indonesia', 'Bahasa Inggris', 'Ekonomi', 'Ilmu Pengetahuan Alam (IPA)', 'Matematika (Umum)', 'Pendidikan Agama Islam', 'Pendidikan Kewarganegaraan', 'Teknologi Informasi dan Komunikasi', 'Lainnya');
-        $status = array('Guru Honor Sekolah', 'PNS', 'Tenaga honor lainnya');
+        $status = array('GTY/PTY', 'Guru Honor Sekolah', 'Honor Daerah TK.I Provinsi', 'Honor Daerah TK.II Kab/Kota', 'PNS', 'PNS Depag', 'PNS Diperbantukan', 'Tenaga Honor Sekolah', 'Lainnya');
         $kecamatan = array('Mantikulore', 'Palu Barat', 'Palu Timur');
         $jenis_jabatan = array('Struktural', 'Fungsional');
 

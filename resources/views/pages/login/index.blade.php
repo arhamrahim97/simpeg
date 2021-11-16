@@ -4,8 +4,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>Login</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="/assets/dashboard/img/icon.ico" type="image/x-icon"/>
-
+	{{-- <link rel="icon" href="/assets/dashboard/img/icon.ico" type="image/x-icon"/> --}}
+    <link rel="icon" href="/assets/welcome/favicon/favicon.ico" type="image/x-icon" />
 	<!-- Fonts and icons -->
 	<script src="/assets/dashboard/js/plugin/webfont/webfont.min.js"></script>
 	<script>
@@ -28,8 +28,15 @@
 			<h3 class="text-center">Login</h3>			
 			@if (session()->has('loginError'))
 			<div class="alert alert-danger">				
-				<h5><i class="icon fas fa-times"></i> Error !</h5>
+				<h5><i class="icon fas fa-times"></i> Gagal !</h5>
 				{{ session('loginError') }}
+			</div>
+			@endif
+
+			@if (session()->has('tidakAktif'))
+			<div class="alert alert-danger">				
+				<h5><i class="icon fas fa-times"></i> Gagal !</h5>
+				{{ session('tidakAktif') }}
 			</div>
 			@endif
 			<form action="/login" method="POST" autocomplete="off"> 

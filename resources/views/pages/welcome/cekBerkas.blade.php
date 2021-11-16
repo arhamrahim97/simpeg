@@ -5,7 +5,26 @@ Sistem Informasi Manajemen Pegawai
 @endsection
 
 @section('content')
+<nav class="bg-gray-200">
+	<div class="container-fluid">
+	  <div class="row">
+		<div class="col-12">
+		  <!-- Breadcrumb -->
+		  <ol class="breadcrumb breadcrumb-scroll">
+			<li class="breadcrumb-item">
+			  <a href="/" class="text-gray-700">
+				SIMPEG Dinas Pendidikan Kota Palu
+			  </a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">
+			    Cek Berkas
+			</li>
+		  </ol>
 
+		</div>
+	  </div> <!-- / .row -->
+	</div> <!-- / .container -->
+</nav>
 <div class="container">
     <h1 class="text-center fw-bold my-5">Cek Berkas</h1>
 
@@ -53,7 +72,61 @@ Sistem Informasi Manajemen Pegawai
 </div>
 @endsection
 
+{{-- @push('style')
+@endpush --}}
+
 @push('style')
+      <style>
+		  /* @media (max-width: 800) {
+			  .container-fluid {
+				  padding-left: 0 !important;
+				  padding-right: 0 !important;
+			  }
+		  } */
+		  @media (min-width: 200px) {
+			  .container-fluid {
+				  padding-left: 2rem !important;
+				  padding-right: 2rem !important;
+			  }
+		  }
+
+		@media (min-width: 460px) { 
+			.container-fluid {
+				  padding-left: 2.5rem !important;
+				  padding-right: 2.5rem !important;
+			  }
+		 }
+
+		/* Medium devices (tablets, 768px and up) */
+		@media (min-width: 768px) {
+			.container-fluid {
+				  padding-left: 3.5rem !important;
+				  padding-right: 3.5rem !important;
+			  }
+		 }
+
+		/* Large devices (desktops, 992px and up) */
+		@media (min-width: 990px) {
+			.container-fluid {
+				  padding-left: 10rem !important;
+				  padding-right: 10rem !important;
+			  }
+		 }
+
+		/* Extra large devices (large desktops, 1200px and up) */
+		@media (min-width: 1600px) {
+			.container-fluid {
+				  padding-left: 16rem !important;
+				  padding-right: 16rem !important;
+			  }
+		}
+		/* @media (min-width: 1600px) {
+			.container-fluid {
+				padding-left: 120px !important;
+				padding-right: 120px !important;
+			} */
+		
+     </style>
 <style>
     .times {
         font-family: "Times New Roman", Times, serif;

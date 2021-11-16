@@ -27,6 +27,8 @@ class UserSeeder extends Seeder
                 'nip' => $this->faker->unique()->numerify('##################'),
                 'username' => $username[$i],
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'jenis_guru' => $jenis_guru[array_rand($jenis_guru)],
+                'status_kepegawaian' => $status_kepegawaian[array_rand($status_kepegawaian)],
                 'role' => $role[$i],
                 'jenis_guru' => $jenis_guru[array_rand($jenis_guru)],
                 'status_kepegawaian' => $status_kepegawaian[array_rand($status_kepegawaian)],

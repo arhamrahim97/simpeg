@@ -152,7 +152,7 @@
 							<option value="Guru TIK" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Guru TIK') selected @endif>Guru TIK</option>
 							<option value="Instruktur" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Instruktur') selected @endif>Instruktur</option>
 							<option value="Kepala Sekolah" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Kepala Sekolah') selected @endif>Kepala Sekolah</option>
-							<option value="Kepala Sekolah" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Laboran') selected @endif>Laboran</option>
+							<option value="Laboran" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Laboran') selected @endif>Laboran</option>
 							<option value="Penjaga Sekolah" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Penjaga Sekolah') selected @endif>Penjaga Sekolah</option>
 							<option value="Pesuruh/Office Boy" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Pesuruh/Office Boy') selected @endif>Pesuruh/Office Boy</option>
 							<option value="Petugas Keamanan" @if (old('jenis_guru', Auth::user()->jenis_guru) == 'Petugas Keamanan') selected @endif>Petugas Keamanan</option>
