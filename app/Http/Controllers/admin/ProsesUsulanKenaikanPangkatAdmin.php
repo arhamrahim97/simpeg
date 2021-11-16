@@ -195,7 +195,7 @@ class ProsesUsulanKenaikanPangkatAdmin extends Controller
     public function show(UsulanPangkat $usulanPangkat)
     {
         $berkasDasar = BerkasDasar::where('id_user', $usulanPangkat->id_user)->get();
-        $user = User::where('id', $usulanPangkat->id_user);
+        $user = User::where('id', $usulanPangkat->id_user)->first();
 
         if ($usulanPangkat->user->role == "Guru") {
             $listPangkat = JabatanFungsional::where('no_urut', '>', $usulanPangkat->pangkatFungsionalSebelumnya->no_urut)->whereExists(function ($query) {

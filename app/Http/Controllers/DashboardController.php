@@ -22,8 +22,7 @@ class DashboardController extends Controller
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return back()->with('tidakAktif', 'Maaf, akun anda sekarang dalam status "Tidak Aktif", hubungi admin untuk mengaktifkan akun anda.');
-            // echo 'akun anda tidak aktif';
+            return back()->with('tidakAktif', 'Maaf, akun anda sekarang dalam status "Tidak Aktif", hubungi admin untuk mengaktifkan akun anda.');            
         } else {
             if ((Auth::user()->role == 'Guru') || (Auth::user()->role == 'Pegawai')) {
                 // $status_kepegawaian = Auth::user()->status_kepegawaian;

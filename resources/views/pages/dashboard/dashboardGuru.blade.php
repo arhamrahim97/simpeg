@@ -14,7 +14,7 @@ Dashboard
             <div class="card-body pb-0">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        @if ($usulanGaji)
+                        @if ($usulanGaji != '')
                         <div class="notification mb-3">
                             <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
                             <div class="row">
@@ -73,7 +73,7 @@ Dashboard
             <div class="card-body pb-0">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        @if ($usulanPangkat)
+                        @if ($usulanPangkat != '')
                         <div class="notification">
                             <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
                             <div class="row">
@@ -309,7 +309,6 @@ Dashboard
         padding-right: 20px;
         padding-left: 20px
     }
-
 </style>
 @endpush
 

@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="card">
-	<div class="card-header py-4 text-center">
-		<h3 class="wizard-title">Lengkapi <b>Berkas Dasar</b> Anda</h3>
-		<small>Silahkan lengkapi berkas dasar anda</small>
-	</div>
-	<div class="card-body">
+    <div class="card-header py-4 text-center">
+        <h3 class="wizard-title">Lengkapi <b>Berkas Dasar</b> Anda</h3>
+        <small>Silahkan lengkapi berkas dasar anda</small>
+    </div>
+    <div class="card-body">
         <div class="row">
             <div class="col-lg-6 col-12 px-4 mb-3">
                 <h6>Berikut beberapa berkas yang harus di upload:</h6>
@@ -14,32 +14,35 @@
                     @php
                     $i = 1
                     @endphp
-                    @forelse ($persyaratan as $row)                    
-                        @foreach ($row->deskripsiPersyaratan as $deskripsi)                      
-                            <li class="list-group-item">
-                                <span class="name">{{ $i++ }}. {{ $deskripsi->deskripsi }}</span>
-                            </li>  
-                        @endforeach
+                    @forelse ($persyaratan as $row)
+                    @foreach ($row->deskripsiPersyaratan as $deskripsi)
+                    <li class="list-group-item">
+                        <span class="name">{{ $i++ }}. {{ $deskripsi->deskripsi }}</span>
+                    </li>
+                    @endforeach
                     @empty
-                        <h5>Tidak ada persyaratan</h5>
+                    <h5>Tidak ada persyaratan</h5>
                     @endforelse
-                </ul>                
+                </ul>
             </div>
-            <div class="col-lg-6 col-12 px-4">                
+            <div class="col-lg-6 col-12 px-4">
                 <form method="POST" id="formBerkas" action="{{route('berkas-dasar.update',$user->id)}}"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="shadow text-center rounded py-5 px-4"><img src="/assets/dashboard/img/pdf.png"
-                            alt="" width="100" class="img-fluid">
+                    <div class="shadow text-center rounded py-5 px-4"><img src="/assets/dashboard/img/pdf.png" alt=""
+                            width="100" class="img-fluid">
                         <h5 class="mb-0 mt-3">Upload Berkas Usulan Kenaikan Gaji</h5>
                         <span class="small text-uppercase">
                             File harus berekstensi .PDF dengan ukuran maksimal 1 MB
                         </span>
                     </div>
-        
+
                     <div class="row gx-4 d-flex justify-content-center">
                         <div class="col-lg-12 mt-3" id="listBerkas">
+                            @php
+                            $listDeskripsi = ['SK Kenaikan Pangkat','SK Kenaikan Gaji Berkala'];
+                            @endphp
                             @foreach ($user->berkasDasar as $berkas)
                             <div class="form-group shadow border border-grey rounded p-3"
                                 id="daftarBerkasUpdate{{$berkas->id}}">
@@ -47,46 +50,53 @@
                                 <label for="exampleInputEmail1">Nama Berkas</label>
                                 <input type="text" class="form-control namaBerkasUpdate" id="exampleInputEmail1"
                                     aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkasUpdate[]"
-                                    value="{{$berkas->nama}}">
+                                    value="{{$berkas->nama}}" @if(in_array($berkas->nama,
+                                $listDeskripsi))
+                                readonly @endif>
                                 <div class="mb-3 mt-3">
                                     <label for="formFileSm" class="form-label">File Berkas</label>
-                                    <input class="form-control form-control-sm fileBerkasUpdate" id="formFileSm" type="file"
-                                        name="fileBerkasUpdate[]">
+                                    <input class="form-control form-control-sm fileBerkasUpdate" id="formFileSm"
+                                        type="file" name="fileBerkasUpdate[]">
                                     <small id="emailHelp" class="form-text text-danger">Kosongkan
                                         File
                                         Berkas Jika
                                         Tidak Ingin Mengubah
-                                        Berkas</small></div>
-        
-                                <div class="div d-flex justify-content-end"><button type="button"
-                                        class="btn btn-danger btn-sm btnHapusBerkasUpdate" id="{{$berkas->id}}"><i
-                                            class="fas fa-trash-alt"></i>
-                                        Hapus</button></div>
+                                        Berkas</small>
+                                </div>
+
+                                <div class="div d-flex justify-content-end">
+                                    @if(!in_array($berkas->nama, $listDeskripsi))
+                                    <button type="button" class="btn btn-danger btn-sm btnHapusBerkasUpdate"
+                                        id="{{$berkas->id}}"><i class="fas fa-trash-alt"></i>
+                                        Hapus</button>
+                                    @endif
+                                </div>
+
                             </div>
                             @endforeach
-        
+
                         </div>
-        
+
                         <div class="div">
                             <button type="button" class="btn btn-warning" id="btnTambahBerkas"> + Tambah Berkas</button>
                         </div>
-        
-        
+
+
                     </div> <!-- / .row -->
-        
+
                     <hr>
                     <div class="div d-flex justify-content-center mt-5">
                         <button type="submit" class="btn btn-primary">Upload Berkas</button>
                     </div>
-                </form>    							
-            </div>            
+                </form>
+            </div>
         </div>
-	</div>
-</div>														
+    </div>
+</div>
 @endsection
-			
+
 @section('script')
-<script>    
+<script>
     var lengthNamaBerkas = 0;
     var lengthTipeFileBerkas = 0;
     var lengthSizeFileBerkas = 0;
@@ -263,7 +273,7 @@
 </script>
 
 <script>
-   var i = 1;
+    var i = 1;
     $('#btnTambahBerkas').on('click', function () {
         i++;
         var formBerkas =
@@ -302,7 +312,7 @@
                 var url = "{{url('hapus-berkas-dasar')}}";
                 $.ajax({
                     type: "DELETE",
-                    url: url + "/" + id,                    
+                    url: url + "/" + id,
                     dataType: 'json',
                     data: {
                         _token: '{{ csrf_token() }}'

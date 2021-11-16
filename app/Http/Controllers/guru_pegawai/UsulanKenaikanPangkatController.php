@@ -382,6 +382,8 @@ class UsulanKenaikanPangkatController extends Controller
         $persyaratan = Persyaratan::where('jenis_asn', $role)->where('kategori', 'Usulan Kenaikan Pangkat')->where('ke_golongan', $pangkat)->first();
         $daftarPersyaratan = '<h6 class="my-2 font-weight-bold">Berikut beberapa berkas yang harus di upload:</h6><ul class="list-group list-group-bordered list my-4">';
         $form = '';
+        $readOnlyDeskripsi = '';
+        $btnHapus = '';
 
         $i = 1;
         foreach ($persyaratan->deskripsiPersyaratan as $syarat) {
@@ -389,19 +391,27 @@ class UsulanKenaikanPangkatController extends Controller
                 <span class="name">' . $i  . '. ' . $syarat->deskripsi . '</span>
             </li>';
 
+            if ($syarat->deskripsi == 'SK Pangkat Terakhir') {
+                $readOnlyDeskripsi = 'readonly';
+                $btnHapus = '';
+            } else {
+                $readOnlyDeskripsi = '';
+                $btnHapus = '<button href="" class="btn btn-danger btn-sm btnHapusFitur" id="' . $i . '">
+                                <i class="fas fa-trash-alt"></i>
+                                Hapus</button>';
+            }
+
             $form .= '<div class="form-group border border-grey shadow-lg rounded p-3"
                         id="daftarBerkas' . $i . '">
                         <label for="exampleInputEmail1">Nama Berkas</label>
                         <input type="text" class="form-control namaBerkas" id="exampleInputEmail1"
                             aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkas[]"
-                            value="' . $syarat->deskripsi . '">
+                            value="' . $syarat->deskripsi . '" ' . $readOnlyDeskripsi . '>
                         <div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File
                                 Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm"
                                 type="file" name="fileBerkas[]"></div>
                         <div class="div d-flex justify-content-end">
-                            <button href="" class="btn btn-danger btn-sm btnHapusFitur" id="' . $i . '">
-                                <i class="fas fa-trash-alt"></i>
-                                Hapus</button>
+                            ' . $btnHapus . '
                         </div>
                     </div>';
             $i++;
