@@ -22,6 +22,7 @@ class DashboardGuruPegawaiController extends Controller
 
         $usulanPangkat = $this->_cekUsulanPangkat();
         $usulanGaji = $this->_cekUsulanGaji();
+        // dd($usulanGaji);
         if (!$usulanGaji) {
             $berkasUsulanGaji = UsulanGaji::where('id_user', Auth::user()->id)->latest()->first();
             if ($berkasUsulanGaji) {
@@ -109,7 +110,7 @@ class DashboardGuruPegawaiController extends Controller
         $cekUsulanGaji = UsulanGaji::where('tmt_gaji_sebelumnya', Auth::user()->profile->tmt_gaji)->first();
         $usulan = '';
         // Cek Apakah TMT Gaji sudah lebih dari 2 tahun dan cek apakah usulan dengan tmt user sekarang sudah ada atau belum
-        if ($tahun > 2 && !($cekUsulanGaji)) {
+        if ($tahun >= 2 && !($cekUsulanGaji)) {
             $usulan = true;
         }
         return $usulan;

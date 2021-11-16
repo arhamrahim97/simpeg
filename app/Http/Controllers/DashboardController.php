@@ -37,7 +37,7 @@ class DashboardController extends Controller
                                 return view('pages.guru_pegawai.lengkapiData.index', ['user' => $user]);
                             }  //
                             else {
-                                return view('pages.dashboard.dashboardGuru', $data2);
+                                return redirect('/dashboard-guru-pegawai');
                             }
                         }
                     }

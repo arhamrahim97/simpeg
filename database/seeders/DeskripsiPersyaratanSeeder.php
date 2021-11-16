@@ -19,15 +19,16 @@ class DeskripsiPersyaratanSeeder extends Seeder
             // Kenaikan Gaji Guru
             [
                 'id_persyaratan' => '1',
-                'deskripsi' => 'Upload Pengantar Dari Sekolah',
-            ],
-            [
-                'id_persyaratan' => '1',
                 'deskripsi' => 'SK Gaji Berkala',
+
             ],
             [
                 'id_persyaratan' => '1',
                 'deskripsi' => 'SK Pangkat Terakhir',
+            ],
+            [
+                'id_persyaratan' => '1',
+                'deskripsi' => 'Upload Pengantar Dari Sekolah',
             ],
             [
                 'id_persyaratan' => '1',
@@ -39,15 +40,16 @@ class DeskripsiPersyaratanSeeder extends Seeder
             // Kenaikan Gaji Pegawai
             [
                 'id_persyaratan' => '2',
-                'deskripsi' => 'Upload Pengantar Dari Sekolah',
-            ],
-            [
-                'id_persyaratan' => '2',
                 'deskripsi' => 'SK Gaji Berkala',
+
             ],
             [
                 'id_persyaratan' => '2',
                 'deskripsi' => 'SK Pangkat Terakhir',
+            ],
+            [
+                'id_persyaratan' => '2',
+                'deskripsi' => 'Upload Pengantar Dari Sekolah',
             ],
             [
                 'id_persyaratan' => '2',
@@ -1015,6 +1017,14 @@ class DeskripsiPersyaratanSeeder extends Seeder
             // Berkas Dasar Guru
             [
                 'id_persyaratan' => '33',
+                'deskripsi' => 'SK Kenaikan Gaji Berkala',
+            ],
+            [
+                'id_persyaratan' => '33',
+                'deskripsi' => 'SK Kenaikan Pangkat',
+            ],
+            [
+                'id_persyaratan' => '33',
                 'deskripsi' => 'Kartu Pegawai',
             ],
             [
@@ -1047,14 +1057,6 @@ class DeskripsiPersyaratanSeeder extends Seeder
             ],
             [
                 'id_persyaratan' => '33',
-                'deskripsi' => 'SK Kenaikan Gaji Berkala',
-            ],
-            [
-                'id_persyaratan' => '33',
-                'deskripsi' => 'SK Kenaikan Pangkat',
-            ],
-            [
-                'id_persyaratan' => '33',
                 'deskripsi' => 'SPMT',
             ],
 
@@ -1063,6 +1065,14 @@ class DeskripsiPersyaratanSeeder extends Seeder
 
         $persyaratanBerkasDasarPegawai = [
             // Berkas Dasar Pegawai
+            [
+                'id_persyaratan' => '34',
+                'deskripsi' => 'SK Kenaikan Gaji Berkala',
+            ],
+            [
+                'id_persyaratan' => '34',
+                'deskripsi' => 'SK Kenaikan Pangkat',
+            ],
             [
                 'id_persyaratan' => '34',
                 'deskripsi' => 'Kartu Pegawai',
@@ -1090,14 +1100,6 @@ class DeskripsiPersyaratanSeeder extends Seeder
             [
                 'id_persyaratan' => '34',
                 'deskripsi' => 'SK PNS',
-            ],
-            [
-                'id_persyaratan' => '34',
-                'deskripsi' => 'SK Kenaikan Gaji Berkala',
-            ],
-            [
-                'id_persyaratan' => '34',
-                'deskripsi' => 'SK Kenaikan Pangkat',
             ],
             [
                 'id_persyaratan' => '34',

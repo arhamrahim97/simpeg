@@ -66,7 +66,6 @@
             font-size: 11px;
             margin-bottom: 0px !important;
         }
-
     </style>
 
     <title>Hello, world!</title>
@@ -221,8 +220,8 @@
                 <p class=""><span class="tab"></span>b. Nomor dan Tanggal</p>
             </td>
             <td width="75%">
-                <p class=""> : {{$usulanGaji->nomor_surat}} / 186/PS/Dikbud <span
-                        class="tab2"></span>{{$hariIni->day . ' ' . $hariIni->monthName . ' ' . $hariIni->year;}}</p>
+                <p class=""> : {{$usulanGaji->nomor_surat}} / 186/PS/Dikbud <span class="tab2"></span>{{$hariIni->day .
+                    ' ' . $hariIni->monthName . ' ' . $hariIni->year;}}</p>
             </td>
         </tr>
         <tr>
@@ -319,6 +318,7 @@
                     <br>
                     <br>
                     <br>
+                    @if($kepalaDinas)
                     <p class="mb-0 fw-bold text-uppercase" style="border-bottom:1px solid black ">{{$kepalaDinas->nama}}
                     </p>
                     <p class="mb-0">{{$kepalaDinas->profilePejabat->jabatanStruktural->jabatan}}</p>
@@ -330,6 +330,7 @@
                     <div class="cap">
                         <img src="assets/dashboard/img/cap.png" alt="" width="125px">
                     </div>
+                    @endif
                 </div>
 
             </td>

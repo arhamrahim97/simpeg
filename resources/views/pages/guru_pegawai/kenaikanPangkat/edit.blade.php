@@ -204,7 +204,8 @@ Ubah Berkas
                         <label for="exampleInputEmail1">Nama Berkas</label>
                         <input type="text" class="form-control namaBerkasUpdate" id="exampleInputEmail1"
                             aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkasUpdate[]"
-                            value="{{$berkas->nama}}">
+                            value="{{$berkas->nama}}" @if($berkas->nama == 'SK Pangkat Terakhir')
+                        readonly @endif>
                         <div class="mb-3 mt-3">
                             <label for="formFileSm" class="form-label">File Berkas</label>
                             <input class="form-control form-control-sm fileBerkasUpdate" id="formFileSm" type="file"
@@ -213,12 +214,16 @@ Ubah Berkas
                                 File
                                 Berkas Jika
                                 Tidak Ingin Mengubah
-                                Berkas</small></div>
+                                Berkas</small>
+                        </div>
 
-                        <div class="div d-flex justify-content-end"><button type="button"
-                                class="btn btn-danger btn-sm btnHapusBerkasUpdate" id="{{$berkas->id}}"><i
-                                    class="fas fa-trash-alt"></i>
-                                Hapus</button></div>
+                        <div class="div d-flex justify-content-end">
+                            @if($berkas->nama != 'SK Pangkat Terakhir')
+                            <button type="button" class="btn btn-danger btn-sm btnHapusBerkasUpdate"
+                                id="{{$berkas->id}}"><i class="fas fa-trash-alt"></i>
+                                Hapus</button>
+                            @endif
+                        </div>
                     </div>
                     @endforeach
 
@@ -265,7 +270,6 @@ Ubah Berkas
         text-decoration: none;
         color: #555;
     }
-
 </style>
 @endpush
 
