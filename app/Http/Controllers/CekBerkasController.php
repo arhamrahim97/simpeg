@@ -24,6 +24,7 @@ class CekBerkasController extends Controller
         $usulanPangkat = UsulanPangkat::where('unique_id', $idDokumen)->first();
         $barcode = new DNS2D;
         $barcode->setStorPath(__DIR__ . '/cache/');
+        $ttdKepalaDinas = '';
         $dataHtml = '';
         if ($usulanGaji) {
 
@@ -32,6 +33,19 @@ class CekBerkasController extends Controller
             $tanggalLahir = \Carbon\Carbon::createFromFormat('Y-m-d', $user->profile->tanggal_lahir)->locale('id');
             $mulaiTanggal = \Carbon\Carbon::createFromFormat('Y-m-d', $usulanGaji->tmt_gaji_selanjutnya)->locale('id');
             $kepalaDinas = User::where('role', 'Kepala Dinas')->where('status', 1)->first();
+            if ($kepalaDinas) {
+                $ttdKepalaDinas = '<p class="mb-0 fw-bold text-uppercase" style="border-bottom:1px solid black "> ' . $kepalaDinas->nama . '
+                    </p>
+                    <p class="mb-0">' . $kepalaDinas->profilePejabat->jabatanStruktural->jabatan . '</p>
+                    <p class="mb-0">NIP. ' . $kepalaDinas->profilePejabat->nip . '</p>
+                    <div class="gambarTtd">
+                        <img src=" ' . Storage::url('upload/foto-ttd/' . $kepalaDinas->profilePejabat->foto_ttd) . '" alt=""
+                            width="225px">
+                    </div>
+                    <div class="cap">
+                        <img src="assets/dashboard/img/cap.png" alt="" width="125px">
+                    </div>';
+            }
 
 
             if ($user->role == 'Guru') {
@@ -257,17 +271,7 @@ class CekBerkasController extends Controller
                     <br>
                     <br>
                     <br>
-                    <p class="mb-0 fw-bold text-uppercase" style="border-bottom:1px solid black "> ' . $kepalaDinas->nama . '
-                    </p>
-                    <p class="mb-0">' . $kepalaDinas->profilePejabat->jabatanStruktural->jabatan . '</p>
-                    <p class="mb-0">NIP. ' . $kepalaDinas->profilePejabat->nip . '</p>
-                    <div class="gambarTtd">
-                        <img src=" ' . Storage::url('upload/foto-ttd/' . $kepalaDinas->profilePejabat->foto_ttd) . '" alt=""
-                            width="225px">
-                    </div>
-                    <div class="cap">
-                        <img src="assets/dashboard/img/cap.png" alt="" width="125px">
-                    </div>
+                    ' . $ttdKepalaDinas . '
                 </div>
 
             </td>
@@ -305,6 +309,20 @@ class CekBerkasController extends Controller
                 $pangkatSelanjutnya = '<p>' . $usulanPangkat->pangkatFungsionalSelanjutnya->jabatan . '</p>';
             } else {
                 $pangkatSelanjutnya = '<p>' . $usulanPangkat->pangkatStrukturalSelanjutnya->jabatan . '</p>';
+            }
+            $ttdSekretaris = '';
+            if ($sekretaris) {
+                $ttdSekretaris = '<p class="mb-0 fw-bold text-uppercase" style="border-bottom:2px solid black ">' . $sekretaris->nama . '
+                    </p>
+                    <p class="mb-0">' . $sekretaris->profilePejabat->jabatanStruktural->jabatan . '</p>
+                    <p class="mb-0">NIP. ' . $sekretaris->profilePejabat->nip . '  </p>
+                    <div class="gambarTtd">
+                        <img src="' . Storage::url('upload/foto-ttd/' . $sekretaris->profilePejabat->foto_ttd) . '" alt=""
+                            width="225px">
+                    </div>
+                    <div class="cap">
+                        <img src="assets/dashboard/img/cap.png" alt="" width="125px">
+                    </div>';
             }
             $dataHtml .= '<table width="100%" style="border-bottom: 3px solid black">
         <tr>
@@ -386,17 +404,7 @@ class CekBerkasController extends Controller
                     <br>
                     <br>
                     <br>
-                    <p class="mb-0 fw-bold text-uppercase" style="border-bottom:2px solid black ">' . $sekretaris->nama . '
-                    </p>
-                    <p class="mb-0">' . $sekretaris->profilePejabat->jabatanStruktural->jabatan . '</p>
-                    <p class="mb-0">NIP. ' . $sekretaris->profilePejabat->nip . '  </p>
-                    <div class="gambarTtd">
-                        <img src="' . Storage::url('upload/foto-ttd/' . $sekretaris->profilePejabat->foto_ttd) . '" alt=""
-                            width="225px">
-                    </div>
-                    <div class="cap">
-                        <img src="assets/dashboard/img/cap.png" alt="" width="125px">
-                    </div>
+                    ' . $ttdSekretaris . '
                 </div>
 
             </td>

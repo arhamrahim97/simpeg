@@ -142,20 +142,26 @@ Upload Berkas Usulan Kenaikan Gaji
 
             <div class="row gx-4 d-flex justify-content-center">
                 <div class="col-lg-12 mt-3" id="listBerkas">
+                    @php
+                    $listDeskripsi = ['SK Pangkat Terakhir','SK Gaji Berkala'];
+                    @endphp
                     @foreach ($persyaratan->deskripsiPersyaratan as $deskripsi)
                     <div class="form-group border border-grey shadow-lg rounded p-3"
                         id="daftarBerkas{{$loop->iteration}}">
                         <label for="exampleInputEmail1">Nama Berkas</label>
                         <input type="text" class="form-control namaBerkas" id="exampleInputEmail1"
                             aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkas[]"
-                            value="{{$deskripsi->deskripsi}}">
+                            value="{{$deskripsi->deskripsi}}" @if(in_array($deskripsi->deskripsi, $listDeskripsi))
+                        readonly @endif>
                         <div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File
                                 Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm"
                                 type="file" name="fileBerkas[]"></div>
                         <div class="div d-flex justify-content-end">
+                            @if(!in_array($deskripsi->deskripsi, $listDeskripsi))
                             <button href="" class="btn btn-danger btn-sm btnHapusFitur" id="{{$loop->iteration}}">
                                 <i class="fas fa-trash-alt"></i>
                                 Hapus</button>
+                            @endif
                         </div>
                     </div>
                     @endforeach
@@ -201,7 +207,6 @@ Upload Berkas Usulan Kenaikan Gaji
         text-decoration: none;
         color: #555;
     }
-
 </style>
 @endpush
 

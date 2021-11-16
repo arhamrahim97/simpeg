@@ -5,7 +5,9 @@ Usulan Kenaikan Pangkat
 @endsection
 
 @section('content')
-
+@if((!$usulan) && $usulanPangkat == '')
+<p class="text-center">Anda Belum Memiliki Usulan Kenaikan Pangkat</p>
+@endif
 @if ($usulan)
 <div class="notification">
     <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
@@ -28,7 +30,7 @@ Usulan Kenaikan Pangkat
 </div>
 @endif
 
-@if ($usulanPangkat)
+@if ($usulanPangkat != '')
 <div class="row mt-3">
     <div class="col-lg-12">
         <div class="table-responsive">
@@ -259,7 +261,6 @@ Usulan Kenaikan Pangkat
         padding-right: 20px;
         padding-left: 20px
     }
-
 </style>
 @endpush
 

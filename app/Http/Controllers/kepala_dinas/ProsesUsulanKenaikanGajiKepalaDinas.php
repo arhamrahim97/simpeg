@@ -4,6 +4,7 @@ namespace App\Http\Controllers\kepala_dinas;
 
 use App\Http\Controllers\Controller;
 use App\Models\BerkasDasar;
+use App\Models\BerkasUsulanGaji;
 use App\Models\Persyaratan;
 use App\Models\ProfileGuruPegawai;
 use App\Models\User;
@@ -13,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
@@ -156,6 +158,27 @@ class ProsesUsulanKenaikanGajiKepalaDinas extends Controller
             $profile->tmt_gaji = $usulanGaji->tmt_gaji_selanjutnya;
             $profile->nilai_gaji = $usulanGaji->nilai_gaji_selanjutnya;
             $usulanGaji->alasan_tolak_kepala_dinas = NULL;
+
+            $berkasDasarSkGaji = BerkasDasar::where('id_user', $usulanGaji->id_user)
+                ->where('nama', 'SK Kenaikan Gaji Berkala')
+                ->first();
+
+            $berkasDasarSkPangkat = BerkasDasar::where('id_user', $usulanGaji->id_user)
+                ->where('nama', 'SK Kenaikan Pangkat')
+                ->first();
+
+            $skGajiBerkala = BerkasUsulanGaji::where('id_usulan_gaji', $usulanGaji->id)
+                ->where('nama', 'SK Gaji Berkala')
+                ->first();
+
+            $skPangkatTerakhir = BerkasUsulanGaji::where('id_usulan_gaji', $usulanGaji->id)
+                ->where('nama', 'SK Pangkat Terakhir')
+                ->first();
+
+            Storage::delete('upload/berkas-dasar/' . $berkasDasarSkGaji->file);
+            Storage::delete('upload/berkas-dasar/' . $berkasDasarSkPangkat->file);
+            Storage::copy('upload/berkas-usulan-gaji/' . $skGajiBerkala->file, 'upload/berkas-dasar/' . $berkasDasarSkGaji->file);
+            Storage::copy('upload/berkas-usulan-gaji/' . $skPangkatTerakhir->file, 'upload/berkas-dasar/' . $berkasDasarSkPangkat->file);
         }
 
         $totalUsulanGaji = UsulanGaji::count();

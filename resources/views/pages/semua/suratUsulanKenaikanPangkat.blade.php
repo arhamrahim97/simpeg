@@ -74,7 +74,6 @@
         .table-content th {
             border: 1px solid black;
         }
-
     </style>
 
     <title>{{$usulanPangkat->nama}}</title>
@@ -166,6 +165,7 @@
                     <br>
                     <br>
                     <br>
+                    @if($sekretaris)
                     <p class="mb-0 fw-bold text-uppercase" style="border-bottom:2px solid black ">{{$sekretaris->nama}}
                     </p>
                     <p class="mb-0">{{$sekretaris->profilePejabat->jabatanStruktural->jabatan}}</p>
@@ -177,6 +177,7 @@
                     <div class="cap">
                         <img src="assets/dashboard/img/cap.png" alt="" width="125px">
                     </div>
+                    @endif
                 </div>
 
             </td>

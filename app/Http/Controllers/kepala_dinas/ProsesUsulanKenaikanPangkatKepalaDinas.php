@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UsulanPangkat;
 use Illuminate\Http\Request;
 use App\Models\BerkasDasar;
+use App\Models\BerkasUsulanPangkat;
 use App\Models\JabatanFungsional;
 use App\Models\JabatanStruktural;
 use App\Models\ProfileGuruPegawai;
@@ -14,6 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProsesUsulanKenaikanPangkatKepalaDinas extends Controller
 {
@@ -185,6 +187,17 @@ class ProsesUsulanKenaikanPangkatKepalaDinas extends Controller
             $usulanPangkat->alasan_tolak_kepala_dinas = NULL;
             $profile->tmt_pangkat = $usulanPangkat->tmt_pangkat_selanjutnya;
             $profile->jabatan_pangkat_golongan = $usulanPangkat->pangkat_selanjutnya;
+
+            $berkasDasarSkPangkat = BerkasDasar::where('id_user', $usulanPangkat->id_user)
+                ->where('nama', 'SK Kenaikan Pangkat')
+                ->first();
+
+            $skPangkatTerakhir = BerkasUsulanPangkat::where('id_usulan_pangkat', $usulanPangkat->id)
+                ->where('nama', 'SK Pangkat Terakhir')
+                ->first();
+
+            Storage::delete('upload/berkas-dasar/' . $berkasDasarSkPangkat->file);
+            Storage::copy('upload/berkas-usulan-pangkat/' . $skPangkatTerakhir->file, 'upload/berkas-dasar/' . $berkasDasarSkPangkat->file);
         }
 
         $totalUsulanPangkat = UsulanPangkat::count();

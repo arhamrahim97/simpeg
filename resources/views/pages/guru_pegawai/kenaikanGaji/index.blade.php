@@ -5,6 +5,9 @@ Usulan Kenaikan Gaji
 @endsection
 
 @section('content')
+@if((!$usulan) && $usulanGaji == '')
+<p class="text-center">Anda Belum Memiliki Usulan Kenaikan Gaji</p>
+@endif
 @if ($usulan)
 <div class="notification">
     <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
@@ -27,7 +30,7 @@ Usulan Kenaikan Gaji
 </div>
 @endif
 
-@if ($usulanGaji)
+@if ($usulanGaji != '')
 <div class="row mt-3">
     <div class="col-lg-12">
         <div class="table-responsive">
@@ -406,7 +409,6 @@ Usulan Kenaikan Gaji
         padding-right: 20px;
         padding-left: 20px
     }
-
 </style>
 @endpush
 
