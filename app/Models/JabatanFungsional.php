@@ -11,6 +11,7 @@ class JabatanFungsional extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'jabatan_fungsional';
+    protected $guarded = [];
 
 
     // public function persyaratan()

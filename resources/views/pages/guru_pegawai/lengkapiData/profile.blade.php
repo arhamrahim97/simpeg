@@ -120,7 +120,7 @@
 						@enderror
 					</div>
 					<div class="form-group @error('status') has-error @enderror">
-						<input type="text" value="{{ Auth::user()->status_kepegawaian }}" id="cek_status" class="d-none">
+						<input type="text" value="{{ Auth::user()->status_kepegawaian }}" id="cek_status" class="">
 						<label>Status Kepegawaian:</label>
 						<select class="form-control" name="status" disabled>
 							<option value="">- Pilih Salah Satu -</option>
@@ -502,7 +502,7 @@
 @section('script')
 <script>	
 	$("#submit" ).on('click', function() {
-		var arr = ['PNS', 'PNS Dipag', 'PNS Diperbantukan'];
+		var arr = ['PNS', 'PNS Depag', 'PNS Diperbantukan'];
 		if(jQuery.inArray($('#cek_status').val(), arr)  == -1){ // !=							
 			swal({
 				title: 'Apakah data yang anda inputkan sudah benar?',				
@@ -521,7 +521,7 @@
 			}).then((confirm) => {
 				if (confirm) {
 					$("#submit2").click()	
-					// $('.rupiah').unmask();
+				// 	$('.rupiah').unmask();
 					// swal({
 					// 	title: "Terima Kasih!",
 					// 	text: "Data diri anda telah tersimpan di database kami",

@@ -33,7 +33,7 @@ class ProfileSeeder extends Seeder
                 'alamat' => $this->faker->address(),
                 'pendidikan_terakhir' => 'Diploma IV/Strata I',
                 'jenis_asn' => 'Guru',
-                'jenis_guru' => 'Guru Mata Pelajaran',
+                'jenis_guru' => 'Guru Mapel',
                 'bidang_studi' => $bidang_studi[array_rand($bidang_studi)], //
                 'mata_pelajaran' => $mata_pelajaran[array_rand($mata_pelajaran)], //
                 'nip' => $this->faker->unique()->numerify('##################'),
@@ -52,7 +52,7 @@ class ProfileSeeder extends Seeder
                 'tmt_gaji' => '2015-08-16',
                 'status_berkas_dasar' => -1,
                 'status_profile' => 0,
-                'tmt_pangkat' => '2015-08-16',                
+                'tmt_pangkat' => '2015-08-16',
                 'foto' => 'profildummy.jpg'
             ],
             [
@@ -66,7 +66,7 @@ class ProfileSeeder extends Seeder
                 'alamat' => $this->faker->address(),
                 'pendidikan_terakhir' => 'Strata II',
                 'jenis_asn' => 'Pegawai',
-                'jenis_guru' => 'Guru Mata Pelajaran',
+                'jenis_guru' => 'Tenaga Administrasi Sekolah ',
                 'nip' => $this->faker->unique()->numerify('##################'),
                 'nuptk' => $this->faker->unique()->numerify('################'),
                 'unit_kerja' => mt_rand(1, 4),

@@ -11,4 +11,6 @@ class JabatanStruktural extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'jabatan_struktural';
+        protected $guarded = ['id'];
+
 }
