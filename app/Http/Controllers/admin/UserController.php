@@ -200,6 +200,7 @@ class UserController extends Controller
                     'email.email' => 'Email Tidak Valid',
                     'alamat.required' => 'Alamat Tidak Boleh Kosong',
                     'nip.required' => 'NIP Tidak Boleh Kosong',
+                    'nip.size' => 'NIP harus 18 karakter',
                     'nip.unique' => 'NIP Telah Digunakan',
                     'jabatan_pangkat_golongan.required' => 'Jabatan - Pangkat - Golongan Tidak Boleh Kosong',
                     'role.required' => 'Role Tidak Boleh Kosong',

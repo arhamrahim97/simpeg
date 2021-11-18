@@ -25,11 +25,11 @@ class ProfileGuruPegawai extends Model
 
     public function jabatanStruktural()
     {
-        return $this->hasOne(jabatanStruktural::class, 'id', 'jabatan_pangkat_golongan');
+        return $this->hasOne(JabatanStruktural::class, 'id', 'jabatan_pangkat_golongan');
     }
 
     public function jabatanFungsional()
     {
-        return $this->hasOne(jabatanFungsional::class, 'id', 'jabatan_pangkat_golongan');
+        return $this->hasOne(JabatanFungsional::class, 'id', 'jabatan_pangkat_golongan');
     }
 }

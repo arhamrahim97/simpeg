@@ -39,8 +39,8 @@ class WelcomeController extends Controller
                 ->orWhereRaw('tmt_pangkat < (now() - interval 4 year) and jenis_asn = "Pegawai" and status LIKE "%PNS%"')
                 ->orderBy('tmt_pangkat', 'desc'),
             'profileAll' => ProfileGuruPegawai::all(),
-            'profilePNS' => ProfileGuruPegawai::where('status', 'like', 'PNS'),
-            'profileNonPNS' => ProfileGuruPegawai::where('status', 'not like', 'PNS'),
+            'profilePNS' => ProfileGuruPegawai::whereRaw('status like "%PNS%"'),
+            'profileNonPNS' => ProfileGuruPegawai::whereRaw('status not like "%PNS%"'),
             'namaStatus' => json_encode($namaStatus),
             'jumlahTiapStatus' => json_encode($jumlahTiapStatus),
 

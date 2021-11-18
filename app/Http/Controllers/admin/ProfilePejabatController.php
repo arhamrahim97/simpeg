@@ -29,7 +29,7 @@ class ProfilePejabatController extends Controller
     public function indexNonProfileGuruPegawai(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProfilePejabat::with(['jabatanStruktural', 'user'])->orderBy('updated_at', 'desc');
+            $data = ProfilePejabat::with(['jabatanStruktural','user'])->orderBy('updated_at', 'desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (ProfilePejabat $profilePejabat) {
@@ -63,6 +63,7 @@ class ProfilePejabatController extends Controller
                 ->rawColumns(['action', 'role', 'golongan_jabatan_pangkat'])
                 ->make(true);
         }
+            // dd($data);
 
         // $data = [
         //     'unit_kerja' => UnitKerja::all(),

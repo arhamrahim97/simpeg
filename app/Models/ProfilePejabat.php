@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\JabatanStruktural;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,6 @@ class ProfilePejabat extends Model
 
     public function jabatanStruktural()
     {
-        return $this->hasOne(jabatanStruktural::class, 'id', 'jabatan_pangkat_golongan');
+        return $this->hasOne(JabatanStruktural::class, 'id', 'jabatan_pangkat_golongan');
     }
 }
