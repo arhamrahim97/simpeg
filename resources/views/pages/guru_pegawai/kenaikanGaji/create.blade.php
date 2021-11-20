@@ -217,17 +217,29 @@ Upload Berkas Usulan Kenaikan Gaji
     var lengthTipeFileBerkas = 0;
     var lengthSizeFileBerkas = 0;
     var lengthFileBerkas = 0;
+    var lengthNamaSama = 0;
     var ukuranFile = 1048576;
     $('#formBerkas').submit(function (e) {
         lengthNamaBerkas = 0;
         lengthTipeFileBerkas = 0;
         lengthSizeFileBerkas = 0;
         lengthFileBerkas = 0;
+        lengthNamaSama = 0;
         $(".namaBerkas").each(function () {
             if ($(this).val()) {
                 lengthNamaBerkas++;
             }
         })
+
+        for (var i = 0; i < $(".namaBerkas").length; i++) {
+            for (var j = 0; j < $(".namaBerkas").length; j++) {
+                if (i != j) {
+                    if ($(".namaBerkas")[i]['value'] == $(".namaBerkas")[j]['value']) {
+                        lengthNamaSama++;
+                    }
+                }
+            }
+        }
 
         if (!$(".fileBerkas")[0]) {
             swal("Terjadi Kesalahan", "Berkas Harus Ditambahkan", {
@@ -298,6 +310,18 @@ Upload Berkas Usulan Kenaikan Gaji
 
         if (lengthTipeFileBerkas !== $('.fileBerkas').length) {
             swal("Periksa Kembali Berkas Anda", "Berkas Yang Diupload Harus PDF", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+            e.preventDefault();
+        }
+
+        if (lengthNamaSama > 0) {
+            swal("Periksa Kembali Berkas Anda", "Nama Berkas Tidak Boleh Sama", {
                 icon: "error",
                 buttons: {
                     confirm: {

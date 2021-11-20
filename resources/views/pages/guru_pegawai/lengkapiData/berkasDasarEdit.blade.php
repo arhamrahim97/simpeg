@@ -48,9 +48,9 @@
                                 id="daftarBerkasUpdate{{$berkas->id}}">
                                 <input type="hidden" value="{{$berkas->id}}" name="idBerkasUpdate[]">
                                 <label for="exampleInputEmail1">Nama Berkas</label>
-                                <input type="text" class="form-control namaBerkasUpdate" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Nama Berkas" name="namaBerkasUpdate[]"
-                                    value="{{$berkas->nama}}" @if(in_array($berkas->nama,
+                                <input type="text" class="form-control namaBerkasUpdate cekNamaBerkas"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nama Berkas"
+                                    name="namaBerkasUpdate[]" value="{{$berkas->nama}}" @if(in_array($berkas->nama,
                                 $listDeskripsi))
                                 readonly @endif>
                                 <div class="mb-3 mt-3">
@@ -102,6 +102,7 @@
     var lengthSizeFileBerkas = 0;
     var lengthFileBerkas = 0;
     var ukuranFile = 1048576;
+    var lengthNamaSama = 0;
 
     // Update File
     var lengthNamaBerkasUpdate = 0;
@@ -113,6 +114,7 @@
         lengthTipeFileBerkas = 0;
         lengthSizeFileBerkas = 0;
         lengthFileBerkas = 0;
+        lengthNamaSama = 0;
 
         // Update
         lengthSizeFileBerkasUpdate = 0;
@@ -125,6 +127,16 @@
                 lengthNamaBerkasUpdate++;
             }
         })
+
+        for (var i = 0; i < $(".cekNamaBerkas").length; i++) {
+            for (var j = 0; j < $(".cekNamaBerkas").length; j++) {
+                if (i != j) {
+                    if ($(".cekNamaBerkas")[i]['value'] == $(".cekNamaBerkas")[j]['value']) {
+                        lengthNamaSama++;
+                    }
+                }
+            }
+        }
 
         $('.fileBerkasUpdate').each(function () {
             if (this.files[0]) {
@@ -268,6 +280,18 @@
                 e.preventDefault();
             }
         }
+
+        if (lengthNamaSama > 0) {
+            swal("Periksa Kembali Berkas Anda", "Nama Berkas Tidak Boleh Sama", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+            e.preventDefault();
+        }
     })
 
 </script>
@@ -278,7 +302,7 @@
         i++;
         var formBerkas =
             ' <div class="form-group border border-grey shadow-lg rounded p-3" id="daftarBerkas' + i +
-            '"><label for="exampleInputEmail1">Nama Berkas</label><input type="text" class="form-control namaBerkas" id="exampleInputEmail1" aria-describedby="emailHelp"placeholder="Nama Berkas" name="namaBerkas[]"><div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm" type="file" name="fileBerkas[]"></div><div class="div d-flex justify-content-end"><button href="" class="btn btn-danger btn-sm btnHapusBerkas" id="' +
+            '"><label for="exampleInputEmail1">Nama Berkas</label><input type="text" class="form-control namaBerkas cekNamaBerkas" id="exampleInputEmail1" aria-describedby="emailHelp"placeholder="Nama Berkas" name="namaBerkas[]"><div class="mb-3 mt-3"><label for="formFileSm" class="form-label">File Berkas</label><input class="form-control form-control-sm fileBerkas" id="formFileSm" type="file" name="fileBerkas[]"></div><div class="div d-flex justify-content-end"><button href="" class="btn btn-danger btn-sm btnHapusBerkas" id="' +
             i +
             '"><i class="fas fa-trash-alt"></i> Hapus</button></div></div>';
         $('#listBerkas').append(formBerkas);
@@ -361,6 +385,7 @@
             }
         });
     })
+
 </script>
 
 
