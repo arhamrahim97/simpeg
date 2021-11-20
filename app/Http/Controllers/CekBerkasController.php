@@ -20,8 +20,8 @@ class CekBerkasController extends Controller
     {
         $idDokumen = $request->idDokumen;
         $hariIni = \Carbon\Carbon::now()->locale('id');
-        $usulanGaji = UsulanGaji::where('unique_id', $idDokumen)->first();
-        $usulanPangkat = UsulanPangkat::where('unique_id', $idDokumen)->first();
+        $usulanGaji = UsulanGaji::where('unique_id', $idDokumen)->where('status_kepala_dinas',1)->first();
+        $usulanPangkat = UsulanPangkat::where('unique_id', $idDokumen)->where('status_kepala_dinas',1)->first();
         $barcode = new DNS2D;
         $barcode->setStorPath(__DIR__ . '/cache/');
         $ttdKepalaDinas = '';

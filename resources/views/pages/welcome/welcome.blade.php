@@ -246,7 +246,7 @@ Sistem Informasi Manajemen Pegawai
 									@empty
 										<h4 class="text-center text-muted">Belum Ada Daftar Usulan Pangkat</h4>
 									@endforelse	
-									@if ($usulanGaji->count() != 0)
+									@if ($usulanPangkat->count() != 0)
 										<a href="/daftar-usulan-kenaikan-pangkat" class="btn w-100 btn-success-soft d-flex align-items-center mt-5 lift shadow-sm">
 											Lihat Selengkapnya <i class="fe fe-arrow-right ms-auto"></i>
 										</a>																

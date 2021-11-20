@@ -20,7 +20,7 @@ class CetakUsulanController extends Controller
         // $hariIni = \Carbon\Carbon::createFromFormat('Y-m-d', $user->profile->tanggal_lahir)->locale('id');
         $random = rand(1000, 9999);
         $pdf = PDF::loadView('pages.semua.suratUsulanKenaikanGaji', compact('usulanGaji', 'user', 'kepalaDinas', 'hariIni'))->setPaper('f4', 'portrait');
-        return $pdf->download($random . '.pdf');
+        return $pdf->download($usulanGaji->nama . '.pdf');
         // echo $hariIni->dayName . ", " . $hariIni->day . ' ' . $hariIni->monthName . ' ' . $hariIni->year;
     }
 

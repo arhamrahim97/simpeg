@@ -69,7 +69,7 @@ class ProfileGuruPegawaiController extends Controller
     public function store(Request $request)
     {
         if ((Auth::user()->status_kepegawaian == 'PNS') || (Auth::user()->status_kepegawaian == 'PNS Depag') || (Auth::user()->status_kepegawaian == 'PNS Diperbantukan')) {
-            $nip_req = ['required', 'size:18'];
+            $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
             $golongan_req = ['required'];
             $nilai_gaji_req = ['required'];
             $tmt_gaji_req = ['required'];
@@ -88,7 +88,9 @@ class ProfileGuruPegawaiController extends Controller
         $data = $request->validate(
             [
                 'nama' => 'required',
-                'nik' => 'required|size:16|unique:profile_guru_pegawai,nik',
+                // 'nik' => 'required|size:16|unique:profile_guru_pegawai,nik',
+                'nik' => ['required', 'size:16', Rule::unique('profile_guru_pegawai')->withoutTrashed()],
+
                 'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
@@ -131,6 +133,7 @@ class ProfileGuruPegawaiController extends Controller
                 'jenis_guru.required' => 'Jenis PTK Tidak Boleh Kosong',
                 'nip.required' => 'NIP Tidak Boleh Kosong',
                 'nip.size' => 'NIP Harus 18 Karakter',
+                'nip.unique' => 'NIP Sudah Ada',
                 // 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
                 'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',
@@ -348,7 +351,13 @@ class ProfileGuruPegawaiController extends Controller
     public function updateProfileGuruPegawai(Request $request, ProfileGuruPegawai $profileGuruPegawai)
     {
         if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
-            $nip_req = ['required', 'size:18'];
+            // $nip_req = ['required', 'size:18'];
+            if($profileGuruPegawai->nip != $request->nip){
+                $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
+            }
+            else{
+                $nip_req = '';
+            }
             $golongan_req = ['required'];
             $nilai_gaji_req = ['required'];
             $tmt_gaji_req = ['required'];
@@ -421,6 +430,7 @@ class ProfileGuruPegawaiController extends Controller
                 'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
                 'nip.required' => 'NIP Tidak Boleh Kosong',
                 'nip.size' => 'NIP Harus 18 Karakter',
+                'nip.unique' => 'NIP Sudah Ada',
                 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
                 'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',
@@ -573,7 +583,13 @@ class ProfileGuruPegawaiController extends Controller
     public function update(Request $request, ProfileGuruPegawai $profileGuruPegawai)
     {
         if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
-            $nip_req = ['required', 'size:18'];
+            // $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
+            if($profileGuruPegawai->nip != $request->nip){
+                $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
+            }
+            else{
+                $nip_req = '';
+            }
             $golongan_req = ['required'];
             $nilai_gaji_req = ['required'];
             $tmt_gaji_req = ['required'];
@@ -593,9 +609,9 @@ class ProfileGuruPegawaiController extends Controller
         } else {
             $foto_req = '';
         }
-
+        
         if ($request->nik != $profileGuruPegawai->nik) {
-            $nik_req = ['required', 'size:16'];
+            $nik_req = ['required', 'size:16', 'unique:profile_guru_pegawai,nik'];
         } else {
             $nik_req = '';
         }
@@ -646,6 +662,7 @@ class ProfileGuruPegawaiController extends Controller
                 'jenis_guru.required' => 'Jenis Guru Tidak Boleh Kosong',
                 'nip.required' => 'NIP Tidak Boleh Kosong',
                 'nip.size' => 'NIP Harus 18 Karakter',
+                'nip.unique' => 'NIP Sudah Ada',
                 'nuptk.required' => 'NUPTK Tidak Boleh Kosong',
                 'npsn.required' => 'NPSN Tidak Boleh Kosong',
                 'unit_kerja.required' => 'Unit Kerja Tidak Boleh Kosong',

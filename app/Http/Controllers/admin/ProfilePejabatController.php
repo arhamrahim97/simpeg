@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\Rule;
 
 class ProfilePejabatController extends Controller
 {
@@ -93,6 +94,14 @@ class ProfilePejabatController extends Controller
     public function updateProfileNonGuruPegawai(Request $request, ProfilePejabat $profileNonGuruPegawai)
     {
         // dd($request);
+        if($profileNonGuruPegawai->nip != $request->nip){
+            $nip_req = ['required', 'size:18', Rule::unique('profile_pejabat')->withoutTrashed()];
+        }
+        else{
+            $nip_req = '';
+        }
+            
+            
         if ($request->file('foto') != null) {
             $foto_req = ['required', 'image', 'file', 'max:1024'];
         } else {
@@ -104,6 +113,8 @@ class ProfilePejabatController extends Controller
         } else {
             $foto_ttd_req = '';
         }
+        
+        
 
         $data = $request->validate(
             [
@@ -114,7 +125,7 @@ class ProfilePejabatController extends Controller
                 'no_hp' => 'required',
                 'email' => 'required|email',
                 'alamat' => 'required',
-                'nip' => 'required',
+                'nip' => $nip_req,
                 'jabatan_pangkat_golongan' => 'required',
                 'foto' => $foto_req,
                 'foto_ttd' => $foto_ttd_req

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -134,7 +135,9 @@ class UserController extends Controller
             $request->validate(
                 [
                     'nama' => 'required',
-                    'username' => 'required|min:6|unique:user',
+                    // 'username' => 'required|min:6|unique:user',
+                    'username' => ['required', 'min:6', Rule::unique('user')->withoutTrashed()],
+
                     'password_text' => 'required|min:6',
                     'status_kepegawaian' => 'required',
                     'jenis_guru' => 'required',
@@ -181,10 +184,10 @@ class UserController extends Controller
                     'no_hp' => 'required',
                     'email' => 'required|email',
                     'alamat' => 'required',
-                    'nip' => 'required|unique:user|size:18',
+                    'nip' => ['required', 'size:18', Rule::unique('user')->withoutTrashed()],
                     'jabatan_pangkat_golongan' => 'required',
                     'role' => 'required',
-                    'username' => 'required|min:6|unique:user',
+                    'username' => ['required', 'min:6', Rule::unique('user')->withoutTrashed()],
                     'password_text' => 'required|min:6',
                     'status' => 'required',
                     'foto' => 'required|image|file|max:1024',
@@ -327,7 +330,9 @@ class UserController extends Controller
     {
         // dd($request->old_status_kepegawaian);
         if ($request->username != $user->username) {
-            $username_req = ['required', 'min:6', 'unique:user'];
+            // $username_req = ['required', 'min:6', 'unique:user'];
+            $username_req = ['required', 'min:6', Rule::unique('user')->withoutTrashed()];
+
         } else {
             $username_req = '';
         }
@@ -497,7 +502,7 @@ class UserController extends Controller
     public function updateAkun(Request $request, User $user)
     {
         if ($request->username != $user->username) {
-            $username_req = ['required', 'min:6', 'unique:user'];
+            $username_req = ['required', 'min:6', Rule::unique('user')->withoutTrashed()];
         } else {
             $username_req = '';
         }
@@ -549,6 +554,13 @@ class UserController extends Controller
         } else {
             $username_req = '';
         }
+        
+        if($user->nip != $request->nip){
+            $nip_req = ['required', 'size:18', Rule::unique('user')->withoutTrashed()];
+        }
+        else{
+            $nip_req = '';
+        }
 
         if ($request->file('foto') != null) {
             $foto_req = ['required', 'image', 'file', 'max:1024'];
@@ -571,7 +583,7 @@ class UserController extends Controller
                 'no_hp' => 'required',
                 'email' => 'required|email',
                 'alamat' => 'required',
-                'nip' => 'required',
+                'nip' => $nip_req,
                 'jabatan_pangkat_golongan' => 'required',
                 'foto' => $foto_req,
                 'foto_ttd' => $foto_ttd_req,
@@ -616,6 +628,18 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => $password,
         ];
+        
+        $profile = [
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'no_hp' => $request->no_hp,
+            'email' => $request->email,
+            'alamat' => $request->alamat,
+            'nip' => $request->nip,
+            'jabatan_pangkat_golongan' => $request->jabatan_pangkat_golongan,
+        ];
 
         if ($request->file('foto')) {
             if (Storage::exists('upload/foto-profil/' . $user->profilePejabat->foto)) {
@@ -645,16 +669,7 @@ class UserController extends Controller
             $profile['foto_ttd'] = $user->profilePejabat->foto_ttd;
         }
 
-        $profile = [
-            'nama' => $request->nama,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'no_hp' => $request->no_hp,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'nip' => $request->nip,
-            'jabatan_pangkat_golongan' => $request->jabatan_pangkat_golongan,
-        ];
+        
         $profile['tanggal_lahir'] = date("Y-m-d", strtotime($request->tanggal_lahir));
 
 

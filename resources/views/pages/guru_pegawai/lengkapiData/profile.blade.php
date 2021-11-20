@@ -120,7 +120,7 @@
 						@enderror
 					</div>
 					<div class="form-group @error('status') has-error @enderror">
-						<input type="text" value="{{ Auth::user()->status_kepegawaian }}" id="cek_status" class="">
+						<input type="text" value="{{ Auth::user()->status_kepegawaian }}" id="cek_status" class="d-none">
 						<label>Status Kepegawaian:</label>
 						<select class="form-control" name="status" disabled>
 							<option value="">- Pilih Salah Satu -</option>

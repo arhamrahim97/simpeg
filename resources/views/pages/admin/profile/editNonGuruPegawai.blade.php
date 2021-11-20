@@ -138,7 +138,7 @@ Edit Profile Non Guru/Pegawai
                         </div>
                     </div>
                     <div class="form-group float-right">
-                        <button type="submit" class="btn btn-primary float-right">Tambah</button>
+                        <button type="submit" class="btn btn-primary float-right">Simpan</button>
                     </div>
                 </div>
 
