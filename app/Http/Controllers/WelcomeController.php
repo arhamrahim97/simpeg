@@ -17,6 +17,7 @@ class WelcomeController extends Controller
     {
         $status = DB::table('profile_guru_pegawai')
             ->selectRaw('status, count(status) as jumlah')
+            ->where('deleted_at', NULL)
             ->groupBy('status')
             ->get();
         $namaStatus = [];
@@ -30,11 +31,13 @@ class WelcomeController extends Controller
             'usulanGaji' => DB::table('profile_guru_pegawai')
                 ->join('unit_kerja', 'profile_guru_pegawai.unit_kerja', '=', 'unit_kerja.id')
                 ->select('profile_guru_pegawai.*', 'unit_kerja.nama as sekolah')
+                ->where('profile_guru_pegawai.deleted_at', NULL)
                 ->whereRaw('tmt_gaji < (now() - interval 2 year) AND status LIKE "%PNS%"')
                 ->orderBy('tmt_gaji', 'desc'),
             'usulanPangkat' => DB::table('profile_guru_pegawai')
                 ->join('unit_kerja', 'profile_guru_pegawai.unit_kerja', '=', 'unit_kerja.id')
                 ->select('profile_guru_pegawai.*', 'unit_kerja.nama as sekolah')
+                ->where('profile_guru_pegawai.deleted_at', NULL)
                 ->whereRaw('tmt_pangkat < (now() - interval 2 year) and jenis_asn = "Guru" and status LIKE "%PNS%"')
                 ->orWhereRaw('tmt_pangkat < (now() - interval 4 year) and jenis_asn = "Pegawai" and status LIKE "%PNS%"')
                 ->orderBy('tmt_pangkat', 'desc'),
@@ -161,9 +164,6 @@ class WelcomeController extends Controller
 
         ];
 
-
-
-
         return view('pages.welcome.welcome', $data);
         // return view('pages.welcome.welcome');
     }
@@ -175,6 +175,7 @@ class WelcomeController extends Controller
             ->join('unit_kerja', 'profile_guru_pegawai.unit_kerja', '=', 'unit_kerja.id')
             ->join('jabatan_fungsional', 'profile_guru_pegawai.jabatan_pangkat_golongan', '=', 'jabatan_fungsional.id')
             ->join('jabatan_struktural', 'profile_guru_pegawai.jabatan_pangkat_golongan', '=', 'jabatan_struktural.id')
+            ->where('profile_guru_pegawai.deleted_at', NULL)
             ->select('profile_guru_pegawai.*', 'unit_kerja.nama as sekolah', 'jabatan_struktural.golongan as golongan_jabatan_struktural', 'jabatan_fungsional.golongan as golongan_jabatan_fungsional');
 
         if ($request->cari) {
@@ -198,6 +199,7 @@ class WelcomeController extends Controller
             ->join('unit_kerja', 'profile_guru_pegawai.unit_kerja', '=', 'unit_kerja.id')
             ->join('jabatan_fungsional', 'profile_guru_pegawai.jabatan_pangkat_golongan', '=', 'jabatan_fungsional.id')
             ->join('jabatan_struktural', 'profile_guru_pegawai.jabatan_pangkat_golongan', '=', 'jabatan_struktural.id')
+            ->where('profile_guru_pegawai.deleted_at', NULL)
             ->select('profile_guru_pegawai.*', 'unit_kerja.nama as sekolah', 'jabatan_struktural.golongan as golongan_jabatan_struktural', 'jabatan_fungsional.golongan as golongan_jabatan_fungsional');
 
         if ($request->cari) {

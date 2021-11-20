@@ -15,16 +15,12 @@ class ProfileSeeder extends Seeder
      */
     public function run()
     {
-        $bidang_studi = array('Administrasi dan Supervisi pendidikan', 'Akuntansi Manajemen', 'Arsitektur', 'Bahasa Dan Sastra Indonesia', 'Bahasa Inggris', 'Biologi', 'Ekonomi', 'Manajemen Informatika dan Komputer', 'Pendidikan Agama Islam', 'Lainnya');
-        $mata_pelajaran = array('Bahasa Indonesia', 'Bahasa Inggris', 'Ekonomi', 'Ilmu Pengetahuan Alam (IPA)', 'Matematika (Umum)', 'Pendidikan Agama Islam', 'Pendidikan Kewarganegaraan', 'Teknologi Informasi dan Komunikasi', 'Lainnya');
-        $kecamatan = array('Mantikulore', 'Palu Barat', 'Palu Timur');
         $this->faker = Faker::create();
         $kecamatan = array('Mantikulore', 'Palu Barat', 'Palu Timur');
         $guru = [
             [
                 'id_user' => 2,
                 'nama' => $this->faker->name(),
-                'nik' => $this->faker->unique()->numerify('################'), //
                 'jenis_kelamin' => "Laki-Laki",
                 'tempat_lahir' => $this->faker->state(),
                 'tanggal_lahir' => $this->faker->date('Y-m-d', 'now'),
@@ -34,13 +30,9 @@ class ProfileSeeder extends Seeder
                 'pendidikan_terakhir' => 'Diploma IV/Strata I',
                 'jenis_asn' => 'Guru',
                 'jenis_guru' => 'Guru Mapel',
-                'bidang_studi' => $bidang_studi[array_rand($bidang_studi)], //
-                'mata_pelajaran' => $mata_pelajaran[array_rand($mata_pelajaran)], //
                 'nip' => $this->faker->unique()->numerify('##################'),
-                'npsn' => $this->faker->unique()->numerify('########'),
                 'nuptk' => $this->faker->unique()->numerify('################'),
-                'unit_kerja' => mt_rand(1, 5),
-                'kecamatan' => $kecamatan[array_rand($kecamatan)],
+                'unit_kerja' => mt_rand(1, 4),
                 'status' => 'PNS',
                 'nik' => $this->faker->unique()->numerify('##################'),
                 'kecamatan' => $kecamatan[array_rand($kecamatan)],
@@ -66,7 +58,7 @@ class ProfileSeeder extends Seeder
                 'alamat' => $this->faker->address(),
                 'pendidikan_terakhir' => 'Strata II',
                 'jenis_asn' => 'Pegawai',
-                'jenis_guru' => 'Tenaga Administrasi Sekolah ',
+                'jenis_guru' => 'Guru Mapel',
                 'nip' => $this->faker->unique()->numerify('##################'),
                 'nuptk' => $this->faker->unique()->numerify('################'),
                 'unit_kerja' => mt_rand(1, 4),
@@ -82,7 +74,6 @@ class ProfileSeeder extends Seeder
                 'status_berkas_dasar' => -1,
                 'status_profile' => 0,
                 'tmt_pangkat' => '2015-08-16',
-                'tmt_pengangkatan' => $this->faker->dateTimeBetween('2010-01-01', '2015-01-01'),
                 'foto' => 'profildummy.jpg'
             ],
         ];

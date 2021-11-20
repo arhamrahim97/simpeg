@@ -506,7 +506,7 @@ Edit Profil Guru/Pegawai
     </div>	
     <div class="wizard-action">
         <div class="pull-right">
-        <input type="submit" class="btn btn-next btn-danger" value="Simpan">		
+        <input type="submit" class="btn btn-next btn-primary" value="Simpan">		
         </div>
         <div class="clearfix"></div>
     </div>
