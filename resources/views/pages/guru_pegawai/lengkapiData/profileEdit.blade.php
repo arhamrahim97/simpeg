@@ -132,7 +132,7 @@
 							<option value="PNS" @if (old('status', $profile->status) == 'PNS') selected @endif>PNS</option>
 							<option value="PNS Depag" @if (old('status', $profile->status) == 'PNS Depag') selected @endif>PNS Depag</option>
 							<option value="PNS Diperbantukan" @if (old('status', $profile->status) == 'PNS Diperbantukan') selected @endif>PNS Diperbantukan</option>
-							<option value="Tenaga honor lainnya" @if (old('status', $profile->status) == 'Tenaga honor lainnya') selected @endif>Tenaga honor lainnya</option>
+							<option value="Tenaga Honor Sekolah" @if (old('status', $profile->status) == 'Tenaga Honor Sekolah') selected @endif>Tenaga Honor Sekolah</option>
 							<option value="Lainnya" @if (old('status', $profile->status) == 'Lainnya') selected @endif>Lainnya</option>
 						</select>
 						<small style="color: green"><i>* Untuk mengubah Status Kepegawaian hanya dapat dilakukan pada menu Akun</i></small>

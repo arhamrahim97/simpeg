@@ -31,7 +31,7 @@ Edit Akun
                     <option value="PNS" @if (old('status', $user->status_kepegawaian) == 'PNS') selected @endif>PNS</option>
                     <option value="PNS Depag" @if (old('status', $user->status_kepegawaian) == 'PNS Depag') selected @endif>PNS Depag</option>
                     <option value="PNS Diperbantukan" @if (old('status', $user->status_kepegawaian) == 'PNS Diperbantukan') selected @endif>PNS Diperbantukan</option>
-                    <option value="Tenaga honor lainnya" @if (old('status', $user->status_kepegawaian) == 'Tenaga honor lainnya') selected @endif>Tenaga honor lainnya</option>
+                    <option value="Tenaga Honor Sekolah" @if (old('status', $user->status_kepegawaian) == 'Tenaga Honor Sekolah') selected @endif>Tenaga Honor Sekolah</option>
                     <option value="Lainnya" @if (old('status', $user->status_kepegawaian) == 'Lainnya') selected @endif>Lainnya</option>
                 </select>
                 @error('status_kepegawaian')
