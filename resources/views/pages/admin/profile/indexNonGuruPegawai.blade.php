@@ -44,7 +44,7 @@ Profil Non Guru/Pegawai
 {{-- Style Disini --}}
 @push('style')
 <style>
- .dataTables_filter {
+    .dataTables_filter {
         display: inline !important;
         float: right;
     }
