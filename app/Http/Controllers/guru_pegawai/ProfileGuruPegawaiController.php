@@ -41,12 +41,6 @@ class ProfileGuruPegawaiController extends Controller
         } else {
             return redirect('/dashboard');
         }
-
-
-
-
-
-
         // return view('components.dashboard.guru_pegawai.mainLengkapiData', $data);
     }
 
@@ -221,7 +215,7 @@ class ProfileGuruPegawaiController extends Controller
     public function indexProfileGuruPegawai(Request $request)
     {
         if ($request->ajax()) {
-            $data = ProfileGuruPegawai::with(['jabatanStruktural','jabatanFungsional', 'unitKerja'])->orderBy('updated_at', 'desc');
+            $data = ProfileGuruPegawai::with(['jabatanStruktural', 'jabatanFungsional', 'unitKerja'])->orderBy('updated_at', 'desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (ProfileGuruPegawai $profileGuruPegawai) {
@@ -257,18 +251,15 @@ class ProfileGuruPegawaiController extends Controller
                 ->addColumn('golongan_jabatan_pangkat', function (ProfileGuruPegawai $profileGuruPegawai) {
                     if ($profileGuruPegawai->jabatan_pangkat_golongan == 0) {
                         return 'Belum Ada Data';
-                    }
-                    else{
+                    } else {
                         if ($profileGuruPegawai->jenis_asn == 'Pegawai') {
-                        $actionBtn = $profileGuruPegawai->jabatanStruktural->golongan;
-                        return $actionBtn;
+                            $actionBtn = $profileGuruPegawai->jabatanStruktural->golongan;
+                            return $actionBtn;
                         } else if ($profileGuruPegawai->jenis_asn == 'Guru') {
                             $actionBtn = $profileGuruPegawai->jabatanFungsional->golongan;
                             return $actionBtn;
                         }
                     }
-                        
-                    
                 })
                 ->filter(function ($query) use ($request) {
                     if ($request->search != '') {
@@ -306,7 +297,7 @@ class ProfileGuruPegawaiController extends Controller
             'profile' => ProfileGuruPegawai::all(),
         ];
         return view('pages.admin.profile.indexGuruPegawai', $data);
-        
+
         // dd(ProfileGuruPegawai::with(['jabatanStruktural','jabatanFungsional', 'unitKerja'])->orderBy('updated_at', 'desc'))->get();
         // echo 'test';
     }
@@ -352,10 +343,9 @@ class ProfileGuruPegawaiController extends Controller
     {
         if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
             // $nip_req = ['required', 'size:18'];
-            if($profileGuruPegawai->nip != $request->nip){
+            if ($profileGuruPegawai->nip != $request->nip) {
                 $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
-            }
-            else{
+            } else {
                 $nip_req = '';
             }
             $golongan_req = ['required'];
@@ -584,10 +574,9 @@ class ProfileGuruPegawaiController extends Controller
     {
         if (($profileGuruPegawai->status == 'PNS') || ($profileGuruPegawai->status == 'PNS Depag') || ($profileGuruPegawai->status == 'PNS Diperbantukan')) {
             // $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
-            if($profileGuruPegawai->nip != $request->nip){
+            if ($profileGuruPegawai->nip != $request->nip) {
                 $nip_req = ['required', 'size:18', Rule::unique('profile_guru_pegawai')->withoutTrashed()];
-            }
-            else{
+            } else {
                 $nip_req = '';
             }
             $golongan_req = ['required'];
@@ -609,7 +598,7 @@ class ProfileGuruPegawaiController extends Controller
         } else {
             $foto_req = '';
         }
-        
+
         if ($request->nik != $profileGuruPegawai->nik) {
             $nik_req = ['required', 'size:16', 'unique:profile_guru_pegawai,nik'];
         } else {

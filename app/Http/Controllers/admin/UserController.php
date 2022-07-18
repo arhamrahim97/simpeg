@@ -37,29 +37,6 @@ class UserController extends Controller
                     }
                     return $actionBtn;
                 })
-                // ->addColumn('profile', function (User $user) {
-                //     if ($user->profile) {
-                //         if (($user->role == 'Guru') || ($user->role == 'Pegawai')) {
-                //             if ($user->profile->status_profile == 0) {
-                //                 $actionBtn = '<span class="badge badge-warning p-2">Menunggu Konfirmasi</span>';
-                //                 return $actionBtn;
-                //             } else if ($user->profile->status_profile == 1) {
-                //                 $actionBtn = '<span class="badge badge-success p-2">Sudah Lengkap dan Disetujui</span>';
-                //                 return $actionBtn;
-                //             } else if ($user->profile->status_profile == 2) {
-                //                 $actionBtn = '<span class="badge badge-danger p-2 mr-2">Ditolak</span>';
-                //                 return $actionBtn;
-                //             }
-                //         } else {
-                //             $actionBtn = '<span class="badge badge-success p-2">Sudah Lengkap dan Disetujui</span>';
-                //             return $actionBtn;
-                //         }
-                //     } //
-                //     else {
-                //         $actionBtn = '<span class="badge badge-secondary p-2">Belum Lengkap</span>';
-                //         return $actionBtn;
-                //     }
-                // })
                 ->addColumn('status_akun', function (User $user) {
                     if ($user->status == 1) {
                         $actionBtn = '<span class="badge badge-success p-2">Aktif</span>';
@@ -81,16 +58,6 @@ class UserController extends Controller
                     if (!empty($request->statusAkun)) {
                         $query->where('status', $request->statusAkun);
                     }
-
-                    // if (!empty($request->statusProfil)) {
-                    //     $query->whereHas('profile', function ($query) use ($request) {
-                    //         if ($request->statusBerkas == 3) {
-                    //             $query->where("profile_guru_pegawai.status_berkas_dasar", "0");
-                    //         } else {
-                    //             $query->where('profile_guru_pegawai.status_berkas_dasar', $request->statusBerkas);
-                    //         }
-                    //     });
-                    // }
                 })
                 ->rawColumns(['action', 'profile', 'status_akun'])
                 ->make(true);
