@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^8.0",
+        "orangehill/iseed": "^3.0",
         "yajra/laravel-datatables": "1.5"
     },
     "require-dev": {

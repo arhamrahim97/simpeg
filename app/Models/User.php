@@ -19,7 +19,6 @@ class User extends Authenticatable
     protected $table = 'user';
     protected $guarded = ['id'];
 
-
     // protected $hidden = [
     //     'password',
     // ];
